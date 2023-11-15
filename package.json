@@ -5,22 +5,14 @@
   "engines": {
     "node": "20.x"
   },
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js",
+    "test": "node test.js"
   },
   "dependencies": {
     "ejs": "^3.1.5",
-    "express": "^4.15.2",
-    "body-parser": "^1.20.2",
-    "cloudinary": "^1.41.0",
-    "express-session": "^1.17.3",
-    "md5": "^2.3.0",
-    "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.6.3",
-    "nodemon": "^3.0.1",
-    "socket.io": "^4.7.2",
-    "xss-escape": "^0.0.6"
+    "express": "^4.15.2"
   },
   "devDependencies": {
     "got": "^11.3.0",
