@@ -24,71 +24,71 @@ function deductDays(date, days) {
 }
 
 
-var layer_content = $.ajax({
-    async: false,
-    url: '/client_partials/layer',
-    type: 'POST',
-}).responseJSON;
+// var layer_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/layer',
+//     type: 'POST',
+// }).responseJSON;
 
-var home_content = $.ajax({
-    async: false,
-    url: '/client_partials/home_content',
-    type: 'POST',
-}).responseJSON;
+// var home_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/home_content',
+//     type: 'POST',
+// }).responseJSON;
 
-var about_content = $.ajax({
-    async: false,
-    url: '/client_partials/about_content',
-    type: 'POST',
-}).responseJSON;
+// var about_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/about_content',
+//     type: 'POST',
+// }).responseJSON;
 
-var brand_content = $.ajax({
-    async: false,
-    url: '/client_partials/brand_content',
-    type: 'POST',
-}).responseJSON;
+// var brand_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/brand_content',
+//     type: 'POST',
+// }).responseJSON;
 
-var categories_content = $.ajax({
-    async: false,
-    url: '/client_partials/categories_content',
-    type: 'POST',
-}).responseJSON;
+// var categories_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/categories_content',
+//     type: 'POST',
+// }).responseJSON;
 
-var login_content = $.ajax({
-    async: false,
-    url: '/client_partials/log-in',
-    type: 'POST',
-}).responseJSON;
+// var login_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/log-in',
+//     type: 'POST',
+// }).responseJSON;
 
-var msg_content = $.ajax({
-    async: false,
-    url: '/client_partials/msg',
-    type: 'POST',
-}).responseJSON;
+// var msg_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/msg',
+//     type: 'POST',
+// }).responseJSON;
 
-var mybookings_content = $.ajax({
-    async: false,
-    url: '/client_partials/my-bookings',
-    type: 'POST',
-}).responseJSON;
+// var mybookings_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/my-bookings',
+//     type: 'POST',
+// }).responseJSON;
 
-var product_content = $.ajax({
-    async: false,
-    url: '/client_partials/product',
-    type: 'POST',
-}).responseJSON;
+// var product_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/product',
+//     type: 'POST',
+// }).responseJSON;
 
-var profile_content = $.ajax({
-    async: false,
-    url: '/client_partials/profile',
-    type: 'POST',
-}).responseJSON;
+// var profile_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/profile',
+//     type: 'POST',
+// }).responseJSON;
 
-var signup_content = $.ajax({
-    async: false,
-    url: '/client_partials/sign-up',
-    type: 'POST',
-}).responseJSON;
+// var signup_content = $.ajax({
+//     async: false,
+//     url: '/client_partials/sign-up',
+//     type: 'POST',
+// }).responseJSON;
 
 const c_plate = new Map([
 
