@@ -97,8 +97,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Home`,
             tag: "Home",
-            layer: layer_content,
-            content: home_content,
+            layer: layer_content.template,
+            content: home_content.template,
         },
     ],
 
@@ -107,8 +107,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Categories`,
             tag: "Categories",
-            layer: layer_content,
-            content: categories_content,
+            layer: layer_content.template,
+            content: categories_content.template,
         },
     ],
 
@@ -118,8 +118,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | About`,
             tag: "About",
-            layer: layer_content,
-            content: about_content,
+            layer: layer_content.template,
+            content: about_content.template,
         },
     ],
 
@@ -128,8 +128,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Sign-in`,
             tag: "Sign-in",
-            layer: layer_content,
-            content: login_content,
+            layer: layer_content.template,
+            content: login_content.template,
         },
     ],
 
@@ -138,8 +138,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Sign-up`,
             tag: "Sign-up",
-            layer: layer_content,
-            content: signup_content,
+            layer: layer_content.template,
+            content: signup_content.template,
         },
     ],
 
@@ -148,8 +148,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | My Account Details`,
             tag: "profile",
-            layer: layer_content,
-            content: profile_content,
+            layer: layer_content.template,
+            content: profile_content.template,
         },
     ],
 
@@ -158,8 +158,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | My bookings`,
             tag: "my-bookings",
-            layer: layer_content,
-            content: mybookings_content,
+            layer: layer_content.template,
+            content: mybookings_content.template,
         },
     ],
 
@@ -168,8 +168,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | product`,
             tag: "product",
-            layer: layer_content,
-            content: product_content,
+            layer: layer_content.template,
+            content: product_content.template,
         },
     ],
 ]);
