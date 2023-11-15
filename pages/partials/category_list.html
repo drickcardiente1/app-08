@@ -1,0 +1,152 @@
+<div class="container-fluid py-4">
+    <div class="d-sm-flex justify-content-between">
+        <div class="d-flex">
+            <div class="dropdown d-inline">
+                <a type="button" href="javascript:;" class="btn btn-icon bg-gradient-primary" onclick='can()' data-bs-toggle="modal" data-bs-target="#add_c">
+                    ADD CATEGORY
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card">
+        <div class="table-responsive">
+            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns ">
+                <div class="dataTable-container " style="margin-bottom: 10vh !important;">
+                    <table class="table table-flush dataTable-table" id="example2" >
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" style="width: 17.0382%;"><a>#</a></th>
+                                <th class="text-center" style="width: 15.9236%;"><a>Category name</a></th>
+                                <th class="text-center" style="width: 15.5255%;"><a>Date Created</a></th>
+                                <th class="text-center" style="width: 15.5255%;"><a>Date Updated</a></th>
+                                <th class="text-center" style="width: 19.2675%;"><a>Status</a></th>
+                                <th class="text-center" style="width: 21.258%;"><a>Action</a></th>
+                            </tr>
+                        </thead>
+                        <tbody class="category_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- add -->
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="add_c" tabindex="-1" role="dialog" aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <div class="input-group input-group-static mt-5" style="margin-bottom: 2vh;">
+                        <input type="text" class="form-control cat_name" placeholder="Category Name">
+                    </div>
+                    <div class="input-group input-group-dynamic mt-4">
+                        <label class="form-label">Description</label>
+                        <div class="input-group input-group-static mt-5">
+                            <div class="form-outline">
+                                <textarea class="form-control cat_disc" rows="4" cols="100"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-static mt-3" style="margin-left: 60%;">
+                        <div class="dropdown d-inline">
+                            <a>status </a>
+                            <a href="javascript:;"
+                                class="btn btn-icon bg-gradient-primary dropdown-toggle bct5"
+                                data-bs-toggle="dropdown" id="navbarDropdownMenuLink2" data_id="1" >Active</a>
+                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                aria-labelledby="navbarDropdownMenuLink2"
+                                data-popper-placement="left-start">
+                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                        data_id="1" onclick="bcat5(this)">ACTIVE</a></li>
+                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                        data_id="0" onclick="bcat5(this)">INACTIVE</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="justify-content-end mt-3">
+                        <button onclick="cancup4()" style="color: black !important;" type="button" name="button"
+                        class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+
+                        <button onclick="add_cat()" type="button" name="button" class="btn bg-gradient-dark m-0 ms-2" data-bs-dismiss="modal">ADD</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit -->
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="edt_cat" tabindex="-1" role="dialog" aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="dropdown d-inline">
+                                <a>status </a>
+                                <a href="javascript:;"
+                                    class="btn btn-icon bg-gradient-primary dropdown-toggle bct6"
+                                    data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"></a>
+                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                    aria-labelledby="navbarDropdownMenuLink2"
+                                    data-popper-placement="left-start">
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                            data_id="1" onclick="bcat6(this)">ACTIVE</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                            data_id="0" onclick="bcat6(this)">INACTIVE</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                                <label>ID</label>
+                                <input type="text" class="form-control cat_i" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                        <label>Category name</label>
+                        <input type="text" class="form-control cnme">
+                    </div>
+                    <div class="input-group input-group-dynamic mt-4">
+                        <label class="form-label">Description</label>
+                        <div class="input-group input-group-static mt-5">
+                            <div class="form-outline">
+                                <textarea class="form-control" id="cat_disc" rows="4" cols="100"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                                <label>Date Created</label>
+                                <input type="date" class="form-control cat_create" disabled>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                                <label>Date Updated</label>
+                                <input type="date" class="form-control cat_up" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="justify-content-end mt-3">
+                        <button onclick="cancup5()" style="color: black !important;" type="button" name="button"
+                        class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+
+                        <button onclick="update_cat(this)" type="button" name="button" class="btn bg-gradient-dark m-0 ms-2 u" data-bs-dismiss="modal">UPDATE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

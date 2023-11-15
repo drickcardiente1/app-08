@@ -1,0 +1,472 @@
+<aside
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 scrollbar-y bg-gradient-dark"
+    data-color="info" style="overflow-x: hidden !important;">
+
+    <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-xl-none"
+            id="iconSidenav"></i>
+        <a class="navbar-brand m-0" href="/">
+            <img src="" class="navbar-brand-img h-100" alt="main_logo">
+            <span class="ms-5 font-weight-bold text-white">(MBRS)</span>
+        </a>
+    </div>
+
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto h-auto" id="sidenav-collapse-main">
+        <ul class="navbar-nav ">
+            <li class="nav-item mt-3">
+                <a class="nav-link active" hidden>
+                </a>
+                <div class="collapse show">
+                    <ul class="nav">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a" href='javascript:;' id="dashboard"
+                                onclick='next("/admin")'>
+                                <i class="material-icons-round opacity-10 ac">dashboard</i>
+                                <span class="sidenav-normal  ms-2  ps-1">Dashboard</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <hr class="horizontal light mt-2">
+            <li class="nav-item">
+                <a class="nav-link active" hidden>
+                </a>
+                <div class="collapse show">
+                    <ul class="nav">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a " id_no="5" href='javascript:;' id="Motorbikes"
+                                onclick='next("/admin/motorbikes/")'>
+                                <i class="material-icons-round opacity-10 ac">motorcycle</i>
+                                <span class="sidenav-normal ms-2 ps-1">Bike List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <hr class="horizontal light mt-2">
+            <li class="nav-item">
+                <a class="nav-link active" hidden>
+                </a>
+                <div class="collapse show">
+                    <ul class="nav">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a" href='javascript:;' id="bookinglist"
+                                onclick='next("/admin/bookinglist/")'>
+                                <i class="material-icons-round opacity-10 ac">content_paste</i>
+                                <span class="sidenav-normal ms-2 ps-1">Booking List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <hr class="horizontal light mt-2">
+            <li class="nav-item">
+                <a class="nav-link active" hidden>
+                </a>
+                <div class="collapse show">
+                    <ul class="nav">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a" href='javascript:;' id="bookingreports"
+                                onclick='next("/admin/bookingreports/")'>
+                                <i class="material-icons-round opacity-10 ac">filter_frames</i>
+                                <span class="sidenav-normal ms-2 ps-1">Booking Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <hr class="horizontal light mt-2">
+            <li class="nav-item">
+                <a class="nav-link active" hidden>
+                </a>
+                <div class="collapse show">
+                    <ul class="nav">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a" href='javascript:;' id="clients"
+                                onclick='next("/admin/clients")'>
+                                <i class="material-icons-round opacity-10 ac">people</i>
+                                <span class="sidenav-normal ms-2 ps-1">Clients</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <hr class="horizontal light mt-2">
+            <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#dashboardsExamples" class="nav-link text-white active"
+                    aria-controls="dashboardsExamples" role="button" aria-expanded="false">
+                    <i class="material-icons-round opacity-10">build</i>
+                    <span class="nav-link-text ms-2 ps-1">Maintenance</span>
+                </a>
+                <div class="collapse  show " id="dashboardsExamples">
+                    <ul class="nav ">
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a " id="brandlist" onclick='next("/admin/brandlist/")'>
+                                <i class="material-icons-round opacity-10">wb_auto</i>
+                                <span class="sidenav-normal  ms-2  ps-1">Brand List</span>
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link text-white a " id="categorylist" onclick='next("/admin/categorylist/")'>
+                                <i class="material-icons-round opacity-10">view_list</i>
+                                <span class="sidenav-normal  ms-2  ps-1">Category List</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <hr class="horizontal light mt-2">
+        </ul>
+    </div>
+</aside>
+<!-- left nav -->
+
+<!-- body content -->
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+
+
+    <nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky bg-r bg-gradient-dark"
+        id="navbarBlur" data-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
+                <a href="javascript:void(0)" class="nav-link text-body p-0 nMinimize" onclick="navbarMinimize(this)">
+                    <div class="sidenav-toggler-inner">
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                    </div>
+                </a>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent" style="margin-bottom: 0 !important;">
+                    <li class="breadcrumb-item text-sm">
+                        <a class="opacity-3 text-dark s-mini" href="javascript:void(0)">
+                            <svg width="12px" height="12px" class="mb-1" viewBox="0 0 45 40" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>shop </title>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g transform="translate(-1716.000000, -439.000000)" fill="#252f40"
+                                        fill-rule="nonzero">
+                                        <g transform="translate(1716.000000, 291.000000)">
+                                            <g transform="translate(0.000000, 148.000000)">
+                                                <path
+                                                    d="M46.7199583,10.7414583 L40.8449583,0.949791667 C40.4909749,0.360605034 39.8540131,0 39.1666667,0 L7.83333333,0 C7.1459869,0 6.50902508,0.360605034 6.15504167,0.949791667 L0.280041667,10.7414583 C0.0969176761,11.0460037 -1.23209662e-05,11.3946378 -1.23209662e-05,11.75 C-0.00758042603,16.0663731 3.48367543,19.5725301 7.80004167,19.5833333 L7.81570833,19.5833333 C9.75003686,19.5882688 11.6168794,18.8726691 13.0522917,17.5760417 C16.0171492,20.2556967 20.5292675,20.2556967 23.494125,17.5760417 C26.4604562,20.2616016 30.9794188,20.2616016 33.94575,17.5760417 C36.2421905,19.6477597 39.5441143,20.1708521 42.3684437,18.9103691 C45.1927731,17.649886 47.0084685,14.8428276 47.0000295,11.75 C47.0000295,11.3946378 46.9030823,11.0460037 46.7199583,10.7414583 Z">
+                                                </path>
+                                                <path
+                                                    d="M39.198,22.4912623 C37.3776246,22.4928106 35.5817531,22.0149171 33.951625,21.0951667 L33.92225,21.1107282 C31.1430221,22.6838032 27.9255001,22.9318916 24.9844167,21.7998837 C24.4750389,21.605469 23.9777983,21.3722567 23.4960833,21.1018359 L23.4745417,21.1129513 C20.6961809,22.6871153 17.4786145,22.9344611 14.5386667,21.7998837 C14.029926,21.6054643 13.533337,21.3722507 13.0522917,21.1018359 C11.4250962,22.0190609 9.63246555,22.4947009 7.81570833,22.4912623 C7.16510551,22.4842162 6.51607673,22.4173045 5.875,22.2911849 L5.875,44.7220845 C5.875,45.9498589 6.7517757,46.9451667 7.83333333,46.9451667 L19.5833333,46.9451667 L19.5833333,33.6066734 L27.4166667,33.6066734 L27.4166667,46.9451667 L39.1666667,46.9451667 C40.2482243,46.9451667 41.125,45.9498589 41.125,44.7220845 L41.125,22.2822926 C40.4887822,22.4116582 39.8442868,22.4815492 39.198,22.4912623 Z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item text-sm text-dark font-weight-bolder tag active text-white"
+                        aria-current="page"></li>
+                </ol>
+            </nav>
+            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                </div>
+                <ul class="navbar-nav  justify-content-end">
+                    <li class="nav-item dropdown pe-2">
+                        <a href="javascript:void(0)" class="nav-link text-body p-0 position-relative"
+                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="material-icons cursor-pointer">
+                                person
+                            </i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                            <li class="mb-2">
+                                <a class="dropdown-item border-radius-md" href="javascript:void(0)"
+                                    onclick='next("/admin/profile")'>
+                                    <div class="d-flex align-items-center py-1">
+                                        <span class="material-icons">account_circle</span>
+                                        <div class="ms-2">
+                                            <h6 class="text-sm font-weight-normal my-auto">
+                                                Profile
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a class="dropdown-item border-radius-md" href="javascript:void(0)"
+                                    onclick='sign_out()'>
+                                    <div class="d-flex align-items-center py-1">
+                                        <span class="material-icons">subdirectory_arrow_right
+                                        </span>
+                                        <div class="ms-2">
+                                            <h6 class="text-sm font-weight-normal my-auto">
+                                                Logout
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                        <a href="javascript:void(0)" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                            <div class="sidenav-toggler-inner">
+                                <i class="sidenav-toggler-line"></i>
+                                <i class="sidenav-toggler-line"></i>
+                                <i class="sidenav-toggler-line"></i>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item px-3 conf_button">
+                        <a href="javascript:void(0)" class="nav-link text-body p-0">
+                            <i class="material-icons fixed-plugin-button-nav cursor-pointer">
+                                settings
+                            </i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown pe-2">
+                        <a href="javascript:void(0)" class="nav-link text-body p-0 position-relative"
+                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="material-icons cursor-pointer">
+                                notifications
+                            </i>
+                            <span
+                                class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                                <span class="small">1</span>
+                                <span class="visually-hidden">unread notifications</span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+                            <li class="mb-2">
+                                <a class="dropdown-item border-radius-md" href="javascript:void(0)">
+                                    <div class="d-flex align-items-center py-1">
+                                        <span class="material-icons">email</span>
+                                        <div class="ms-2">
+                                            <h6 class="text-sm font-weight-normal my-auto">
+                                                Check new messages
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a class="dropdown-item border-radius-md" href="javascript:void(0)">
+                                    <div class="d-flex align-items-center py-1">
+                                        <span class="material-icons">podcasts</span>
+                                        <div class="ms-2">
+                                            <h6 class="text-sm font-weight-normal my-auto">
+                                                Manage podcast session
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item border-radius-md" href="javascript:void(0)">
+                                    <div class="d-flex align-items-center py-1">
+                                        <span class="material-icons">shopping_cart</span>
+                                        <div class="ms-2">
+                                            <h6 class="text-sm font-weight-normal my-auto">
+                                                Payment successfully completed
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="container-fluid py-4 bdy">
+    </div>
+    <footer class="footer py-4">
+        <div class="container-fluid ">
+            <div class="row align-items-center">
+                <center>
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <center>
+                            <div class="copyright text-center text-sm text-muted">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>,
+                                TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                                for a better web.
+                            </div>
+                        </center>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </footer>
+</main>
+<!-- body content -->
+
+<!-- configurator -->
+<!-- ps show -->
+<div class="fixed-plugin" id="to_repeat">
+
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2 conf_button">
+        <i class="material-icons py-2">settings</i>
+    </a>
+
+    <div class="card shadow-lg">
+        <div class="card-header pb-0 pt-3">
+            <div class="float-start">
+                <h5 class="mt-3 mb-0">UI Configurator</h5>
+            </div>
+            <div class="float-end mt-4">
+                <button class="btn btn-link text-dark p-0 fixed-plugin-close-button">
+                    <i class="material-icons" id="clr">clear</i>
+                </button>
+            </div>
+
+        </div>
+        <hr class="horizontal dark my-1">
+        <div class="card-body pt-sm-3 pt-0">
+
+            <div>
+                <h6 class="mb-0">Sidebar Active Colors</h6>
+            </div>
+            <a href="javascript:void(0)" class="switch-trigger background-color">
+                <div class="badge-colors my-2 text-start">
+                    <span class="badge filter bg-gradient-primary" data-color="primary"
+                        onclick="sidebarColor(this)"></span>
+                    <span class="badge filter bg-gradient-dark" data-color="dark" onclick="sidebarColor(this)"></span>
+                    <span class="badge filter bg-gradient-info active" data-color="info"
+                        onclick="sidebarColor(this)"></span>
+                    <span class="badge filter bg-gradient-success" data-color="success"
+                        onclick="sidebarColor(this)"></span>
+                    <span class="badge filter bg-gradient-warning" data-color="warning"
+                        onclick="sidebarColor(this)"></span>
+                    <span class="badge filter bg-gradient-danger" data-color="danger"
+                        onclick="sidebarColor(this)"></span>
+                </div>
+            </a>
+
+            <div class="mt-3">
+                <h6 class="mb-0">Topbar Type</h6>
+            </div>
+
+            <div class="d-flex">
+                <button class="btn bg-gradient-dark px-3 mb-2 bar active" data-class="bg-gradient-dark"
+                    onclick="topbarType(this)">Dark</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 ms-2 bar" data-class="bg-transparent"
+                    onclick="topbarType(this)">Transparent</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 ms-2 bar" data-class="bg-white"
+                    onclick="topbarType(this)">White</button>
+            </div>
+
+            <div class="mt-3">
+                <h6 class="mb-0">Sidenav Type</h6>
+            </div>
+            <div class="d-flex">
+                <button class="btn bg-gradient-dark px-3 mb-2 active" data-class="bg-gradient-dark"
+                    onclick="sidebarType(this)">Dark</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
+                    onclick="sidebarType(this)">Transparent</button>
+                <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-white"
+                    onclick="sidebarType(this)">White</button>
+            </div>
+
+
+
+
+            <div class="mt-3 d-flex">
+                <h6 class="mb-0">Navbar Fixed</h6>
+                <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed"
+                        onclick="navbarFixed(this)" checked="true">
+                </div>
+            </div>
+            <hr class="horizontal dark my-3">
+            <div class="mt-2 d-flex">
+                <h6 class="mb-0">Sidenav Mini</h6>
+                <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <input class="form-check-input mt-1 ms-auto nMinimize" type="checkbox"
+                        onclick="navbarMinimize(this)">
+                </div>
+            </div>
+            <hr class="horizontal dark my-3">
+            <div class="mt-2 d-flex">
+                <h6 class="mb-0">Light / Dark</h6>
+                <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                        onclick="darkMode(this)" checked="true">
+                </div>
+            </div>
+            <hr class="horizontal dark my-sm-2">
+
+            <a class="btn btn-outline-dark w-100" href="https://www.sinotrack.com/">View GPS</a>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-plugin3 mb-1" id="cl-msg">
+    <a class="fixed-plugin3-button text-dark position-fixed px-3 py-2 fn1" onclick="set_actor()">
+        <i class="material-icons py-2">chat_bubble</i>
+    </a>
+    <div class="card shadow-lg"
+        style="height: 70vh !important; top: 30vh !important; border-radius: 25px 0 0 25px !important;">
+
+
+        <div class="card-header pb-0 pt-3">
+            <div class="float-start">
+                <h5 class="mt-3 mb-0 disp_name"></h5>
+            </div>
+            <div class="float-end mt-4">
+                <button onclick="cl_msg_close()" class="btn btn-link text-dark p-0 fixed-plugin-close-button"
+                    style="float: right !important;">
+                    <i class="material-icons">clear</i>
+                </button>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-4 scrollbar-y msg-usrs-row" style="height: 50vh !important; overflow: scroll; padding: 0;" >
+            </div>
+            <div class="col-8" style="padding: 0;">
+                <div class="card-body overflow-auto overflow-x-hidden scrollbar-y bg-white border border-info mb-2 ms_box"
+                    style="border-radius: 25px 25px 25px 0; height: 50vh !important; padding: 0; width: 97% !important;">
+                </div>
+            </div>
+            <div class="row msg_sender">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- <div class="row justify-content-start mt-2" style="width: 100% !important;">
+    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white"
+        style="border-radius: 0 25px 25px 0px; background-color: #344767 !important;">
+        <p class="text-sm">Lorem ipsum dolor </p>
+        <p>user</p>
+    </div>
+    <p style="color: black !important;">time</p>
+</div>
+<div class="row justify-content-end mt-2"
+    style="width: 100% !important; margin-left: 2vh !important;">
+    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white"
+        style="border-radius: 25px 0 0 25px; background-color: #344767 !important;">
+        <p class="text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo
+            tenetur
+            similique porro voluptas illum blanditiis..</p>
+        <p>user</p>
+    </div>
+    <p style="color: black !important;">time</p>
+</div> -->

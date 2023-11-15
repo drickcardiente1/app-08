@@ -1,0 +1,245 @@
+<div class="container-fluid py-4">
+    <div class="d-sm-flex justify-content-between">
+        <div class="d-flex">
+            <div class="dropdown d-inline">
+                <a href="javascript:;" class="btn btn-icon bg-gradient-primary dropdown-toggle"
+                    data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+                    Filters
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3" aria-labelledby="navbarDropdownMenuLink2"
+                    data-popper-placement="left-start">
+                    <li><a onclick="filter_pending()" class="dropdown-item border-radius-md"
+                            href="javascript:;">Status:Pending</a></li>
+                    <li><a onclick="filter_confirmed()" class="dropdown-item border-radius-md"
+                            href="javascript:;">Status:Confired</a></li>
+                    <li><a onclick="filter_canceled()" class="dropdown-item border-radius-md"
+                            href="javascript:;">Status:Canceled</a></li>
+                    <li><a onclick="filter_pickedup()" class="dropdown-item border-radius-md"
+                            href="javascript:;">Status:Picked up</a></li>
+                    <li><a onclick="filter_returned()" class="dropdown-item border-radius-md"
+                            href="javascript:;">Status:Returned</a></li>
+                    <li>
+                        <hr class="horizontal my-2 light">
+                    </li>
+                    <li><a onclick="filter_remove()" class="dropdown-item border-radius-md text-danger"
+                            href="javascript:;">Remove Filter</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="dataTable-search">
+            <input class="booking_search" class="dataTable-input" placeholder="Search..." type="text">
+        </div>
+    </div>
+</div>
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex align-items-center me-2" style="float: right !important">
+                <button disabled
+                    class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">keyboard_return</i>
+                </button>
+                <span>RETURNED</span>
+            </div>
+            <div class="d-flex align-items-center me-2" style="float: right !important">
+                <button disabled
+                    class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">graphic_eq</i>
+                </button>
+                <span>PICKED UP</span>
+            </div>
+            <div class="d-flex align-items-center me-2" style="float: right !important">
+                <button disabled
+                    class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">check</i>
+                </button>
+                <span>CONFIRMED</span>
+            </div>
+            <div class="d-flex align-items-center me-2" style="float: right !important">
+                <button disabled
+                    class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">more_horiz</i>
+                </button>
+                <span>pending</span>
+            </div>
+            <div class="d-flex align-items-center me-2" style="float: right !important">
+                <button disabled
+                    class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">clear</i>
+                </button>
+                <span>CANCELED</span>
+            </div>
+            <h5 class="mb-0">Booking Table</h5>
+            <p class="text-sm mb-0" style="float: right !important">
+                Date Format Year/Month/Day
+            </p>
+            <p class="text-sm mb-0">
+                View all the Bookings.
+            </p>
+        </div>
+        <div class="table-responsive">
+            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                <div class="dataTable-container" style="margin-bottom: 10vh !important;">
+                    <table class="table table-flush dataTable-table" id="datatable-search">
+                        <thead class="thead-light">
+                            <tr>
+                                <th data-sortable="" style="width: 17.0382%;"><a>Booking ID</a></th>
+                                <th data-sortable="" class="asc" style="width: 15.9236%;"><a>Client Name</a></th>
+                                <th data-sortable="" style="width: 15.5255%;"><a>Date Booked</a></th>
+                                <th data-sortable="" style="width: 19.2675%;"><a>Pick Up</a></th>
+                                <th data-sortable="" style="width: 21.258%;"><a>Return</a></th>
+                                <th data-sortable="" style="width: 10.9873%;"><a>Rent Days</a></th>
+                                <th data-sortable="" style="width: 10.9873%;"><a>Balance</a></th>
+                                <th data-sortable="" style="width: 10.9873%;"><a>Status</a></th>
+                                <th data-sortable="" style="width: 10.9873%;"><a>Action</a></th>
+                            </tr>
+                        </thead>
+                        <tbody class="booking_list">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dataTable-bottom">
+                    <div class="dataTable-info"></div>
+                    <nav class="dataTable-pagination">
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="blst" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card card-header" style="width: 100% !important;">
+                    <div class="card-header pb-0 text-left">
+                        <img src="" style="width: 100% !important; border-radius: 15px;">
+                    </div>
+                    <div class="card-body pb-3">
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>ID</label>
+                                    <input id="id_tab" type="number" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Client name</label>
+                                    <input id="nme" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Status</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Bike Model</label>
+                                    <input id="link2" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="dropdown d-inline">
+                                    <a href="javascript:;" class="btn btn-icon bg-gradient-primary dropdown-toggle bct2"
+                                        data-bs-toggle="dropdown" id="link3"></a>
+                                    <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3 bt2"
+                                        aria-labelledby="link3" data-popper-placement="left-start" id="l3">
+                                        <li>
+                                            <a onclick="toset(this, 'link3')" class="dropdown-item border-radius-md" href="javascript:;" d_id="0" >PENDING</a>
+                                        </li>
+                                        <li>
+                                            <a onclick="toset(this, 'link3')" class="dropdown-item border-radius-md" href="javascript:;" d_id="1" >CONFIRMED</a>
+                                        </li>
+                                        <li>
+                                            <a onclick="toset(this, 'link3')" class="dropdown-item border-radius-md" href="javascript:;" d_id="2" >CANCELED</a>
+                                        </li>
+                                        <li>
+                                            <a onclick="toset(this, 'link3')" class="dropdown-item border-radius-md" href="javascript:;" d_id="3" >PICKED-UP</a>
+                                        </li>
+                                        <li>
+                                            <a onclick="toset(this, 'link3')" class="dropdown-item border-radius-md" href="javascript:;" d_id="4" >RETURNED</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Amount Receaved</label>
+                                    <input type="number" class="form-control" id="a1">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Amount to pay</label>
+                                    <input type="number" class="form-control" id="a2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Date Started</label>
+                                    <input id="d_start" type="date" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Date End</label>
+                                    <input id="d_ends" type="date" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Rend days</label>
+                                    <input id="r_d" type="number" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Balance</label>
+                                    <input type="number" class="form-control" disabled id="balance">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Date Booked</label>
+                                    <input id="d_booked" type="date" id="created" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label>Date Updated</label>
+                                    <input id="d_update" type="date" id="updated" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="justify-content-end mt-3">
+                            <button onclick="cancup1()" style="float: left;" type="button" name="button"
+                                class="btn btn-light m-0" data-bs-dismiss="modal">Cancel</button>
+                            <button onclick="upd_bl()" style="float: right;" type="button" name="button"class="btn bg-gradient-dark m-0 ms-2" data-bs-dismiss="modal">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

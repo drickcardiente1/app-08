@@ -1,0 +1,207 @@
+<div class="container position-sticky z-index-sticky top-0" id="layer_top">
+    <div class="row">
+        <div class="col-12">
+            <nav
+                class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+                <div class="container-fluid px-0">
+                    <a style="color: black !important;"
+                        class=" navbar-brand font-weight-bolder ms-sm-3 d-none d-md-block" rel="tooltip"
+                        data-placement="bottom" target="_blank">
+                        TE motorbikes
+                    </a>
+                    <a style="color: black !important;"
+                        class="navbar-brand font-weight-bolder ms-sm-3  d-block d-md-none" rel="tooltip"
+                        data-placement="bottom" target="_blank">
+                        TE motorbikes
+                    </a>
+                    <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon mt-2">
+                            <span class="navbar-toggler-bar bar1"></span>
+                            <span class="navbar-toggler-bar bar2"></span>
+                            <span class="navbar-toggler-bar bar3"></span>
+                        </span>
+                    </button>
+                    <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+                        <ul class="navbar-nav navbar-nav-hover ms-auto">
+                            <li class="nav-item dropdown dropdown-hover mx-2">
+                                <a href="javascript:;" class="btn btn-sm mb-0 tc"
+                                    onclick="get_page('/')"><i
+                                        class="material-icons opacity-6 me-2 text-md">store</i>Home</a>
+                            </li>
+                            <li class="nav-item dropdown dropdown-hover mx-2">
+                                <a href="javascript:;" class="btn btn-sm mb-0 tc2" onclick="get_page('/categories')"><i
+                                        class="material-icons opacity-6 me-2 text-md">article</i>Categories</a>
+                            </li>
+
+                            <li class="nav-item dropdown dropdown-hover mx-2">
+                                <a href="javascript:;" class="btn btn-sm mb-0 tc3" onclick="get_page('/about')"><i
+                                        class="material-icons opacity-6 me-2 text-md">subtitles</i>About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+
+</div>
+
+
+
+
+<div class="fixed-plugin" id="to_repeat">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2 conf_button" onclick="client_prof()">
+        <i class="material-icons py-2">person</i>
+    </a>
+    <div class="card shadow-lg">
+        <div class="card-header pb-0 pt-3">
+            <div class="float-start">
+                <div class="d-flex align-items-center prf">
+                </div>
+            </div>
+            <div class="float-end mt-4">
+                <button class="btn btn-link text-dark p-0 fixed-plugin-close-button" onclick="client_prof_close()">
+                    <i class="material-icons" id="clr">clear</i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body pt-sm-3 pt-0">
+            <div class="profile_context">
+            </div>
+            <div class="mt-2 d-flex">
+                <h6 class="mb-0">Light / Dark</h6>
+                <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                        onclick="darkMode(this)" checked="true">
+                </div>
+            </div>
+            <hr class="horizontal dark my-3">
+            <div class="mt-2 d-flex">
+                <h6 class="mb-0">Navbar Fixed</h6>
+                <div class="form-check form-switch ps-0 ms-auto my-auto">
+                    <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                        onclick="fixbar(this)" checked="true">
+                </div>
+            </div>
+            <hr class="horizontal dark my-sm-2">
+            <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+            </a>
+            <hr class="horizontal dark my-sm-2">
+            <div class="container-fluid ">
+                <div>
+                    <div class=" mb-lg-0 mb-4">
+                        <div class="text-sm text-center text-muted">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                            <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                            for a better web.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="fixed-plugin2" id="cl-msg">
+    <a class="fixed-plugin2-button text-dark position-fixed px-3 py-2" onclick="cl_msg_open()">
+        <i class="material-icons py-2">chat_bubble</i>
+    </a>
+    <div class="card shadow-lg"
+        style="height: 70vh !important; top: 30vh !important; border-radius: 5% 0 0 0 !important;">
+
+
+        <div class="card-header pb-0 pt-3">
+            <div class="float-start">
+                <h5 class="mt-3 mb-0">USERNAME</h5>
+            </div>
+            <div class="float-end mt-4">
+                <button onclick="cl_msg_close()" class="btn btn-link text-dark p-0 fixed-plugin-close-button"
+                    style="float: right !important;">
+                    <i class="material-icons">clear</i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="card-body overflow-auto overflow-x-hidden scrollbar-y bg-white border border-info" style="border-radius: 25px; float: right !important;">
+            <div class="row justify-content-start mb-4" style="width: 100% !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                    <p class="text-sm">Lorem ipsum dolor </p>
+                    <p>user</p>
+                </div>
+                <p style="color: black !important;">time</p>
+            </div>
+            <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                    <p class="text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo tenetur
+                        similique porro voluptas illum blanditiis..</p>
+                    <p>user</p>
+                </div>
+                <p style="color: black !important;">time</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1" style="margin-right: 2vh !important;">
+                <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
+                    <i class="material-icons" title="upload image">add</i>
+                </a>
+            </div>
+            <div class="col-8">
+                <form class="align-items-center">
+                    <div class="input-group input-group-outline d-flex">
+                        <label class="form-label">Type your message</label>
+                        <input type="text" class="form-control form-control-lg">
+                    </div>
+                </form>
+            </div>
+            <div class="col-1">
+                <button class="btn bg-gradient-primary mb-0">
+                    <i class="material-icons">send</i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+
+
+
+
+<footer class="footer py-4">
+    <div class="container-fluid ">
+        <div class="row align-items-center">
+            <center>
+                <div class="col-lg-6 mb-lg-0 mb-4">
+                    <center>
+                        <div class="copyright text-center text-sm text-muted">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                            <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                            for a better web.
+                        </div>
+                    </center>
+                </div>
+            </center>
+        </div>
+    </div>
+</footer>

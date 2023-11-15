@@ -1,0 +1,134 @@
+<div class="container-fluid py-4">
+    <div class="d-sm-flex justify-content-between">
+        <div class="d-flex">
+            <div class="dropdown d-inline">
+                <a type="button" href="javascript:;" class="btn btn-icon bg-gradient-primary" onclick='can()' data-bs-toggle="modal" data-bs-target="#add_m">
+                    ADD BRAND
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="card">
+        <div class="table-responsive">
+            <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns ">
+                <div class="dataTable-container " style="margin-bottom: 10vh !important;">
+                    <table class="table table-flush dataTable-table" id="example" >
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" style="width: 17.0382%;"><a>#</a></th>
+                                <th class="text-center" style="width: 15.9236%;"><a>Name</a></th>
+                                <th class="text-center" style="width: 15.5255%;"><a>Date Created</a></th>
+                                <th class="text-center" style="width: 15.5255%;"><a>Date Updated</a></th>
+                                <th class="text-center" style="width: 19.2675%;"><a>Status</a></th>
+                                <th class="text-center" style="width: 21.258%;"><a>Action</a></th>
+                            </tr>
+                        </thead>
+                        <tbody class="brand_list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- add -->
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="add_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                        <input type="text" class="form-control bn" placeholder="Brand Name">
+                    </div>
+                    <div class="input-group input-group-static" style="margin-left: 60%;">
+                        <div class="dropdown d-inline">
+                            <a>status </a>
+                            <a href="javascript:;"
+                                class="btn btn-icon bg-gradient-primary dropdown-toggle bct3"
+                                data-bs-toggle="dropdown" id="navbarDropdownMenuLink2" data_id="1" >Active</a>
+                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                aria-labelledby="navbarDropdownMenuLink2"
+                                data-popper-placement="left-start">
+                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                        data_id="1" onclick="bcat3(this)">ACTIVE</a></li>
+                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                        data_id="0" onclick="bcat3(this)">INACTIVE</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="justify-content-end mt-3">
+                        <button onclick="cancup2()" style="color: black !important;" type="button" name="button"
+                        class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+
+                        <button onclick="add_b()" type="button" name="button" class="btn bg-gradient-dark m-0 ms-2" data-bs-dismiss="modal">ADD</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- edit -->
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="edt_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="dropdown d-inline">
+                                <a>status </a>
+                                <a href="javascript:;"
+                                    class="btn btn-icon bg-gradient-primary dropdown-toggle bct4"
+                                    data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"></a>
+                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                    aria-labelledby="navbarDropdownMenuLink2"
+                                    data-popper-placement="left-start">
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                            data_id="1" onclick="bcat4(this)">ACTIVE</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                            data_id="0" onclick="bcat4(this)">INACTIVE</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                                <label>ID</label>
+                                <input type="text" class="form-control i" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                        <input type="text" class="form-control bnme">
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                                <label>Date Created</label>
+                                <input type="date" class="form-control dc" disabled>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-static mt-3" style="margin-bottom: 2vh;">
+                                <label>Date Updated</label>
+                                <input type="date" class="form-control du" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="justify-content-end mt-3">
+                        <button onclick="cancup3()" style="color: black !important;" type="button" name="button"
+                        class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+
+                        <button onclick="updt_b(this)" type="button" name="button" class="btn bg-gradient-dark m-0 ms-2 u" data-bs-dismiss="modal">UPDATE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

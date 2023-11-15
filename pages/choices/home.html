@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../public/js/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="../../public/css/m-round.css" rel="stylesheet" >
+    <link id="pagestyle" href="../../public/css/material-dashboard.min.css?v=3.0.6" rel="stylesheet" />
+    <script src="../../public/js/qr-3.6.4.min.js"></script>
+</head>
+
+<body class="g-sidenav-show  bg-gray-200" style="width: 100%;">
+    <div class="container position-sticky z-index-sticky top-0">
+        <div class="row">
+            <div class="col-12">
+                <nav
+                    class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+                    <div class="container-fluid px-0">
+                        <a class="navbar-brand font-weight-bolder ms-sm-3  d-none d-md-block"
+                            href="" rel="tooltip"
+                            title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+                            Material Kit 2 PRO
+                        </a>
+                        <a class="navbar-brand font-weight-bolder ms-sm-3  d-block d-md-none"
+                            href="" rel="tooltip"
+                            title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
+                            Material Design
+                        </a>
+                        <a href=""
+                            class="btn btn-sm  bg-gradient-primary  mb-0 ms-auto d-lg-none d-block">Buy Now</a>
+                        <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon mt-2">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </span>
+                        </button>
+                        <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+                            <ul class="navbar-nav navbar-nav-hover ms-auto">
+                                <li class="nav-item dropdown dropdown-hover mx-2">
+                                    <a href="#" role="button" class="nav-link ps-2 d-flex cursor-pointer align-items-center">
+                                        <i class="material-icons opacity-6 me-2 text-md">view_day</i>
+                                        Sections
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown dropdown-hover mx-2">
+                                    <a role="button" class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+                                        id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="material-icons opacity-6 me-2 text-md">article</i>
+                                        Docs
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown dropdown-hover mx-2">
+                                    <a role="button" class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+                                        id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="material-icons opacity-6 me-2 text-md">article</i>
+                                        Docs
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown dropdown-hover mx-2">
+                                    <a href="#" role="button" class="nav-link ps-2 d-flex cursor-pointer align-items-center">
+                                        <i class="material-icons opacity-6 me-2 text-md">view_day</i>Sections
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav d-lg-block d-none">
+                                <li class="nav-item">
+                                    <a href="javascript:;" class="btn btn-sm  bg-gradient-primary  mb-0"
+                                        onclick="smoothToPricing('pricing-soft-ui')">Buy Now</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="page-header bg-gradient-dark position-relative m-3 border-radius-xl min-vh-50" style="background-image: url('./bg0.jpg') !important;">
+        <span class="mask bg-gradient-dark opacity-2"></span>
+        <div class="container py-10 postion-relative z-index-2">
+            <div class="row">
+                <div class="col-md-6 mx-auto text-center">
+                    <h2 class="text-white">Pick the best plan for you</h2>
+                    <p class="text-white">You have Free Unlimited Updates and Premium Support on each package.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <div class="container-fluid px-5 my-6">
+        <div class="card mt-n8">
+            <div class="container">
+                <div class="row mb-5">
+                    <div class="col-lg-4 col-md-6 col-7 mx-auto text-center">
+                        <div class="nav-wrapper mt-5 position-relative z-index-2">
+                            <ul class="nav nav-pills nav-fill flex-row p-1" id="tabs-pricing" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link mb-0 active" id="tabs-iconpricing-tab-1" data-bs-toggle="tab"
+                                        href="#monthly" role="tab" aria-controls="monthly" aria-selected="true">
+                                        Monthly
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link mb-0" id="tabs-iconpricing-tab-2" data-bs-toggle="tab"
+                                        href="#annual" role="tab" aria-controls="annual" aria-selected="false">
+                                        Annual
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content tab-space">
+                    <div class="tab-pane active" id="monthly">
+                        <div class="row">
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="card shadow-lg">
+                                    <span
+                                        class="badge rounded-pill bg-light text-dark w-30 mt-n2 mx-auto">Starter</span>
+                                    <div class="card-header text-center pt-4 pb-3">
+                                        <h1 class="font-weight-bold mt-2">
+                                            <small class="text-lg align-top me-1">$</small>59<small
+                                                class="text-lg">/mo</small>
+                                        </h1>
+                                    </div>
+                                    <div class="card-body text-lg-start text-center pt-0">
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">2 team members</span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">20GB Cloud storage </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Integration help </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">Sketch Files </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">API Access </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">Complete documentation </span>
+                                        </div>
+                                        <a href="javascript:;"
+                                            class="btn btn-icon bg-gradient-dark d-lg-block mt-3 mb-0">
+                                            Join
+                                            <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="card bg-gradient-dark shadow-lg">
+                                    <span class="badge rounded-pill bg-primary w-30 mt-n2 mx-auto">Premium</span>
+                                    <div class="card-header text-center pt-4 pb-3 bg-transparent">
+                                        <h1 class="font-weight-bold mt-2 text-white">
+                                            <small class="text-lg align-top me-1">$</small>89<small
+                                                class="text-lg">/mo</small>
+                                        </h1>
+                                    </div>
+                                    <div class="card-body text-lg-start text-center pt-0">
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">10 team members</span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">40GB Cloud storage </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">Integration help </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">Sketch Files </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">remove</i>
+                                            <span class="ps-3 text-white">API Access </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">remove</i>
+                                            <span class="ps-3 text-white">Complete documentation </span>
+                                        </div>
+                                        <a href="javascript:;"
+                                            class="btn btn-icon bg-gradient-primary d-lg-block mt-3 mb-0">
+                                            Try Premium
+                                            <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="card shadow-lg">
+                                    <span
+                                        class="badge rounded-pill bg-light text-dark w-30 mt-n2 mx-auto">Enterprise</span>
+                                    <div class="card-header text-center pt-4 pb-3">
+                                        <h1 class="font-weight-bold mt-2">
+                                            <small class="text-lg align-top me-1">$</small>99<small
+                                                class="text-lg">/mo</small>
+                                        </h1>
+                                    </div>
+                                    <div class="card-body text-lg-start text-center pt-0">
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Unlimited team members</span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">100GB Cloud storage </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Integration help </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Sketch Files </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">API Access </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Complete documentation </span>
+                                        </div>
+                                        <a href="javascript:;"
+                                            class="btn btn-icon bg-gradient-dark d-lg-block mt-3 mb-0">
+                                            Join
+                                            <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="annual">
+                        <div class="row">
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="card shadow-lg">
+                                    <span class="badge rounded-pill bg-light text-dark w-30 mx-auto">Starter</span>
+                                    <div class="card-header text-center pt-4 pb-3">
+                                        <h1 class="font-weight-bold mt-2">
+                                            <small class="text-lg align-top me-1">$</small>119<small
+                                                class="text-lg">/mo</small>
+                                        </h1>
+                                    </div>
+                                    <div class="card-body text-lg-start text-center pt-0">
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">2 team members</span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">20GB Cloud storage </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">Integration help </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">Sketch Files </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">API Access </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">remove</i>
+                                            <span class="ps-3">Complete documentation </span>
+                                        </div>
+                                        <a href="javascript:;"
+                                            class="btn btn-icon bg-gradient-dark d-lg-block mt-3 mb-0">
+                                            Join
+                                            <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="card bg-gradient-dark shadow-lg">
+                                    <span class="badge rounded-pill bg-primary w-30 mx-auto">Premium</span>
+                                    <div class="card-header text-center pt-4 pb-3 bg-transparent">
+                                        <h1 class="font-weight-bold mt-2 text-white">
+                                            <small class="text-lg align-top me-1">$</small>159<small
+                                                class="text-lg">/mo</small>
+                                        </h1>
+                                    </div>
+                                    <div class="card-body text-lg-start text-center pt-0">
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">10 team members</span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">40GB Cloud storage </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">Integration help </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">done</i>
+                                            <span class="ps-3 text-white">Sketch Files </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">remove</i>
+                                            <span class="ps-3 text-white">API Access </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto text-white">remove</i>
+                                            <span class="ps-3 text-white">Complete documentation </span>
+                                        </div>
+                                        <a href="javascript:;"
+                                            class="btn btn-icon bg-gradient-primary d-lg-block mt-3 mb-0">
+                                            Try Premium
+                                            <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-lg-0 mb-4">
+                                <div class="card shadow-lg">
+                                    <span class="badge rounded-pill bg-light text-dark w-30 mx-auto">Enterprise</span>
+                                    <div class="card-header text-center pt-4 pb-3">
+                                        <h1 class="font-weight-bold mt-2">
+                                            <small class="text-lg align-top me-1">$</small>399<small
+                                                class="text-lg">/mo</small>
+                                        </h1>
+                                    </div>
+                                    <div class="card-body text-lg-start text-center pt-0">
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Unlimited team members</span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">100GB Cloud storage </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Integration help </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Sketch Files </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">API Access </span>
+                                        </div>
+                                        <div class="d-flex justify-content-lg-start justify-content-center p-2">
+                                            <i class="material-icons my-auto">done</i>
+                                            <span class="ps-3">Complete documentation </span>
+                                        </div>
+                                        <a href="javascript:;"
+                                            class="btn btn-icon bg-gradient-dark d-lg-block mt-3 mb-0">
+                                            Join
+                                            <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="my-5 py-5">
+                <div class="container mt-sm-5 mt-3">
+                    <div class="row pt-lg-6">
+                        <div class="col-lg-3">
+                            <div class="position-sticky pb-lg-5 pb-3 mt-lg-0 mt-5 ps-2" style="top: 100px">
+                                <h3>Input Areas</h3>
+                                <h6 class="text-secondary font-weight-normal pe-3">50+ elements that you need for text
+                                    manipulation and insertion</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <a href="./sections/input-areas/newsletters.html">
+                                        <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
+                                            <img class="w-100 my-auto"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/sections/newsletters.jpg"
+                                                alt="newsletter">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Newsletters</h6>
+                                            <p class="text-secondary text-sm font-weight-normal">6 Examples</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 mt-md-0 mt-4">
+                                    <a href="./sections/input-areas/contact-sections.html">
+                                        <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
+                                            <img class="w-100 m-auto"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/sections/contact-sections.jpg"
+                                                alt="contact">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Contact Sections</h6>
+                                            <p class="text-secondary text-sm font-weight-normal">8 Examples</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 mt-md-0 mt-4">
+                                    <a href="./sections/input-areas/forms.html">
+                                        <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
+                                            <img class="w-100 m-auto"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/sections/forms.jpg"
+                                                alt="forms">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Forms</h6>
+                                            <p class="text-secondary text-sm font-weight-normal">3 Examples</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <a href="./sections/input-areas/inputs.html">
+                                        <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
+                                            <img class="w-100 my-auto"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/sections/inputs.jpg"
+                                                alt="inputs">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Inputs</h6>
+                                            <p class="text-secondary text-sm font-weight-normal">6 Examples</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row mt-4">
+                                <div class="col-md-4 mt-md-0 mt-5">
+                                    <a href="./pages/virtual-reality">
+                                        <div class="card move-on-hover">
+                                            <img class="w-100"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/pages/virtual-reality.jpg"
+                                                loading="lazy" alt="vr">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Virtual Reality</h6>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 mt-md-0 mt-5">
+                                    <a href="./pages/smart-home">
+                                        <div class="card move-on-hover">
+                                            <img class="w-100"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/pages/smart-home.jpg"
+                                                loading="lazy" alt="smartHome">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Smart Home</h6>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4 mt-md-0 mt-5">
+                                    <a href="./pages/chat">
+                                        <div class="card move-on-hover">
+                                            <img class="w-100"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/pages/chat.jpg"
+                                                loading="lazy" alt="chat">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Chat</h6>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-4 mt-md-0 mt-5">
+                                    <a href="./pages/product-page">
+                                        <div class="card move-on-hover">
+                                            <img class="w-100"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/pages/product.jpg"
+                                                loading="lazy" alt="product">
+                                        </div>
+                                        <div class="mt-2 ms-2">
+                                            <h6 class="mb-0">Product Page</h6>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mx-auto mt-md-0 mt-5">
+                            <div class="position-sticky" style="top:100px !important">
+                                <h4 class>Presentation Pages for Company, Landing Pages, Blogs and Support</h4>
+                                <h6 class="text-secondary">These is just a small selection of the multiple possibitilies you
+                                    have. Focus on the business, not on the design.</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="mt-lg-10 pb-4 bg-gradient-dark position-relative mx-n3">
+                <img src="" loading="lazy" class="position-absolute start-0 top-md-0 w-100 opacity-6">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 my-auto">
+                            <h2 class="mb-4 text-white">Account Pages for beautiful webapps</h2>
+                            <p class="text-white opacity-8">We created many examples for pages like Signup, Signin, Forgot
+                                Password, 2FA Authentification and so on. Just choose between a Basic Design, an
+                                illustration or a cover and you are good to go!</p>
+                            <div class="buttons">
+                                <a href="./pages/sign-in/sign-in-cover.html" target="_blank"
+                                    class="btn bg-gradient-primary mt-4">View Pages</a>
+                                <a href="./pages/sign-up/sign-up-basic.html" target="_blank"
+                                    class="btn text-white shadow-none mt-4">View Signup Pages</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 ps-5 pe-0">
+                            <div class="row mt-lg-n7">
+                                <div class="col-lg-4 col-6 mt-5">
+                                    <div class="card move-on-hover">
+                                        <a href="./pages/sign-up/sign-up-basic.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/sign-up-cover.jpg"
+                                                loading="lazy" alt="signupcover">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover p-1 mt-4">
+                                        <a href="./pages/reset/reset-cover.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/reset-cover.jpg"
+                                                loading="lazy" alt="reset-cover">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover mt-4 p-1">
+                                        <a href="./pages/sign-up/sign-up-illustration.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/signup-illustration.jpg"
+                                                loading="lazy" alt="signupill">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-6">
+                                    <div class="card move-on-hover">
+                                        <a href="./pages/2fa-security.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/2fa.jpg"
+                                                loading="lazy" alt="2fa">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover mt-4">
+                                        <a href="./pages/coming-soon.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/comming-soon.jpg"
+                                                loading="lazy" alt="soon">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover mt-4">
+                                        <a href="./pages/reset/reset-basic.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/reset-basic.jpg"
+                                                loading="lazy" alt="reset-basic">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover mt-4">
+                                        <a href="./pages/error-500.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-500.jpg"
+                                                loading="lazy" alt="500">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-6 mt-5 d-lg-block d-none">
+                                    <div class="card move-on-hover">
+                                        <a href="./pages/error-404.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-404.jpg"
+                                                loading="lazy" alt="404">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover mt-4">
+                                        <a href="./pages/sign-in/sign-in-illustration.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/signin-basic.jpg"
+                                                loading="lazy" alt="basic">
+                                        </a>
+                                    </div>
+                                    <div class="card move-on-hover p-1 mt-4">
+                                        <a href="./pages/sign-up/sign-up-cover.html">
+                                            <img class="w-100 border-radius-xl"
+                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/sign-up-cover.jpg"
+                                                loading="lazy" alt="coverr">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 ms-auto">
+                            <h4 class="mb-1">Thank you for your support!</h4>
+                            <p class="lead mb-0">We deliver the best web products</p>
+                        </div>
+                        <div class="col-lg-5 me-lg-auto my-lg-auto text-lg-end mt-5">
+                            <a href="https://twitter.com/intent/tweet?text=Check%20Material%20Design%20System%20made%20by%20%40CreativeTim%20%23webdesign%20%23designsystem%20%23bootstrap5&url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fmaterial-design-system-pro"
+                                class="btn btn-twitter mb-0 me-2" target="_blank">
+                                <i class="fab fa-twitter me-1"></i> Tweet
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/material-design-system-pro"
+                                class="btn btn-facebook mb-0 me-2" target="_blank">
+                                <i class="fab fa-facebook-square me-1"></i> Share
+                            </a>
+                            <a href="https://www.pinterest.com/pin/create/button/?url=https://www.creative-tim.com/product/material-design-system-pro"
+                                class="btn btn-pinterest mb-0 me-2" target="_blank">
+                                <i class="fab fa-pinterest me-1"></i> Pin it
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <footer class="footer py-4">
+        <div class="container-fluid ">
+            <div class="row align-items-center">
+                <center>
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                        <center>
+                            <div class="copyright text-center text-sm text-muted">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>,
+                                TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                                for a better web.
+                            </div>
+                        </center>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="../../public/js/core/popper.min.js"></script>
+    <script type="text/javascript" src="../../public/js/core/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../public/js/plugins/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="../../public/js/plugins/smooth-scrollbar.min.js"></script>
+    <script type="text/javascript" src="../../public/js/material-dashboard.min.js?v=3.0.6"></script>
+    <script type="text/javascript" src="../../public/js/plugins/dragula/dragula.min.js"></script>
+    <script type="text/javascript" src="../../public/js/plugins/jkanban/jkanban.js"></script>
+    <script type="text/javascript" src="../../public/js/plugins/chartjs.min.js"></script>
+    <script type="text/javascript" src="../../public/js/plugins/world.js"></script>
+    <script async defer src="../../public/js/btns.js"></script>
+</body>
+
+</html>

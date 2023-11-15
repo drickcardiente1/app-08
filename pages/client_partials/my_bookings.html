@@ -1,0 +1,143 @@
+<div class="container-fluid px-2 px-md-4">
+    <div class="page-header min-height-300 border-radius-xl mt-4"
+        style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80');">
+        <span class="mask  bg-gradient-primary  opacity-6"></span>
+    </div>
+    <div class="card card-body mx-3 mx-md-4 mt-n6">
+        <div class="card card-body" id="profile">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-sm-auto col-8 my-auto">
+                    <div class="h-100">
+                        <h5 class="mb-1 font-weight-bolder display_full_name">
+                            My Bookings
+                        </h5>
+                        <p class="mb-0 font-weight-normal text-sm display_type">
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns ">
+                            <div class="dataTable-container " style="margin-bottom: 10vh !important;">
+                                <table class="table table-flush dataTable-table" id="my_bookings">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th class="text-center" style="width: 17.0382%;"><a>#</a></th>
+                                            <th class="text-center" style="width: 15.9236%;"><a>Date Booked</a></th>
+                                            <th class="text-center" style="width: 15.5255%;"><a>Pick up</a></th>
+                                            <th class="text-center" style="width: 15.5255%;"><a>Return</a></th>
+                                            <th class="text-center" style="width: 19.2675%;"><a>Status</a></th>
+                                            <th class="text-center" style="width: 21.258%;"><a>Action</a></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="my_booking_list">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="edt_cat" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content  rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black !important;">Booking Details</h5>
+            </div>
+            <div class="modal-body booked-info">
+            </div>
+            <div class="modal-footer">
+                <div class="justify-content-end mt-3 footing">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="modal fade show" id="uni_modal" style="display: block; padding-right: 17px;" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog rounded-0 modal-md modal-dialog-centered large" role="document">
+        <div class="modal-content  rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>
+            </div>
+            <div class="modal-body">
+                <div class="conitaner-fluid px-3 py-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><b>Client Name:</b> John Smith</p>
+                            <p><b>Client Email:</b> example@gmail.com</p>
+                            <p><b>Client Contact:</b> 09123456789</p>
+                            <p><b>Client Address:</b> Sample</p>
+                            <p><b>Rent Pick up Date:</b> Oct 18,2021</p>
+                            <p><b>Rent Return Date:</b> Oct 19,2021</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><b>Bike Category:</b> Adventure Bike</p>
+                            <p><b>Bike Brand:</b> Honda</p>
+                            <p><b>Bike Model:</b> Honda X-ADV 2021</p>
+                            <p><b>Bike Daily Rate:</b> 1,500.00</p>
+                            <p><b>Day/s to Rent:</b> 2</p>
+                            <p><b>Client Payable Amount:</b> 3,000.00</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Booking Status:</div>
+                        <div class="col-auto">
+                            <span class="badge badge-primary">Confirmed</span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm btn-flat" data-dismiss="modal">Close</button>
+                </div>
+                <style>
+                    #uni_modal>.modal-dialog>.modal-content>.modal-footer {
+                        display: none;
+                    }
+
+                    #uni_modal .modal-body {
+                        padding: 0;
+                    }
+                </style>
+                <script>
+                    $(function () {
+                        $('#update').click(function () {
+                            uni_modal("Edit Booking Details", "./bookings/manage_booking.php?id=6")
+                        })
+                    })
+                </script>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submit"
+                    onclick="$('#uni_modal form').submit()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div> -->

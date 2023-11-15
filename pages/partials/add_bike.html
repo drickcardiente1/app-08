@@ -1,0 +1,117 @@
+<div class="container-fluid py-4">
+    <div class="row mt-4">
+        <div class="col-lg-9 col-12 mx-auto position-relative">
+            <div class="card mt-4" id="basic-info">
+                <div class="card-header p-3 pt-2">
+                    <div
+                        class="icon icon-lg icon-shape bg-gradient-dark shadow text-center border-radius-xl mt-n4 me-3 float-start">
+                        <i class="material-icons opacity-10">motorcycle</i>
+                    </div>
+                    <h6 class="mb-0">New Motorbike</h6>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="input-group input-group-static">
+                                <label>Bike type</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-static">
+                                <label>Brand Category</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="dropdown d-inline">
+                                <a href="javascript:;" class="btn btn-icon bg-gradient-primary dropdown-toggle bct"
+                                    data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"></a>
+                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3 bt"
+                                    aria-labelledby="navbarDropdownMenuLink2" data-popper-placement="left-start"></ul>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="dropdown d-inline">
+                                <a href="javascript:;" class="btn btn-icon bg-gradient-primary dropdown-toggle bct2"
+                                    data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"></a>
+                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3 bt2"
+                                    aria-labelledby="navbarDropdownMenuLink2" data-popper-placement="left-start"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="input-group input-group-static">
+                                <label>Available Unit</label>
+                                <input type="number" class="form-control" id="avu">
+                                <label class="lb1" style="color: red !important;"></label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-static">
+                                <label>Daily Rate</label>
+                                <input type="number" class="form-control" id="onkp">
+                                <label class="lb2" style="color: red !important;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">
+                            <div class="input-group input-group-static">
+                                <label>Model</label>
+                                <input type="text" class="form-control" id="mdl">
+                                <label class="lb3" style="color: red !important;"></label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-static">
+                                <div class="dropdown d-inline mt-4">
+                                    <a>status </a>
+                                    <a href="javascript:;" class="btn btn-icon bg-gradient-primary dropdown-toggle bct3"
+                                        data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">Active</a>
+                                    <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                        aria-labelledby="navbarDropdownMenuLink2" data-popper-placement="left-start">
+                                        <li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="1"
+                                                onclick="bcat3(this)">Active</a></li>
+                                        <li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="0"
+                                                onclick="bcat3(this)">InActive</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-dynamic mt-4">
+                        <label class="form-label">Description</label>
+                        <div class="input-group input-group-static mt-5">
+                            <div class="form-outline">
+                                <textarea class="form-control" id="disc" rows="4" cols="100"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-dynamic mt-4">
+                        <label class="form-label">default image</label>
+                        <form action="/file-upload" class="form-control dropzone">
+                            <input class="dz-message" type="file" name="img" accept="image/*">
+                            </input>
+                        </form>
+                    </div>
+                    <div class="input-group input-group-dynamic mt-4">
+                        <label class="form-label">Gallery</label>
+                        <form action="/file-upload" class="form-control dropzone">
+                            <input class="dz-message" type="file" name="img" accept="image/*" multiple>
+                            </input>
+                        </form>
+                        <img src="input">
+                    </div>
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" name="button" class="btn btn-light m-0"
+                            onclick='next("/admin/motorbikes/")'>Cancel</button>
+                        <button type="button" name="button" class="btn bg-gradient-dark m-0 ms-2" onclick='val_nb()'>Add
+                            Motorbike</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

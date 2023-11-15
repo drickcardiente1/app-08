@@ -1,0 +1,120 @@
+<section>
+    <div class="page-header min-vh-100">
+        <div class="container">
+            <div class="row">
+                <div
+                    class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+                    <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center"
+                        style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-404.jpg'); background-size: cover;"
+                        loading="lazy">
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+                    <div class="card card-plain">
+                        <div class="card-header">
+                            <h4 class="font-weight-bolder">Sign Up</h4>
+                            <p class="mb-0">Fill Up Registration Form</p>
+                        </div>
+                        <div class="card-body pt-0">
+                            <form role="form" action="javascript:void(0);" method="POST" id="reg">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label>First Name</label>
+                                            <input type="text" class="form-control name" onkeydown="keyDown(event)"
+                                                onpaste="checkWhitespace(event)"
+                                                onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>
+                                        </div>
+                                        <p style="color: red !important; margin: 0 !important;" class="name_error"></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label>Last Name</label>
+                                            <input type="text" class="form-control last_name" onkeydown="keyDown(event)"
+                                                onpaste="checkWhitespace(event)"
+                                                onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>
+                                        </div>
+                                        <p style="color: red !important; margin: 0 !important;" class="last_name_error"></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label>Address</label>
+                                            <input type="text" class="form-control address">
+                                        </div>
+                                        <p style="color: red !important; margin: 0 !important;" class="address_error"></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label>Contact Number</label>
+                                            <input class="form-control contact_number" type="text"
+                                                onkeypress="return onlyNumberKey(event)" maxlength="11">
+                                        </div>
+                                        <p style="color: red !important; margin: 0 !important;" class="contact_number_error"></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label>Username</label>
+                                            <input type="text" class="form-control user_name" onkeydown="keyDown(event)"
+                                                onpaste="checkWhitespace(event)">
+                                        </div>
+                                        <p style="color: red !important; margin: 0 !important;" class="user_name_error" ></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label>Password</label>
+                                            <input type="password" class="form-control pwd"
+                                                onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
+                                        </div>
+                                        <p style="color: red !important; margin: 0 !important;" class="pwd_error"></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <div class="dropdown d-inline">
+                                            <a style="margin-right: 5vh !important;">Gender</a>
+                                            <a href="javascript:;"
+                                                class="btn btn-icon bg-gradient-primary dropdown-toggle bct_reg"
+                                                data-bs-toggle="dropdown" id="navbarDropdownMenuLink2" data="N/A" >N/A</a>
+                                            <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                                aria-labelledby="navbarDropdownMenuLink2"
+                                                data-popper-placement="left-start">
+                                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                                        data="MALE" onclick="bcat_reg(this)">MALE</a></li>
+                                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                                        data="FEMALE" onclick="bcat_reg(this)">FEMALE</a></li>
+                                                <li><a class="dropdown-item border-radius-md" href="javascript:;"
+                                                        data="N/A" onclick="bcat_reg(this)">N/A</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-check-info text-start ps-0 col-6">
+                                        <input class="form-check-input" type="checkbox" value id="flexCheckDefault"
+                                            checked>
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            I agree the <a href="javascript:;"
+                                                class="text-dark font-weight-bolder">Terms and Conditions</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button onclick="s_up()" type="button"
+                                        class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Sign
+                                        Up</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                            <p href="javascript:;" class="mb-2 text-sm mx-auto text-dark" onclick="get_page('/sign-in')">
+                                Already have an <a href="javascript:;" class="text-primary text-gradient font-weight-bold"> Account ?</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
