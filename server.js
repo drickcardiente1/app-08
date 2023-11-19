@@ -16,8 +16,10 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
-app.use(express.static(path.join(__dirname, '/public')))
-app.set('views', path.join(__dirname, '/pages'))
+
+
+app.use(express.static(path.join(__dirname, 'public')))
+app.set('views', path.join(__dirname, 'pages'))
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'ejs')
 //app.set('view engine', 'jade');
