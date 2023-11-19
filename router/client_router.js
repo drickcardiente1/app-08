@@ -9,7 +9,7 @@ const fs = require("node:fs");
 
 client_router.get('/', (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html" });
-    const html = fs.readFileSync(__dirname + "../../pages/client/index.html", "utf-8");
+    const html = fs.readFileSync(__dirname + "/pages/client/index.html", "utf-8");
     res.end(html);
 });
 // client_router.get('/Sign-in', (req, res) => {
