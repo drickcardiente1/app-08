@@ -74,17 +74,22 @@ const start = async () => {
     c_plate.set(`/profile`,{tittle: `TE Motorbikes | My Account Details`,tag: "profile",layer: layout.get('layer'),content: layout.get('profile')})
     c_plate.set(`/my-bookings`,{tittle: `TE Motorbikes | My bookings`,tag: "my-bookings",layer: layout.get('layer'),content: layout.get('bookings')})
     c_plate.set(`/product`,{tittle: `TE Motorbikes | product`,tag: "product",layer: layout.get('layer'),content: layout.get('product')})
-    c_plate.set(`/book`,{tittle: `TE Motorbikes | BOOK`,tag: "book",layer: layout.get('layer'),content: layout.get('bookings')})
+    c_plate.set(`/book`,{tittle: `TE Motorbikes | BOOK`,tag: "book",layer: layout.get('layer'),content: layout.get('product')})
 };
 
+function startclear(ths) {
+    if (ths.value == '') {
+        ths.value = today(new Date());
+    }
+}
 
-
-
-
-
-
-
-
+function endclear(ths) {
+    if (ths.value == '') {
+        document.querySelector('.date_start').value = today(new Date());;
+        ths.value = today(addDays(new Date(), 1))
+        ths.min = today(addDays(new Date(), 1))
+    }
+}
 
 function sidebar_format() {
     var valid_u = map_data.get('active_u');
@@ -366,9 +371,9 @@ function page_data_loader(tag) {
             document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
-            document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
+            document.querySelector('.category').innerHTML = category.length >=1 ? category[0].category : "N/A" 
             console.log(brand)
-            document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
+            document.querySelector('.brand').innerHTML = brand.length >=1 ? brand[0].name : "N/A" 
             document.querySelector('.product-avatar').innerHTML =
             `
                 <img class="w-100 border-radius-lg shadow-lg mx-auto"
@@ -376,7 +381,7 @@ function page_data_loader(tag) {
             `
             var gal = document.querySelector('.galeries');
             gal.innerHTML = ""
-            for (var galleries of all_galleries) {
+            for (var galleries of galery) {
                 gal.innerHTML +=        
                 `
                <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
@@ -482,8 +487,10 @@ function page_data_loader(tag) {
             document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
-            document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
-            document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
+
+            document.querySelector('.category').innerHTML = category.length >=1 ? category[0].category : "N/A" 
+            document.querySelector('.brand').innerHTML = brand.length >=1 ? brand[0].name : "N/A" 
+            
             document.querySelector('.product-avatar').innerHTML =
             `
                 <img class="w-100 border-radius-lg shadow-lg mx-auto"
@@ -491,7 +498,7 @@ function page_data_loader(tag) {
             `
             var gal = document.querySelector('.galeries');
             gal.innerHTML = ""
-            for (var galleries of all_galleries) {
+            for (var galleries of galery) {
                 gal.innerHTML +=        
                 `
                <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
@@ -625,7 +632,7 @@ function looper1() {
         document.querySelector('.looper').innerHTML +=
             `
         <div class="col-md-4 mt-md-0 mt-4">
-            <a onclick="get_page('/book/${to_load[loop].id}'); datefrom_to();" href="javascript:;" >
+            <a onclick="get_page('/book/${to_load[loop].id}');" href="javascript:;" >
                 <div class="card move-on-hover">
                     <img class="w-100"
                         src="${to_load[loop].avatar}"
@@ -660,6 +667,49 @@ function looper1() {
     }
 }
 
+function check_unit() {
+    var link = window.location.pathname;
+    var url = link.toLowerCase();
+    var res = url.split("/");
+    var pos = res.indexOf('product');
+    var result = res[pos+1];
+    var id = result
+
+    var starts = document.querySelector('.date_start').value;
+    var ends = document.querySelector('.date_end').value;
+    var available_bikes = $.ajax({
+        async: false,
+        url: "/client_query/available_bikes",
+        data: { start: starts, ends: ends },
+        type: 'POST',
+        dataType: "JSON",
+    }).responseJSON;
+    var to_check_exist = available_bikes.data;
+    var exist = false;
+    for(let loop = 0; loop < to_check_exist.length; loop++){
+        console.log(to_check_exist[loop].id)
+        if(id == to_check_exist[loop].id){
+            exist = true;
+        }
+    }
+    if(exist == true){
+        var s_badge = "badge badge-success";
+        var chicker = document.querySelector('.chicker');
+        chicker.innerHTML = `
+        <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: -2.6vh !important;"
+        onclick="check_unit()">BOOK NOW</button>
+        `
+        var sts = document.querySelector('#sts');
+        sts.classList.add(...s_badge.split(" "));
+        sts.innerHTML = 'AVAILABLE';
+    }else{
+        var s_badge = "badge badge-danger";
+        var sts = document.querySelector('#sts');
+        sts.classList.add(...s_badge.split(" "));
+        sts.innerHTML = 'UNAVAILABLE';
+    }
+}
+
 function book_mode(){
     var check_var = false;
     request_all_b();
@@ -673,9 +723,483 @@ function book_mode(){
 }
 
 
+function keyDown(e) {
+    var e = window.event || e;
+    var key = e.keyCode;
+    if (key == 32) {
+        e.preventDefault();
+    }
+}
+
+function checkWhitespace(event) {
+    var data = event.clipboardData.getData("text/plain");
+    var isNullOrContainsWhitespace = (!data || data.length === 0 || /\s/g.test(data));
+    if (isNullOrContainsWhitespace) {
+        event.preventDefault();
+    }
+
+}
+
+function onlyNumberKey(evt) {
+    var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+    return true;
+}
+
+function msg(){
+    // var valid_u = map_data.get('active_u');
+    var tab = document.querySelector('#cl-msg');
+    tab.classList.add('show');
+    com_client();
+}
 
 
+function cl_msg_close(){
+    var tab = document.querySelector('#cl-msg');
+    tab.classList.remove('show');
+}
 
+function bcat(ths) {
+    var target = document.getElementsByClassName('bct')[0];
+    var vr = ths.getAttribute('data');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data', vr);
+}
+
+function bcat_reg(ths) {
+    var target = document.getElementsByClassName('bct_reg')[0];
+    var vr = ths.getAttribute('data');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data', vr);
+}
+
+
+function detail(e) {
+    var all_bikes = map_data.get('all_bikes');
+    var all_brands = map_data.get('all_brands');
+    var all_categories = map_data.get('all_categories');
+    var b_list = map_data.get('my-bookings');
+    var valid_u = map_data.get('active_u');
+    var id = e.getAttribute('d_id')
+    var d_start = new Date(b_list[id].date_start), d_end = new Date(b_list[id].date_end), stats, footing;
+    var bike = [];
+    var brand = [];
+    var category = [];
+
+    for (let loop = 0; loop < all_bikes.length; loop++) {
+        if (all_bikes[loop].id == b_list[id].bike_id) {
+            bike.push(all_bikes[loop]);
+        }
+    }
+    function find(id){
+        for (let loop = 0; loop < all_categories.length; loop++) {
+            console.log(bike)
+            if (all_categories[loop].id == id) {
+                category.push(all_categories[loop]);
+            }
+        }
+    }
+    function find2(id){
+        for (let loop = 0; loop < all_brands.length; loop++) {
+            if (all_brands[loop].id == bike[0].brand_id) {
+                brand.push(all_brands[loop]);
+            }
+        }
+    }
+    bike.length >= 1 ? find(bike[0].category_id): category.push('');
+    bike.length >= 1 ? find2(bike[0].brand_id): brand.push('');
+    var style_1 =
+        `
+    <button style="float: left;" type="button" name="button" class="btn bg-gradient-info m-0 ms-2" data-bs-dismiss="modal">CLOSE</button>
+    `;
+    if (b_list[id].status == "0") {
+        stats =
+            `
+        <p><b>Booking Status<br></b> <span class="badge badge-warning">PENDING</span></p>
+        `;
+        footing =
+            `
+        <button style="float: left;" type="button" name="button" class="btn bg-gradient-info m-0 ms-2" data-bs-dismiss="modal">CLOSE</button>
+        <button onclick="canbook(this)" d_id="${b_list[id].id}" style="float: right;" type="button" name="button" class="btn bg-gradient-dark m-0 ms-2" data-bs-dismiss="modal">CANCEL BOOKING</button>
+        `
+    } else if (b_list[id].status == "1") {
+        stats =
+            `
+        <p><b>Booking Status<br></b> <span class="badge badge-info">CONFIRMED</span></p>
+        `;
+        footing = style_1;
+    } else if (b_list[id].status == "2") {
+        stats =
+            `
+        <p><b>Booking Status<br></b> <span class="badge badge-danger">CANCELLED</span></p>
+        `;
+        footing = style_1;
+    } else if (b_list[id].status == "3") {
+        stats =
+            `
+        <p><b>Booking Status<br></b> <span class="badge badge-success">PICK UP</span></p>
+        `;
+        footing = style_1;
+    } else if (b_list[id].status == "4") {
+        stats =
+            `
+        <p><b>Booking Status<br></b> <span class="badge badge-secondary">RETURNED</span></p>
+        `;
+        footing = style_1;
+    }
+    document.querySelector('.booked-info').innerHTML =
+        `
+    <div class="conitaner-fluid px-3 py-2">
+        <div class="row">
+            <div class="col-md-6" style="color: black !important;">
+                <p><b>Client Name<br></b> ${valid_u.raw[0].firstname} ${valid_u.raw[0].lastname}</p>
+                <p><b>Client Contact<br></b> ${valid_u.raw[0].contact}</p>
+                <p><b>Client Address<br></b> ${valid_u.raw[0].address}</p>
+                <p><b>Rent Pick up Date<br></b>${d_start.toLocaleDateString()}</p>
+                <p><b>Rent Return Date<br></b> ${d_end.toLocaleDateString()}</p>
+                ${stats}
+            </div>
+            <div class="col-md-6" style="color: black !important;">
+                <p><b>Bike Category<br></b> ${category[0].category}</p>
+                <p><b>Bike Brand<br></b> ${brand[0].name}</p>
+                <p><b>Bike Model<br></b> ${bike.length >= 1 ? bike[0].bike_model: ""}</p>
+                <p><b>Bike Daily Rate<br></b> ${bike.length >= 1 ? bike[0].daily_rate: ""}</p>
+                <p><b>Day/s to Rent<br></b> ${b_list[id].rent_days}</p>
+                <p><b>Client Payable Amount<br></b> ${b_list[id].amount_topay}</p>
+            </div>
+        </div>
+    </div>
+    `;
+    document.querySelector('.footing').innerHTML =
+        `
+    ${footing}
+    `;
+}
+
+function canbook(e) {
+    var id = e.getAttribute('d_id');
+    $.ajax({
+        url: "/client_query/cancel-book",
+        method: "POST",
+        data: { id: id },
+        dataType: "JSON",
+        success: function (data) {
+            if (data.status == 202) {
+                Swal.fire(
+                    'Booking Cancelled Successfully',
+                )
+                initializer();
+                get_page('/my-bookings');
+                first_load();
+            }
+        },
+        error: function (request, error) {
+            console.log(error)
+        },
+    });
+}
+
+function sign_out_admin() {
+    $.ajax({
+        url: "/auth/logout",
+        method: "GET",
+        dataType: "JSON",
+        success: function (data) {
+            initializer();
+            get_page('/');
+            first_load();
+        }
+    });
+}
+
+function updatepwd() {
+    var old_p = document.getElementById('old_p');
+    var new_p = document.getElementById('nw_p');
+    var confnew_p = document.getElementById('confnw_p');
+
+    if (old_p.value == "") {
+        Swal.fire(
+            'Please input Current password',
+        )
+    } else {
+        $.ajax({
+            url: "/client_query/validate_oldpass",
+            method: "POST",
+            data: { old_p: old_p.value },
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == 202) {
+                    var p = String(new_p.value);
+                    if (p == "") {
+                        Swal.fire(
+                            'New password must not be null',
+                        )
+                    } else if (p.length < 7) {
+                        document.getElementById("min").style.color = "red";
+                    }
+                    else if (p.search(/[a-z]/i) < 0) {
+                        document.getElementById("st").style.color = "red";
+                    }
+                    else if (p.search(/[0-9]/i) < 0) {
+                        document.getElementById("num").style.color = "red";
+                    }
+                    else {
+                        if (confnew_p.value == new_p.value) {
+                            $.ajax({
+                                url: "/client_query/validate_newpass",
+                                method: "POST",
+                                data: { new_p: new_p.value },
+                                dataType: "JSON",
+                                success: function (data) {
+                                    if (data.status == 202) {
+                                        $.ajax({
+                                            url: "/client_query/updatepd",
+                                            method: "POST",
+                                            data: { new_p: new_p.value },
+                                            dataType: "JSON",
+                                            success: function (data) {
+                                                if (data.status == 202) {
+                                                    Swal.fire(
+                                                        'password Updated',
+                                                    )
+                                                    old_p.value = "";
+                                                    new_p.value = "";
+                                                    confnew_p.value = "";
+                                                    get_page('/profile')
+                                                    first_load();
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire(
+                                            'Now password must not same with old password',
+                                        )
+                                    }
+                                }
+                            });
+                        } else {
+                            document.getElementById("conf").style.color = "red";
+                        }
+                    }
+                } else {
+                    Swal.fire(
+                        'Current password did not match',
+                    )
+                }
+            },
+            error: function (request, error) {
+                console.log("error");
+            },
+        });
+    }
+}
+
+function s_up() {
+    var f_name = document.querySelector('.name').value;
+    var l_name = document.querySelector('.last_name').value;
+    var addr = document.querySelector('.address').value;
+    var cont_num = document.querySelector('.contact_number').value;
+    var u_name = document.querySelector('.user_name').value;
+    var pwd = document.querySelector('.pwd').value;
+    var gend = document.querySelector('.bct_reg').getAttribute('data');
+
+    var name_error = document.querySelector('.name_error');
+    var last_name_error = document.querySelector('.last_name_error')
+    var address_error = document.querySelector('.address_error')
+    var contact_number_error = document.querySelector('.contact_number_error')
+    var user_name_error = document.querySelector('.user_name_error')
+    var pwd_error = document.querySelector('.pwd_error')
+    name_error.innerHTML = "";
+    last_name_error.innerHTML = "";
+    address_error.innerHTML = "";
+    contact_number_error.innerHTML = "";
+    user_name_error.innerHTML = "";
+    pwd_error.innerHTML = "";
+    var flag = true;
+    if (f_name == "") {
+        flag = false;
+        name_error.innerHTML = "Please fill out this field";
+    }
+    if (l_name == "") {
+        flag = false;
+        last_name_error.innerHTML = "Please fill out this field";
+    }
+    if (addr == "") {
+        flag = false;
+        address_error.innerHTML = "Please fill out this field";
+    }
+    if (cont_num == "") {
+        flag = false;
+        contact_number_error.innerHTML = "Please fill out this field";
+    } else if (cont_num.length < 11) {
+        flag = false;
+        contact_number_error.innerHTML = "Min 11 numbers";
+    }
+    if (u_name == "") {
+        flag = false;
+        user_name_error.innerHTML = "Please fill out this field";
+    } else if (u_name.length < 6) {
+        flag = false;
+        user_name_error.innerHTML = "Min 7 characters";
+    } else {
+        var validate_uname = $.ajax({
+            async: false,
+            url: "/client_query/check_uname",
+            data: { username: u_name },
+            type: 'POST',
+        }).responseJSON;
+        if (validate_uname.stats != 202) {
+            flag = false;
+            user_name_error.innerHTML = "Username is already taken";
+        }
+    }
+    console.log("hello world")
+    if (pwd == "") {
+        console.log(pwd.length)
+        flag = false;
+        pwd_error.innerHTML = "Please fill out this field";
+    } else if (pwd.length < 6) {
+        flag = false;
+        pwd_error.innerHTML = "Min 7 characters";
+    }
+    else if (pwd.search(/[a-z]/i) < 0) {
+        flag = false;
+        pwd_error.innerHTML = "Atleast one letter (recommended)";
+    }
+    else if (pwd.search(/[0-9]/i) < 0) {
+        flag = false;
+        pwd_error.innerHTML = "Atleast 1 number";
+    }
+    if (flag == true) {
+        $.ajax({
+            url: "/client_query/reg_client",
+            method: "POST",
+            data: { firstname: f_name, lastname: l_name, username: u_name, address: addr, contact: cont_num, gender: gend, password: pwd },
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == 202) {
+                    Swal.fire(
+                        'Users Successfuly Registered',
+                    )
+                    $.ajax({
+                        url: "/auth/client-login",
+                        method: "POST",
+                        data: { um: u_name, pd: pwd },
+                        dataType: "JSON",
+                        success: function (data) {
+                            if (data.status == 202) {
+                                map_data.set('active_u', data.raw)
+                                initializer();
+                                get_page('/');
+                                first_load();
+                            } else if (data.status == 203) {
+                                window.location.href = '/admin'
+                            }
+                            else {
+                                map_data.set('active_u', '')
+                                Swal.fire(
+                                    'No user founds',
+                                )
+                            }
+                        },
+                        error: function (request, error) {
+                            alert(error);
+                        },
+                    });
+                }
+            },
+            error: function (request, error) {
+                console.log(error)
+            },
+        });
+    }
+}
+
+
+function update_info_client() {
+    var valid_u = map_data.get('active_u');
+    var f_name = document.querySelector('.f_name');
+    var l_name = document.querySelector('.l_name');
+    var u_name = document.querySelector('.u_name');
+    var add = document.querySelector('.address');
+    var contact_num = document.querySelector('.contact');
+    var c_gender = document.querySelector('.bct').getAttribute('data');
+    var f, l, u, a, c, flag = true, less = true, less2 = true;
+    if (f_name.value == "") {
+        f = f_name.placeholder;
+    } else {
+        f = f_name.value;
+    }
+    if (l_name.value == "") {
+        l = l_name.placeholder
+    } else {
+        l = l_name.value
+    }
+    if (u_name.value == "") {
+        u = u_name.placeholder
+    } else if (u_name.value.length < 7) {
+        u = u_name.placeholder
+        less = false;
+    } else {
+        var validate_uname = $.ajax({
+            async: false,
+            url: "/client_query/validate_uname",
+            data: { id: valid_u.raw[0].id, username: u_name.value },
+            type: 'POST',
+        }).responseJSON;
+        if (validate_uname.stats == 202) {
+            u = u_name.value;
+        } else {
+            u = u_name.placeholder
+            flag = false;
+        }
+    }
+    if (add.value == "") {
+        a = add.placeholder
+    } else {
+        a = add.value
+    }
+    if (contact_num.value == "") {
+        c = contact_num.placeholder
+    } else if (contact_num.value.length < 11) {
+        c = contact_num.placeholder
+        less2 = false;
+    } else {
+        c = contact_num.value
+    }
+    if (flag == false) {
+        Swal.fire(
+            'Username is already taken',
+        )
+    } else if (less == false) {
+        document.querySelector('.uname_error').innerHTML = "Min 6 characters"
+    } else if (less2 == false) {
+        document.querySelector('.num_error').innerHTML = "Min 11 characters"
+    } else {
+        $.ajax({
+            url: "/client_query/update_client_info",
+            method: "POST",
+            data: { firstname: f, lastname: l, username: u, address: a, contact: c, gender: c_gender },
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == 202) {
+                    Swal.fire(
+                        'Users info succesfully updated',
+                    )
+                    initializer();
+                    get_page('/profile');
+                    first_load();
+                }
+            },
+            error: function (request, error) {
+                console.log(error)
+            },
+        });
+    }
+}
 
 
 function get_page(relocate) {
@@ -706,6 +1230,31 @@ function get_page(relocate) {
         sidebar_format();
         page_data_loader(product_entry.tag);
     }
+    function book_page(){
+        var product_entry = c_plate.get('/book');
+        document.title = product_entry.tittle + `| ${result}`;
+        history.pushState(null, product_entry.tittle, `/book/${result2}`);
+        document.querySelector('.layer').innerHTML = product_entry.layer;
+        document.querySelector('.content').innerHTML = product_entry.content;
+        sidebar_format();
+        page_data_loader(product_entry.tag);
+    }
+    
+    function book_mode(){
+        var check_var = false;
+        request_all_b();
+        var all_bikes = map_data.get('all_bikes');
+        for (let loop = 0; loop < all_bikes.length; loop++) {
+            console.log(all_bikes[loop].id)
+            if (all_bikes[loop].id == result2) {
+                check_var = true;
+            }
+        }
+        console.log(check_var)
+        console.log("looping out")
+        check_var ? book_page() : console.log("error this");
+    }
+
     function product_mode(){
         var check_var = false;
         request_all_b();

@@ -50,6 +50,12 @@ client_router.get('/product/:id', async (req, res) => {
     res.end(html);
 })
 
+client_router.get('/book/:id', async (req, res) => {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    const html = fs.readFileSync(__dirname + "/../pages/client/index.html", "utf-8");
+    res.end(html);
+})
+
 client_router.get('/profile', (req, res) => {
     if (!req.session.is_client) {
         res.status(404);
