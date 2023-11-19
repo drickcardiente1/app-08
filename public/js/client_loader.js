@@ -1,37 +1,76 @@
 "use strict"
 
-import json from '../json/plate.json' assert {type:'json'};
-console.log(json)
 
-// function getFile(U) {
-//     var X = new XMLHttpRequest();
-//     X.open('GET', U, false);
-//     X.send();
-//     return X.responseText;
-// }
-// const map_data = new Map([]);
+function getFile(U) {
+    var X = new XMLHttpRequest();
+    X.open('GET', U, false);
+    X.send();
+    return X.responseText;
+}
+const layout = new Map([]);
+const map_data = new Map([]);
+var from = [], to = []
+
+async function firstFunction(){
+    console.log("starting")
+    await $.ajax({
+        url: "/template/client-layer",
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            console.log(data)
+        },
+        error: function (request, error) {
+            alert(error);
+        },
+    });
+    console.log("next");
+    await $.ajax({
+        url: "/template/client-home",
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            console.log(data)
+        },
+        error: function (request, error) {
+            alert(error);
+        },
+    });
+    console.log("exiting");
+}
+
+
+(async () => {
+    await firstFunction()
+    console.log("hello world 2")
+})();
 
 
 
-// function today(d_now) {
-//     var dc = new Date(d_now)
-//     var day = String(dc.getDate()).padStart(2, '0');
-//     var month = String(dc.getMonth() + 1).padStart(2, '0');
-//     var year = String(dc.getFullYear());
-//     return `${year}-${month}-${day}`
-// }
 
-// function addDays(date, days) {
-//     var currentDate = date.getDate();
-//     date.setDate(currentDate + days);
-//     return date;
-// }
+function today(d_now) {
+    var dc = new Date(d_now)
+    var day = String(dc.getDate()).padStart(2, '0');
+    var month = String(dc.getMonth() + 1).padStart(2, '0');
+    var year = String(dc.getFullYear());
+    return `${year}-${month}-${day}`
+}
 
-// function deductDays(date, days) {
-//     var currentDate = date.getDate();
-//     date.setDate(currentDate - days);
-//     return date;
-// }
+function addDays(date, days) {
+    var currentDate = date.getDate();
+    date.setDate(currentDate + days);
+    return date;
+}
+
+function deductDays(date, days) {
+    var currentDate = date.getDate();
+    date.setDate(currentDate - days);
+    return date;
+}
+
+function datefrom_to(){
+    console.log(from, to)
+}
 
 
 // const c_plate = new Map([
@@ -72,7 +111,7 @@ console.log(json)
 //         {
 //             tittle: `TE Motorbikes | Sign-in`,
 //             tag: "Sign-in",
-//             layer: getFile("../pages/client_partials/layer.html"),
+//             layer: getFile("../../pages/client_partials/layer.html"),
 //             content: getFile("../../pages/client_partials/log-in.html"),
 //         },
 //     ],
@@ -116,6 +155,16 @@ console.log(json)
 //             content: getFile("../../pages/client_partials/product.html"),
 //         },
 //     ],
+
+//     [
+//         `/book`,
+//         {
+//             tittle: `TE Motorbikes | BOOK`,
+//             tag: "book",
+//             layer: getFile("../../pages/client_partials/layer.html"),
+//             content: getFile("../../pages/client_partials/product.html"),
+//         },
+//     ],
 // ]);
 
 // function startclear(ths) {
@@ -139,6 +188,10 @@ console.log(json)
 //     var home_result = document.querySelector('.home_result');
 //     var to_load = map_data.get('available_bikes')
 //     console.log(to_load)
+//     from = []
+//     to = []
+//     from.push(starts)
+//     to.push(ends)
 //     home_result.innerHTML =
 //         `
 //     <div class="row pt-lg-6">
@@ -155,14 +208,15 @@ console.log(json)
 //         </div>
 //     </div>
 //     `
+//     var u = map_data.get('active_u');
 //     for (let loop = 0; loop < to_load.length; loop++) {
 //         document.querySelector('.looper').innerHTML +=
 //             `
 //         <div class="col-md-4 mt-md-0 mt-4">
-//             <a onclick="get_page('/product/${to_load[loop].id}');" href="javascript:;" >
+//             <a onclick="get_page('/book/${to_load[loop].id}'); datefrom_to();" href="javascript:;" >
 //                 <div class="card move-on-hover">
 //                     <img class="w-100"
-//                         src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-404.jpg"
+//                         src="${to_load[loop].avatar}"
 //                         loading="lazy" alt="chat">
 //                 </div>
 //                 <div class="mt-2 ms-2">
@@ -171,6 +225,26 @@ console.log(json)
 //             </a>
 //         </div>
 //         `;
+//     }
+//     function add_loop(){
+//         for (let loop = 0; loop < to_load.length; loop++) {
+//             document.querySelector('.looper').innerHTML +=
+//                 `
+//             <div class="col-md-4 mt-md-0 mt-4">
+//                 <a onclick="get_page('/book/${to_load[loop].id}'); datefrom_to();" href="javascript:;" >
+//                     <div class="card move-on-hover">
+//                         <img class="w-100"
+//                             src="${to_load[loop].avatar}"
+//                             loading="lazy" alt="chat">
+//                     </div>
+//                     <div class="mt-2 ms-2">
+//                         <h6 class="mb-0">${to_load[loop].bike_model}</h6>
+//                     </div>
+//                 </a>
+//             </div>
+//             `;
+//         }
+//         functi
 //     }
 // }
 
@@ -335,7 +409,7 @@ console.log(json)
 //                         <a onclick="get_page('/product/${bikes[loop3].id}');" href="javascript:;">
 //                             <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
 //                                 <img class="w-100 my-auto"
-//                                     src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/sections/newsletters.jpg"
+//                                     src="${bikes[loop3].avatar}"
 //                                     alt="newsletter">
 //                             </div>
 //                             <div class="mt-2 ms-2">
@@ -428,60 +502,216 @@ console.log(json)
 //             ]
 //         });
 //     }else if (tag == 'product') {
-//         var unit_chicker = document.querySelector('.unit-chicker');
-
-
-//         unit_chicker.innerHTML = `
-        
-//         <div class="row border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-//             <div class="col-lg-3 mt-lg-n2 mt-2">
-//                 <div class="input-group input-group-static my-3">
-//                     <label>Date Start</label>
-//                     <input type="date" class="form-control date_start" onchange="startclear(this);">
-//                 </div>
-//             </div>
-//             <div class="col-lg-3 mt-lg-n2 mt-2">
-//                 <div class="input-group input-group-static my-3">
-//                     <label>Date end</label>
-//                     <input type="date" class="form-control date_end" onchange="endclear(this);">
-//                 </div>
-//             </div>
-//             <div class="col-lg-3 mt-lg-n2 chicker">
-//                 <label>&nbsp;</label>
-//                 <button type="button" class="btn bg-gradient-primary" style="margin-left: 7vh !important; bottom: 2vh !important;"
-//                     onclick="check_unit()">Check Availablity</button>
-//             </div>
-//             <span class="" id="sts"></span>
-//         </div>
-        
-//         `
-
-
-
-
-
-
-
-
-
-//         var date_now = today(new Date())
-//         var date_start_picker = document.querySelector('.date_start');
-//         var date_end_picker = document.querySelector('.date_end');
-//         date_start_picker.setAttribute('min', date_now);
-//         date_start_picker.setAttribute('value', date_now);
-//         date_start_picker.setAttribute('max', date_now);
-//         date_end_picker.setAttribute('min', today(addDays(new Date(date_now), 1)));
-//         date_end_picker.setAttribute('value', today(addDays(new Date(date_now), 1)));
-
-//         $(".date_start").change((a) => {
-//             if (a.target.value) {
-//                 date_end_picker.min = today(addDays(new Date(a.target.value), 1))
+//         console.log("hello world")
+//         var link = rep(window.location.pathname);
+//         var url = link.toLowerCase();
+//         var res = url.split("/");
+//         var pos = res.indexOf('product');
+//         var result = res[pos + 1];
+//         var onlyContainsNumbers = (str) => /^\d+$/.test(str);
+//         function on(){
+//             console.log(result)
+//             var all_bikes = map_data.get('all_bikes');
+//             var all_brands = map_data.get('all_brands');
+//             var all_categories = map_data.get('all_categories');
+//             var all_galleries = map_data.get('galleries');
+//             var bike = [], brand = [], category = [], galery = [], bike_id;
+//             for (var bikes of all_bikes) {
+//                 result == bikes.id ? (bike.push(bikes), bike_id=bikes.id):""
 //             }
-//         })
+//             for (var brands of all_brands) {
+//                 bike[0].brand_id == brands.id ? brand.push(brands):""
+//             }
+//             for (var categories of all_categories) {
+//                 console.log(categories.id)
+//                 bike[0].category_id == categories.id ? category.push(categories):""
+//             }
+//             for (var galleries of all_galleries) {
+//                 bike_id == galleries.bike_id ? galery.push(galleries):""
+//             }
+//             document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
+//             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
+//             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
+//             document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
+//             console.log(brand)
+//             document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
+//             document.querySelector('.product-avatar').innerHTML =
+//             `
+//                 <img class="w-100 border-radius-lg shadow-lg mx-auto"
+//                 src="${bike[0].avatar}" alt="chair">
+//             `
+//             var gal = document.querySelector('.galeries');
+//             gal.innerHTML = ""
+//             for (var galleries of all_galleries) {
+//                 gal.innerHTML +=        
+//                 `
+//                <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
+//                    <div class="card" data-animation="true">
+//                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+//                            <a class="d-block blur-shadow-image">
+//                                <img src="${galleries.image}" class="img-fluid border-radius-lg" alt="Responsive image">
+//                            </a>
+//                            <div class="colored-shadow"
+//                                style="background-image: url(${galleries.image});">
+//                            </div>
+//                        </div>
+//                    </div>
+//                </div>
+//                `
+//             }
 
-//         $(".date_end").change((a) => {
-//             date_start_picker.max = today(deductDays(new Date(a.target.value), 1));
-//         })
+
+
+
+
+
+
+
+
+//             var u = map_data.get('active_u');
+//             var unit_chicker = document.querySelector('.unit-chicker');
+//             function adds(){
+//                 unit_chicker.innerHTML = ``
+//             }
+//             function not_adds(){
+//                 unit_chicker.innerHTML = `
+//                 <div class="row border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
+//                     <div class="col-lg-3 mt-lg-n2 mt-2">
+//                         <div class="input-group input-group-static my-3">
+//                             <label>Date Start</label>
+//                             <input type="date" class="form-control date_start" onchange="startclear(this);">
+//                         </div>
+//                     </div>
+//                     <div class="col-lg-3 mt-lg-n2 mt-2">
+//                         <div class="input-group input-group-static my-3">
+//                             <label>Date end</label>
+//                             <input type="date" class="form-control date_end" onchange="endclear(this);">
+//                         </div>
+//                     </div>
+//                     <div class="col-lg-3 mt-lg-n2 chicker">
+//                         <label>&nbsp;</label>
+//                         <button type="button" class="btn bg-gradient-primary" style="margin-left: 7vh !important; bottom: 2vh !important;"
+//                             onclick="check_unit()">Check Availablity</button>
+//                     </div>
+//                     <span class="" id="sts"></span>
+//                 </div>
+                
+//                 `
+//                 var date_now = today(new Date())
+//                 var date_start_picker = document.querySelector('.date_start');
+//                 var date_end_picker = document.querySelector('.date_end');
+//                 date_start_picker.setAttribute('min', date_now);
+//                 date_start_picker.setAttribute('value', date_now);
+//                 date_start_picker.setAttribute('max', date_now);
+//                 date_end_picker.setAttribute('min', today(addDays(new Date(date_now), 1)));
+//                 date_end_picker.setAttribute('value', today(addDays(new Date(date_now), 1)));
+//                 $(".date_start").change((a) => {
+//                     if (a.target.value) {
+//                         date_end_picker.min = today(addDays(new Date(a.target.value), 1))
+//                     }
+//                 })
+
+//                 $(".date_end").change((a) => {
+//                     date_start_picker.max = today(deductDays(new Date(a.target.value), 1));
+//                 })
+//             }
+//             u.status == 203 ? adds() : not_adds()
+//         }
+//         // make condition here if user admin client or guest
+//         onlyContainsNumbers(result) ? on() : console.log("display werror");
+//     }else if (tag == 'book') {
+//         var u = map_data.get('active_u');
+//         var link = rep(window.location.pathname);
+//         var url = link.toLowerCase();
+//         var res = url.split("/");
+//         var pos = res.indexOf('book');
+//         var result = res[pos + 1];
+//         var onlyContainsNumbers = (str) => /^\d+$/.test(str);
+//         function on(){
+//             console.log(result)
+//             var all_bikes = map_data.get('all_bikes');
+//             var all_brands = map_data.get('all_brands');
+//             var all_categories = map_data.get('all_categories');
+//             var all_galleries = map_data.get('galleries');
+//             var bike = [], brand = [], category = [], galery = [], bike_id;
+//             for (var bikes of all_bikes) {
+//                 result == bikes.id ? (bike.push(bikes), bike_id=bikes.id):""
+//             }
+//             for (var brands of all_brands) {
+//                 bike[0].brand_id == brands.id ? brand.push(brands):""
+//             }
+//             for (var categories of all_categories) {
+//                 console.log(categories.id)
+//                 bike[0].category_id == categories.id ? category.push(categories):""
+//             }
+//             for (var galleries of all_galleries) {
+//                 bike_id == galleries.bike_id ? galery.push(galleries):""
+//             }
+//             document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
+//             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
+//             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
+//             document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
+//             console.log(brand)
+//             document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
+//             document.querySelector('.product-avatar').innerHTML =
+//             `
+//                 <img class="w-100 border-radius-lg shadow-lg mx-auto"
+//                 src="${bike[0].avatar}" alt="chair">
+//             `
+//             var gal = document.querySelector('.galeries');
+//             gal.innerHTML = ""
+//             for (var galleries of all_galleries) {
+//                 gal.innerHTML +=        
+//                 `
+//                <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
+//                    <div class="card" data-animation="true">
+//                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+//                            <a class="d-block blur-shadow-image">
+//                                <img src="${galleries.image}" class="img-fluid border-radius-lg" alt="Responsive image">
+//                            </a>
+//                            <div class="colored-shadow"
+//                                style="background-image: url(${galleries.image});">
+//                            </div>
+//                        </div>
+//                    </div>
+//                </div>
+//                `
+//             }
+
+//             var unit_chicker = document.querySelector('.unit-chicker');
+//             function adds(){
+//                 unit_chicker.innerHTML = ``
+//             }
+//             function not_adds(){
+//                 unit_chicker.innerHTML = `
+//                 <div class="row border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
+//                     <div class="col-lg-3 mt-lg-n2 mt-2">
+//                         <div class="input-group input-group-static my-3">
+//                             <label>Date Start</label>
+//                             ${from[0]}
+//                         </div>
+//                     </div>
+//                     <div class="col-lg-3 mt-lg-n2 mt-2">
+//                         <div class="input-group input-group-static my-3">
+//                             <label>Date end</label>
+//                             ${to[0]}
+//                         </div>
+//                     </div>
+//                     <div class="col-lg-3 mt-lg-n2 chicker">
+//                         <label>&nbsp;</label>
+//                         <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: 2vh !important;"
+//                             onclick="check_unit()">BOOK NOW</button>
+//                     </div>
+//                     <span class="" id="sts"></span>
+//                 </div>
+                
+//                 `
+//             }
+//             u.status == 203 ? adds() : not_adds()
+            
+//         }
+//         // make condition here if user admin client or guest
+//         onlyContainsNumbers(result) && from[0] ? on() : (document.querySelector('.layer').innerHTML = `<h1>404 NOT FOUND </h1>`, document.querySelector('.sub-layer').innerHTML = ``);
 //     }else if (tag == 'About') {
 //         document.querySelector('.tc3').classList.add('bg-gradient-primary')
 //     }
@@ -783,8 +1013,23 @@ console.log(json)
 
 // function get_page(relocate) {
 //     var link = rep(relocate);
-//     var entry = c_plate.get(link.toLowerCase());
-//     if(entry){
+//     var url = link.toLowerCase();
+//     var entry = c_plate.get(url);
+//     var res = url.split("/");
+//     var pos = res.indexOf('product');
+//     var result = res[pos + 1];
+
+//     var pos2 = res.indexOf('book');
+
+//     var result2 = res[pos2 + 1];
+
+
+//     var onlyContainsNumbers = (str) => /^\d+$/.test(str);
+
+
+
+
+//     function normal_mode(){
 //         console.log(relocate)
 //         document.title = entry.tittle;
 //         history.pushState(null, entry.tittle, relocate);
@@ -792,42 +1037,102 @@ console.log(json)
 //         document.querySelector('.content').innerHTML = entry.content;
 //         sidebar_format();
 //         page_data_loader(entry.tag);
-//     }else{
-//         // trrr
-//         try{
-//             var url = link.toLowerCase();
-//             var res = url.split("/");
-//             var pos = res.indexOf('product');
-//             var result = res[pos+1];
-//             var onlyContainsNumbers = (str) => /^\d+$/.test(str);
-//             if(onlyContainsNumbers(result) == true){
-//                 var check_var = false;
-//                 request_all_b();
-//                 var all_bikes = map_data.get('all_bikes');
-//                 for(let loop = 0; loop < all_bikes.length; loop++){
-//                     if(all_bikes[loop].id == result){
-//                         console.log(all_bikes[loop].id)
-//                         check_var = true;
-//                     }
-//                 }
-//                 if(check_var){
-//                     var product_entry = c_plate.get('/product');
-//                     document.title = product_entry.tittle + `| ${result}`;
-//                     history.pushState(null, product_entry.tittle, `/product/${result}`);
-//                     document.querySelector('.layer').innerHTML = product_entry.layer;
-//                     document.querySelector('.content').innerHTML = product_entry.content;
-//                     sidebar_format();
-//                     page_data_loader(product_entry.tag);
-//                 }else{
-//                     error
-//                 }
-//             }else{
-//                 error
-//             }
-//         }catch{
-//             console.log("error")
-//         }
 //     }
+//     function product_page(){
+//         var product_entry = c_plate.get('/product');
+//         document.title = product_entry.tittle + `| ${result}`;
+//         history.pushState(null, product_entry.tittle, `/product/${result}`);
+//         document.querySelector('.layer').innerHTML = product_entry.layer;
+//         document.querySelector('.content').innerHTML = product_entry.content;
+//         sidebar_format();
+//         // same diri
+//         page_data_loader(product_entry.tag);
+//     }
+//     function book_page(){
+//         var product_entry = c_plate.get('/book');
+//         document.title = product_entry.tittle + `| ${result}`;
+//         history.pushState(null, product_entry.tittle, `/book/${result2}`);
+//         document.querySelector('.layer').innerHTML = product_entry.layer;
+//         document.querySelector('.content').innerHTML = product_entry.content;
+//         sidebar_format();
+//         page_data_loader(product_entry.tag);
+//     }
+
+
+//     function book_mode(){
+//         var check_var = false;
+//         request_all_b();
+//         var all_bikes = map_data.get('all_bikes');
+//         for (let loop = 0; loop < all_bikes.length; loop++) {
+//             console.log(all_bikes[loop].id)
+//             if (all_bikes[loop].id == result2) {
+//                 check_var = true;
+//             }
+//         }
+//         console.log(check_var)
+//         console.log("looping out")
+//         check_var ? book_page() : console.log("error this");
+//     }
+
+
+//     function product_mode(){
+//         var check_var = false;
+//         request_all_b();
+//         var all_bikes = map_data.get('all_bikes');
+//         console.log("looping here")
+//         for (let loop = 0; loop < all_bikes.length; loop++) {
+//             console.log(all_bikes[loop].id)
+//             if (all_bikes[loop].id == result) {
+//                 check_var = true;
+//             }
+//         }
+//         console.log("looping out")
+//         check_var ? product_page() : console.log("error page");
+//     }
+//     entry ? normal_mode() : onlyContainsNumbers(result)? product_mode() : onlyContainsNumbers(result2)? book_mode() : console.log("error page");
+//     // if(entry){
+//     //     console.log(relocate)
+//     //     document.title = entry.tittle;
+//     //     history.pushState(null, entry.tittle, relocate);
+//     //     document.querySelector('.layer').innerHTML = entry.layer;
+//     //     document.querySelector('.content').innerHTML = entry.content;
+//     //     sidebar_format();
+//     //     page_data_loader(entry.tag);
+//     // }else{
+//     //     // trrr
+//     //     try{
+//     //         var url = link.toLowerCase();
+//     //         var res = url.split("/");
+//     //         var pos = res.indexOf('product');
+//     //         var result = res[pos+1];
+//     //         var onlyContainsNumbers = (str) => /^\d+$/.test(str);
+//     //         if(onlyContainsNumbers(result) == true){
+//     //             var check_var = false;
+//     //             request_all_b();
+//     //             var all_bikes = map_data.get('all_bikes');
+//     //             for(let loop = 0; loop < all_bikes.length; loop++){
+//     //                 if(all_bikes[loop].id == result){
+//     //                     check_var = true;
+//     //                 }
+//     //             }
+//     //             if(check_var){
+//     //                 var product_entry = c_plate.get('/product');
+//     //                 document.title = product_entry.tittle + `| ${result}`;
+//     //                 history.pushState(null, product_entry.tittle, `/product/${result}`);
+//     //                 document.querySelector('.layer').innerHTML = product_entry.layer;
+//     //                 document.querySelector('.content').innerHTML = product_entry.content;
+//     //                 sidebar_format();
+//     //                 page_data_loader(product_entry.tag);
+//     //             }else{
+//     //                 error
+//     //             }
+//     //         }else{
+//     //             error
+//     //         }
+//     //     }catch{
+//     //         console.log("error")
+//     //     }
+//     // }
 // }
 
 
@@ -849,6 +1154,7 @@ console.log(json)
 //     request_all_b();
 //     request_all_brands();
 //     request_all_categories();
+//     request_galleries();
 //     var actor = map_data.get('active_u');
 //     if(actor.status == 202){
 //         document.querySelector('.sub-layer').innerHTML = getFile("../../pages/client_partials/msg.html")
@@ -1090,6 +1396,16 @@ console.log(json)
 //     map_data.set('all_categories', all_categories.raw);
 // }
 
+// function request_galleries() {
+//     var galleries = $.ajax({
+//         async: false,
+//         url: '/client_query/galleries',
+//         type: 'POST',
+//     }).responseJSON;
+//     map_data.set('galleries', galleries.raw);
+// }
+
+
 // function check_unit() {
 //     var link = window.location.pathname;
 //     var url = link.toLowerCase();
@@ -1171,11 +1487,11 @@ console.log(json)
 //     return true;
 // }
 
-// function set_actor(){
-//     var valid_u = map_data.get('active_u');
+// function msg(){
+//     // var valid_u = map_data.get('active_u');
 //     var tab = document.querySelector('#cl-msg');
 //     tab.classList.add('show');
-//     tab.setAttribute('actor_id', valid_u.raw[0].id)
+//     com_client();
 // }
 
 
@@ -1183,6 +1499,6 @@ console.log(json)
 //     var tab = document.querySelector('#cl-msg');
 //     tab.classList.remove('show');
 // }
-// var l = document.getElementsByTagName('a');
-// l[0].focus();
+// // var l = document.getElementsByTagName('a');
+// // l[0].focus();
 

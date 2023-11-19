@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 client_router.use(express.static(__dirname));
 client_router.use(bodyParser.urlencoded({ extended: true }));
 const fs = require("node:fs");
+const http = require('http');
 
 
 
@@ -12,6 +13,17 @@ client_router.get('/', (req, res) => {
     const html = fs.readFileSync(__dirname + "/../pages/client/index.html", "utf-8");
     res.end(html);
 });
+
+
+client_router.post('/example', (req, res) => {
+    res.setHeader("Content-Type", "text/html");
+    var content = fs.readFileSync(__dirname + "/../pages/client_partials/layer.html", 'utf8');
+    res.json({content:content});
+    res.end();
+});
+
+
+
 // client_router.get('/Sign-in', (req, res) => {
 //     res.writeHead(200, { "Content-Type": "text/html" });
 //     const html = fs.readFileSync(__dirname + "../../pages/client/index.html", "utf-8");

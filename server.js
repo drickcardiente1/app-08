@@ -32,5 +32,6 @@ app.use('/', require('./router/client_router'));
 // app.use('/admin', require('./router/admin_routes'));
 // app.use('/query', require('./router/admin_queries'));
 // app.use('/client_query', require('./router/client_query'));
+app.use('/template', require('./router/template'));
 
 http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
