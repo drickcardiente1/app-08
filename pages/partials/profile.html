@@ -8,20 +8,20 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-404.jpg"
-                            alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <img alt="profile_image" class="w-100 border-radius-lg shadow-sm my-profile">
                     </div>
                 </div>
                 <div class="col-sm-auto col-8 my-auto">
                     <div class="h-100">
                         <h5 class="mb-1 font-weight-bolder display_full_name">
-                            Richard Davis
                         </h5>
                         <p class="mb-0 font-weight-normal text-sm display_type">
                         </p>
                     </div>
                 </div>
-                <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
+                <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex change-prof">
+                    <button class="btn btn-sm btn-light" type="button" onclick="change_prof()" title="change profile"
+                        data-bs-toggle="modal" data-bs-target="#change-prof">Change Profile</button>
                 </div>
             </div>
         </div>
@@ -133,3 +133,50 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="change-prof" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <form action="javascript:;" onsubmit="update_my_img()" method="POST" autocomplete="off"
+                        enctype="multipart/form-data">
+                        <div class="input-group input-group-static mt-3 curent_img" style="margin-bottom: 2vh;">
+                        </div>
+                        <div class="input-group input-group-static">
+                            <div class="input-group input-group-dynamic mt-4">
+                                <input class="input-prof" type="file" id="img" name="img"
+                                    accept="image/jpeg, image/png, image/jpg">
+                            </div>
+                        </div>
+                        <div class="justify-content-end mt-3">
+                            <button onclick="cancupx()" style="color: black !important;" type="button" name="button"
+                                class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+                            <button onclick="update_my_img()" type="submit" name="button"
+                                class="btn bg-gradient-dark m-0 ms-2" data-bs-dismiss="modal">UPDATE</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal loader -->
+<div class="modal fade" data-bs-backdrop="static" id="loader" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h5 class="modal-title">Image Uploading...</h5>
+        </div>
+        <div class="modal-body text-center ">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>

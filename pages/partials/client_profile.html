@@ -1,5 +1,6 @@
 <div class="dataTable-top">
-    <button class="btn btn-icon bg-gradient-primary" style="float: right !important;" id="Motorbikes" onclick='next("/admin/clients/")'>
+    <button class="btn btn-icon bg-gradient-primary" style="float: right !important;" id="Motorbikes"
+        onclick='next("/admin/clients/")'>
         Cancel
     </button>
 </div>
@@ -14,7 +15,7 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-sm-auto col-4">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="" alt="bruce" class="w-100 rounded-circle shadow-sm">
+                        <img alt="bruce" class="w-100 rounded-circle shadow-sm cl_avatar">
                     </div>
                 </div>
                 <div class="col-sm-auto col-8 my-auto">
@@ -27,6 +28,8 @@
                     </div>
                 </div>
                 <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
+                    <button class="btn btn-sm btn-light cp" type="button" onclick="change_cl_prof(this)" title="change profile"
+                    data-bs-toggle="modal" data-bs-target="#change-prof">Change Profile</button>
                 </div>
             </div>
         </div>
@@ -43,7 +46,7 @@
                                 <input type="text" class="form-control" id="display_id" disabled>
                             </div>
                         </div>
-                        
+
                         <div class="col-6">
                             <div class="input-group input-group-static">
                                 <label>First Name</label>
@@ -102,29 +105,29 @@
                         <div class="col-6">
                             <div class="dropdown d-inline">
                                 <a style="margin-right: 5vh !important;">Gender</a>
-                                <a href="javascript:;"
-                                    class="btn btn-icon bg-gradient-primary dropdown-toggle bct7"
+                                <a href="javascript:;" class="btn btn-icon bg-gradient-primary dropdown-toggle bct7"
                                     data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"></a>
                                 <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
-                                    aria-labelledby="navbarDropdownMenuLink2"
-                                    data-popper-placement="left-start">
-                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
-                                            data="MALE" onclick="bcat7(this)">MALE</a></li>
-                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
-                                            data="FEMALE" onclick="bcat7(this)">FEMALE</a></li>
-                                    <li><a class="dropdown-item border-radius-md" href="javascript:;"
-                                            data="N/A" onclick="bcat7(this)">N/A</a></li>
+                                    aria-labelledby="navbarDropdownMenuLink2" data-popper-placement="left-start">
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;" data="MALE"
+                                            onclick="bcat7(this)">MALE</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;" data="FEMALE"
+                                            onclick="bcat7(this)">FEMALE</a></li>
+                                    <li><a class="dropdown-item border-radius-md" href="javascript:;" data="N/A"
+                                            onclick="bcat7(this)">N/A</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="input-group input-group-static">
                                 <label>Contact Number</label>
-                                <input type="text" onkeypress="return onlyNumberKey(event)" maxlength="11" class="form-control" id="contact">
+                                <input type="text" onkeypress="return onlyNumberKey(event)" maxlength="11"
+                                    class="form-control" id="contact">
                             </div>
                         </div>
                     </div>
-                    <button class="btn bg-gradient-dark btn-sm float-end mt-6 mb-0 cl_inf" onclick="update_info_client(this)">Update
+                    <button class="btn bg-gradient-dark btn-sm float-end mt-6 mb-0 cl_inf"
+                        onclick="update_info_client(this)">Update
                         Info</button>
                 </div>
             </div>
@@ -134,13 +137,16 @@
                 </div>
                 <div class="card-body pt-0">
                     <div class="input-group input-group-outline">
-                        <input placeholder="Current password" type="password" id="old_p" class="form-control" onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
+                        <input placeholder="Current password" type="password" id="old_p" class="form-control"
+                            onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
                     </div>
                     <div class="input-group input-group-outline my-4">
-                        <input placeholder="New password" id="nw_p" type="password" class="form-control" onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
+                        <input placeholder="New password" id="nw_p" type="password" class="form-control"
+                            onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
                     </div>
                     <div class="input-group input-group-outline">
-                        <input placeholder="Confirm New password" id="confnw_p" type="password" class="form-control" onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
+                        <input placeholder="Confirm New password" id="confnw_p" type="password" class="form-control"
+                            onkeydown="keyDown(event)" onpaste="checkWhitespace(event)">
                     </div>
                     <h5 class="mt-5">Password requirements</h5>
                     <p class="text-muted mb-2">
@@ -151,7 +157,7 @@
                             <span class="text-sm" id="num">Atleast 1 number</span>
                         </li>
                         <li>
-                            <span class="text-sm" id="min" >Min 6 characters</span>
+                            <span class="text-sm" id="min">Min 6 characters</span>
                         </li>
                         <li>
                             <span class="text-sm" id="st">Atleast one letter (recommended)</span>
@@ -160,10 +166,59 @@
                             <span class="text-sm" id="conf">Confim password must be match</span>
                         </li>
                     </ul>
-                    <button type="submit" class="btn bg-gradient-dark btn-sm float-end mt-6 mb-0 updid" onclick="updateclpwd(this)">Update
+                    <button type="submit" class="btn bg-gradient-dark btn-sm float-end mt-6 mb-0 updid"
+                        onclick="updateclpwd(this)">Update
                         password</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="change-prof" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <form action="javascript:;" onsubmit="update_cl_img()" method="POST" autocomplete="off"
+                        enctype="multipart/form-data">
+                        <div class="input-group input-group-static mt-3 curent_img" style="margin-bottom: 2vh;">
+                        </div>
+                        <div class="input-group input-group-static">
+                            <div class="input-group input-group-dynamic mt-4">
+                                <input class="input-prof" type="file" id="img" name="img"
+                                    accept="image/jpeg, image/png, image/jpg">
+                            </div>
+                        </div>
+                        <div class="justify-content-end mt-3">
+                            <button onclick="cancupx()" style="color: black !important;" type="button" name="button"
+                                class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+                            <button onclick="update_cl_img()" type="submit" name="button"
+                                class="btn bg-gradient-dark m-0 ms-2 cl-id" data-bs-dismiss="modal">UPDATE</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal loader -->
+<div class="modal fade" data-bs-backdrop="static" id="loader" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h5 class="modal-title">Image Uploading...</h5>
+        </div>
+        <div class="modal-body text-center ">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>

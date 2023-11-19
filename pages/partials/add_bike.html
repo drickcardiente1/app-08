@@ -43,9 +43,9 @@
                     <div class="row mt-4">
                         <div class="col-6">
                             <div class="input-group input-group-static">
-                                <label>Available Unit</label>
-                                <input type="number" class="form-control" id="avu">
-                                <label class="lb1" style="color: red !important;"></label>
+                                <label>Model</label>
+                                <input type="text" class="form-control" id="mdl">
+                                <label class="lb3" style="color: red !important;"></label>
                             </div>
                         </div>
                         <div class="col-6">
@@ -57,13 +57,6 @@
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">
-                            <div class="input-group input-group-static">
-                                <label>Model</label>
-                                <input type="text" class="form-control" id="mdl">
-                                <label class="lb3" style="color: red !important;"></label>
-                            </div>
-                        </div>
                         <div class="col-6">
                             <div class="input-group input-group-static">
                                 <div class="dropdown d-inline mt-4">
@@ -90,11 +83,20 @@
                         </div>
                     </div>
                     <div class="input-group input-group-dynamic mt-4">
-                        <label class="form-label">Picture</label>
-                        <form action="/file-upload" class="form-control dropzone dz-clickable" id="dropzone">
-                            <div class="dz-default dz-message"><button class="dz-button" type="button">Drop files here
-                                    to upload</button></div>
-                        </form>
+                        <label class="form-label">default image</label>
+                        <div class="form-control dropzone">
+                            <input class="dz-message sing-img" id="" type="file" name="img"
+                                accept="image/jpeg, image/png, image/jpg">
+                            </input>
+                        </div>
+                    </div>
+                    <div class="input-group input-group-dynamic mt-4">
+                        <label class="form-label">Gallery</label>
+                        <div class="form-control dropzone">
+                            <input class="dz-message mult-img" type="file" name="img"
+                                accept="image/jpeg, image/png, image/jpg" multiple>
+                            </input>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-end mt-4">
                         <button type="button" name="button" class="btn btn-light m-0"
@@ -107,3 +109,6 @@
         </div>
     </div>
 </div>
+
+
+

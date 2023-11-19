@@ -344,20 +344,20 @@ function page_data_loader(tag) {
         var result = res[pos + 1];
         var onlyContainsNumbers = (str) => /^\d+$/.test(str);
         function on(){
+            console.log(result)
             var all_bikes = map_data.get('all_bikes');
             var all_brands = map_data.get('all_brands');
             var all_categories = map_data.get('all_categories');
             var all_galleries = map_data.get('galleries');
             var bike = [], brand = [], category = [], galery = [], bike_id;
-            (async () => {
-                for (var bikes of all_bikes) {
-                    await result == bikes.id ? (bike.push(bikes), bike_id=bikes.id): ""
-                }
-            })();
+            for (var bikes of all_bikes) {
+                result == bikes.id ? (bike.push(bikes), bike_id=bikes.id):""
+            }
             for (var brands of all_brands) {
                 bike[0].brand_id == brands.id ? brand.push(brands):""
             }
             for (var categories of all_categories) {
+                console.log(categories.id)
                 bike[0].category_id == categories.id ? category.push(categories):""
             }
             for (var galleries of all_galleries) {
@@ -367,6 +367,7 @@ function page_data_loader(tag) {
             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
             document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
+            console.log(brand)
             document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
             document.querySelector('.product-avatar').innerHTML =
             `
