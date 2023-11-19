@@ -23,12 +23,12 @@ app.engine('html', require('ejs').renderFile);
 //app.set('view engine', 'jade');
 app.set('view engine', 'html');
 
-app.use('/client_partials', require('./router/re_routing/client_partials'));
+// app.use('/client_partials', require('./router/re_routing/client_partials'));
 
 app.use('/', require('./router/client_router'));
-app.use('/auth', require('./router/auth_rauter'));
-app.use('/admin', require('./router/admin_routes'));
-app.use('/query', require('./router/admin_queries'));
-app.use('/client_query', require('./router/client_query'));
+// app.use('/auth', require('./router/auth_rauter'));
+// app.use('/admin', require('./router/admin_routes'));
+// app.use('/query', require('./router/admin_queries'));
+// app.use('/client_query', require('./router/client_query'));
 
 http.listen(PORT, () => console.log(`Listening on ${ PORT }`))

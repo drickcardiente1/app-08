@@ -5,9 +5,6 @@ queries.use(express.static(__dirname));
 const db = require('../db');
 var md5 = require('md5');
 
-var cloudinary = require('../middleware/cloudinary')
-var upload = require('../middleware/multer')
-
 var this_date = new Date()
 var day = String(this_date.getDate()).padStart(2, '0');
 var m = String(this_date.getMonth() + 1).padStart(2, '0');
@@ -560,107 +557,7 @@ queries.post('/del_user', (req, res) => {
     }
 });
 
-queries.post('/updateusr', async (req, res) => {
-    var f_name = req.body.f_name;
-    var l_name = req.body.l_name;
-    var u_name = req.body.u_name;
-    if (!req.session.is_admin) {
-        res.redirect('/admin/sign-in');
-        res.end();
-    }
-    else {
-        var d = new Date()
-        d.toLocaleTimeString()
-        qry = `UPDATE users SET firstname = '${f_name}', lastname = '${l_name}', username = '${u_name}', date_updated = '${today}'  WHERE users.id = ${req.session.user_id};`;
-        db.query(qry, function (error, data) {
-            if (error) res.send(error);
-            res.json({status:202, raw:data});
-            res.end();
-        });
-    }
-})
 
-queries.post('/my-profile_update', upload.single('imageProfile'), async (req, res) => {
-    if (!req.session.is_admin) {
-        res.redirect('/admin/sign-in');
-        res.end();
-    }
-    else {
-        (async () => {
-            await new Promise((resolve, reject) => {
-                cloudinary.uploader.upload(req.file.path, (err, data) => {
-                    if (err) {
-                        reject(res.send({ code: 404 }))
-                    } else {
-                        resolve(data)
-                    };
-                })
-            }).then(result => {
-                qry = `UPDATE users SET avatar = '${result.secure_url}', date_updated = '${today}'  WHERE users.id = ${req.session.user_id};`;
-                (async () => {
-                    await new Promise((resolve, reject) => {
-                        db.query(qry, (err, data) => {
-                            if (err) {
-                                reject(res.send({ code: 404 }))
-                            } else {
-                                resolve(data)
-                            };
-                        })
-                    }).then(result => {
-                        res.sendStatus(202)
-                        res.end();
-                    }).catch(rs => {
-                        console.log("Error such table found ", rs);
-                    })
-                })();
-            }).catch(rs => {
-                console.log("cloudinary response error", rs);
-            })
-        })();
-    }
-})
-
-
-queries.post('/cl-profile_update', upload.single('imageProfile'), async (req, res) => {
-    if (!req.session.is_admin) {
-        res.redirect('/admin/sign-in');
-        res.end();
-    }
-    else {
-        (async () => {
-            await new Promise((resolve, reject) => {
-                cloudinary.uploader.upload(req.file.path, (err, data) => {
-                    if (err) {
-                        reject(res.send({ code: 404 }))
-                    } else {
-                        resolve(data)
-                    };
-                })
-            }).then(result => {
-                console.log(result)
-                qry = `UPDATE clients SET avatar = '${result.secure_url}', date_updated = '${today}'  WHERE id = ${req.body.id};`;
-                (async () => {
-                    await new Promise((resolve, reject) => {
-                        db.query(qry, (err, data) => {
-                            if (err) {
-                                reject(res.send({ code: 404 }))
-                            } else {
-                                resolve(data)
-                            };
-                        })
-                    }).then(result => {
-                        res.sendStatus(202)
-                        res.end();
-                    }).catch(rs => {
-                        console.log("Error such table found ", rs);
-                    })
-                })();
-            }).catch(rs => {
-                console.log("cloudinary response error", rs);
-            })
-        })();
-    }
-})
 
 
 

@@ -224,10 +224,14 @@ function add_data_page(tag) {
                         </div>
                     </div>
                     <div class="card-body text-center">
-                        <div class="mt-n6 mx-auto">
-                            <a d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"">
-                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i>
+                        <div class="d-flex mt-n6 mx-auto">
+                            <a onclick="locate_b(this)" d_id="${a[loop].id}" class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="locate">
+                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">place</i>
                             </a>
+                            
+                            <button d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
+
                             <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" title="delete">
                                 <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
@@ -298,10 +302,12 @@ function add_data_page(tag) {
                                 </div>
                             </div>
                             <div class="card-body text-center">
-                                <div class="mt-n6 mx-auto">
-                                    <a d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"">
-                                        <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i>
+                                <div class="d-flex mt-n6 mx-auto">
+                                    <a onclick="locate_b(this)" d_id="${a[loop].id}" class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="locate">
+                                        <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">place</i>
                                     </a>
+                                    <button d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
                                     <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" title="delete">
                                         <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
@@ -426,15 +432,17 @@ function add_data_page(tag) {
                                         </div>
                                     </div>
                                     <div class="card-body text-center">
-                                            <div class="mt-n6 mx-auto">
-                                                <a d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"">
-                                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i>
-                                                </a>
-                                                <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
-                                                    data-bs-placement="bottom" title="delete">
-                                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
-                                                </a>
-                                            </div>
+                                        <div class="d-flex mt-n6 mx-auto">
+                                            <a onclick="locate_b(this)" d_id="${a[loop].id}" class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="locate">
+                                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">place</i>
+                                            </a>
+                                            <button d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
+                                            <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="delete">
+                                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                                            </a>
+                                        </div>
                                         <div class="row mt-4">
                                             <div class="col-6">
                                                 <div class="input-group input-group-static">
@@ -538,7 +546,7 @@ function add_data_page(tag) {
                     addr = clients[c].address
                 }
 
-                if(clients[c].gender == ""){    
+                if(clients[c].gender == ""){
                     gndr = "N/A";
                 }else{
                     gndr = clients[c].gender
@@ -587,7 +595,6 @@ function add_data_page(tag) {
         }catch{
             //abcd
             var conf = window.location.pathname
-            
             var url = conf.toLowerCase();
             var res = url.split("/");
             var pos = res.indexOf('clients');
@@ -623,8 +630,6 @@ function add_data_page(tag) {
             var display_f_name = document.getElementsByClassName('display_full_name')[0]
             var display_type = document.getElementsByClassName('display_type')[0]
             display_f_name.innerHTML = `${info[0].firstname} ${info[0].lastname}`
-            document.querySelector('.cl_avatar').setAttribute('src', info[0].avatar)
-            document.querySelector('.cp').setAttribute('d_id', info[0].id)
             display_type.innerHTML = "client";
             document.getElementById("display_id").placeholder = `${info[0].id}`;
             document.getElementById("f_name").placeholder = `${info[0].firstname}`;
@@ -732,11 +737,9 @@ function add_data_page(tag) {
             ]
         });
     }else if (tag == 'profile') {
-        console.log("hellow profile")
         var x = map1.get('user')
         var display_f_name = document.getElementsByClassName('display_full_name')[0]
         var display_type = document.getElementsByClassName('display_type')[0]
-        document.querySelector('.my-profile').setAttribute('src',x[0].avatar)
         display_f_name.innerHTML = `${x[0].firstname} ${x[0].lastname}`
         var tp;
         if (x[0].type = 1) {
@@ -1083,14 +1086,12 @@ function rl_lop(data) {
     t.innerHTML = "";
 
     for (let loop = 0; loop < data.length; loop++) {
-        var client, avatar, date_booked = gdt(data[loop].date_created), date_pick_up = gdt(data[loop].date_start), date_return = gdt(data[loop].date_end), status;
+        var client, date_booked = gdt(data[loop].date_created), date_pick_up = gdt(data[loop].date_start), date_return = gdt(data[loop].date_end), status;
         for (let u = 0; u < clients.length; u++) {
             if (data[loop].client_id == clients[u].id) {
                 client = `${clients[u].firstname} ${clients[u].lastname}`
-                avatar = clients[u].avatar
             }
         }
-        console.log(avatar)
         if (data[loop].status == "0") {
             status = `
                 <button disabled class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
@@ -1136,7 +1137,7 @@ function rl_lop(data) {
             </td>
             <td class="text-xs font-weight-normal">
                 <div class="d-flex align-items-center">
-                    <img src="${avatar}" class="avatar avatar-xs me-2" alt="user image">
+                    <img src="#" class="avatar avatar-xs me-2" alt="user image">
                     <span>${client}</span>
                 </div>
             </td>
@@ -2003,9 +2004,6 @@ function can() {
     var bot6 = document.getElementById('categorylist')
     bot6.style.pointerEvents = 'none';
     bot6.style.cursor = 'none'
-    var bot7 = document.getElementById('clients')
-    bot7.style.pointerEvents = 'none';
-    bot7.style.cursor = 'none'
 }
 
 function recan() {
@@ -2021,8 +2019,6 @@ function recan() {
     bot5.style = ""
     var bot6 = document.getElementById('categorylist')
     bot6.style = ""
-    var bot7 = document.getElementById('clients')
-    bot7.style = ""
 }
 
 
@@ -2194,10 +2190,6 @@ function cancup4() {
 function cancup5() {
     document.querySelector('.cnme').value = "";
     document.getElementById('cat_disc').value = "";
-    recan();
-}
-function cancupx() {
-    document.querySelector('.input-prof').value = "";
     recan();
 }
 function locate_b(ths) {
@@ -2912,153 +2904,4 @@ function cl_msg_close(){
 function pl(){
     var l = document.querySelector('.sewing-avatar-a');
     l.classList.add('sewing-button-active')
-}
-
-function change_prof(){
-    can()
-    var c_user = map1.get('user');
-    document.querySelector('.curent_img').innerHTML  = 
-     `
-    <img style="height: 50% !important; width: 100% !important;" src="${c_user[0].avatar}">
-    `
-
-    var input_prof = document.querySelector('.input-prof')
-    input_prof.addEventListener('change', function(){
-        var img = input_prof.files
-        if (img) {
-            const fileReader = new FileReader();
-            fileReader.onload = event => {
-                document.querySelector('.curent_img').innerHTML  = 
-                `
-                    <img style="height: 50% !important; width: 100% !important;" src="${event.target.result}">
-                `
-            }
-            fileReader.readAsDataURL(img[0]);
-        }
-    });
-}
-function change_cl_prof(e){
-    can()
-    var id = e.getAttribute('d_id');
-    document.querySelector('.cl-id').setAttribute('d_id', id)
-    console.log(id)
-    var c_user = map1.get('users');
-    console.log(c_user);
-    var the_user = [];
-    for (let loop = 0; loop < c_user.length; loop++){
-        console.log(c_user[loop]);
-        if(id == c_user[loop].id){
-            the_user.push(c_user[loop])
-        }
-    };
-    document.querySelector('.curent_img').innerHTML  = 
-     `
-    <img style="height: 50% !important; width: 100% !important;" src="${the_user[0].avatar}">
-    `
-
-    var input_prof = document.querySelector('.input-prof')
-    input_prof.addEventListener('change', function(){
-        var img = input_prof.files
-        if (img) {
-            const fileReader = new FileReader();
-            fileReader.onload = event => {
-                document.querySelector('.curent_img').innerHTML  = 
-                `
-                    <img style="height: 50% !important; width: 100% !important;" src="${event.target.result}">
-                `
-            }
-            fileReader.readAsDataURL(img[0]);
-        }
-    });
-}
-
-function update_cl_img(e){
-    var id = document.querySelector('.cl-id').getAttribute('d_id')
-    var input_prof = document.querySelector('.input-prof')
-    var img = input_prof.files
-    if(img.length != 0 ){
-        // add loader here
-        $('#loader').modal('show');
-        var data = new FormData();
-        data.append('imageProfile', input_prof.files[0]);
-        data.append('id', id);
-        fetch('/query/cl-profile_update',{
-            method: 'POST',
-            body: data
-        }).then(res =>{
-            $('#loader').modal('hide');
-            request_all();
-            next(`/admin/clients/${id}`)
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "PROFILE UPDATED SUCCESSFULLY",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            // close here
-        }).catch(rs => {
-            $('#loader').modal('hide');
-            Swal.fire(
-                'Failed to upload profile',
-            )
-            // and here
-            input_prof.value = "";
-        })
-    }else{
-        Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "No Image Deticted",
-            showConfirmButton: false,
-            timer: 1500
-        });
-        recan();
-    }
-}
-
-function update_my_img(){
-    var input_prof = document.querySelector('.input-prof')
-    var img = input_prof.files
-    if(img.length != 0 ){
-        // add loader here
-        $('#loader').modal('show');
-
-        var data = new FormData();
-        data.append('imageProfile', input_prof.files[0]);
-        data.append('name', input_prof.files[0].name);
-
-        fetch('/query/my-profile_update',{
-            method: 'POST',
-            body: data
-        }).then(res =>{
-            $('#loader').modal('hide');
-            request_all();
-            next('/admin/profile/')
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "PROFILE UPDATED SUCCESSFULLY",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            // close here
-        }).catch(rs => {
-            $('#loader').modal('hide');
-            Swal.fire(
-                'Failed to upload profile',
-            )
-            // and here
-            input_prof.value = "";
-        })
-    }else{
-        Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "No Image Deticted",
-            showConfirmButton: false,
-            timer: 1500
-        });
-        recan();
-    }
 }

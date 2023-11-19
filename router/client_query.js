@@ -128,6 +128,7 @@ client_queries.post('/all_bikes', (req, res) => {
 });
 
 client_queries.post('/all_brands', (req, res) => {
+    if(req.session.logged_in){
         qry = "SELECT * FROM `brand_list`";
         (async () => {
             await new Promise((resolve, reject) => {
@@ -145,6 +146,10 @@ client_queries.post('/all_brands', (req, res) => {
                 console.log("Error such table found ", rs);
             })
         })();
+    }else{
+        res.json({status:404});
+        res.end();
+    }
 });
 
 client_queries.post('/all_categories', (req, res) => {

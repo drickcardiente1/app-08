@@ -1,4 +1,12 @@
 "use strict"
+
+
+function getFile(U) {
+    var X = new XMLHttpRequest();
+    X.open('GET', U, false);
+    X.send();
+    return X.responseText;
+}
 const map_data = new Map([]);
 
 
@@ -24,72 +32,6 @@ function deductDays(date, days) {
 }
 
 
-var layer_content = $.ajax({
-    async: false,
-    url: '/client_partials/layer',
-    type: 'POST',
-}).responseJSON;
-
-var home_content = $.ajax({
-    async: false,
-    url: '/client_partials/home_content',
-    type: 'POST',
-}).responseJSON;
-
-var about_content = $.ajax({
-    async: false,
-    url: '/client_partials/about_content',
-    type: 'POST',
-}).responseJSON;
-
-var brand_content = $.ajax({
-    async: false,
-    url: '/client_partials/brand_content',
-    type: 'POST',
-}).responseJSON;
-
-var categories_content = $.ajax({
-    async: false,
-    url: '/client_partials/categories_content',
-    type: 'POST',
-}).responseJSON;
-
-var login_content = $.ajax({
-    async: false,
-    url: '/client_partials/log-in',
-    type: 'POST',
-}).responseJSON;
-
-var msg_content = $.ajax({
-    async: false,
-    url: '/client_partials/msg',
-    type: 'POST',
-}).responseJSON;
-
-var mybookings_content = $.ajax({
-    async: false,
-    url: '/client_partials/my-bookings',
-    type: 'POST',
-}).responseJSON;
-
-var product_content = $.ajax({
-    async: false,
-    url: '/client_partials/product',
-    type: 'POST',
-}).responseJSON;
-
-var profile_content = $.ajax({
-    async: false,
-    url: '/client_partials/profile',
-    type: 'POST',
-}).responseJSON;
-
-var signup_content = $.ajax({
-    async: false,
-    url: '/client_partials/sign-up',
-    type: 'POST',
-}).responseJSON;
-
 const c_plate = new Map([
 
     [
@@ -97,8 +39,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Home`,
             tag: "Home",
-            layer: layer_content.template,
-            content: home_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/home_content.html"),
         },
     ],
 
@@ -107,8 +49,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Categories`,
             tag: "Categories",
-            layer: layer_content.template,
-            content: categories_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/categories_content.html"),
         },
     ],
 
@@ -118,8 +60,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | About`,
             tag: "About",
-            layer: layer_content.template,
-            content: about_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/about_content.html"),
         },
     ],
 
@@ -128,8 +70,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Sign-in`,
             tag: "Sign-in",
-            layer: layer_content.template,
-            content: login_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/log-in.html"),
         },
     ],
 
@@ -138,8 +80,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | Sign-up`,
             tag: "Sign-up",
-            layer: layer_content.template,
-            content: signup_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/sign-up.html"),
         },
     ],
 
@@ -148,8 +90,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | My Account Details`,
             tag: "profile",
-            layer: layer_content.template,
-            content: profile_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/profile.html"),
         },
     ],
 
@@ -158,8 +100,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | My bookings`,
             tag: "my-bookings",
-            layer: layer_content.template,
-            content: mybookings_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/my_bookings.html"),
         },
     ],
 
@@ -168,8 +110,8 @@ const c_plate = new Map([
         {
             tittle: `TE Motorbikes | product`,
             tag: "product",
-            layer: layer_content.template,
-            content: product_content.template,
+            layer: getFile("../../pages/client_partials/layer.html"),
+            content: getFile("../../pages/client_partials/product.html"),
         },
     ],
 ]);
@@ -364,13 +306,13 @@ function page_data_loader(tag) {
         for (let loop = 0; loop < all_categories.length; loop++) {
 
             for (let loop2 = 0; loop2 < all_bikes.length; loop2++) {
-                if (all_categories[loop].id == all_bikes[loop2].category_id) {
-                    console.log(all_categories[loop].id)
+                if(all_categories[loop].id == all_bikes[loop2].category_id){
+                    console.log(all_categories[loop].id )
                     bikes.push(all_bikes[loop2])
                 }
             };
 
-            if (bikes.length != 0) {
+            if(bikes.length != 0){
                 odd_even.innerHTML += `
                 <div class="col-lg-3">
                     <div class="position-sticky pb-lg-5 pb-3 mt-lg-0 mt-5 ps-2" style="top: 100px">
@@ -385,8 +327,8 @@ function page_data_loader(tag) {
                 `
                 for (let loop3 = 0; loop3 < bikes.length; loop3++) {
                     var ct = document.querySelector(`.cat${all_categories[loop].id}`);
-                    ct.innerHTML +=
-                        `
+                    ct.innerHTML +=            
+                    `
                     <div class="col-md-4">
                         <a onclick="get_page('/product/${bikes[loop3].id}');" href="javascript:;">
                             <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
@@ -403,8 +345,8 @@ function page_data_loader(tag) {
                     `
                 };
             }
-            console.log(bikes.length)
-            bikes = [];
+          console.log(bikes.length)
+          bikes = [];
         }
     } else if (tag == 'profile') {
         var valid_u = map_data.get('active_u');
@@ -483,33 +425,8 @@ function page_data_loader(tag) {
                 },
             ]
         });
-    } else if (tag == 'product') {
+    }else if (tag == 'product') {
         var unit_chicker = document.querySelector('.unit-chicker');
-        var all_bikes = map_data.get('all_bikes');
-        var all_brands = map_data.get('all_brands');
-        var link = window.location.pathname
-        var url = link.toLowerCase();
-        var res = url.split("/");
-        var pos = res.indexOf('product');
-        var result = res[pos + 1];
-        var curent_product = [], brand_product = []
-        console.log(all_bikes.length)
-        for (let loop = 0; loop < all_bikes.length; loop++) {
-            if (result == all_bikes[loop].id) {
-                curent_product.push(all_bikes[loop])
-            }
-        }
-        for (let loop = 0; loop < all_brands.length; loop++) {
-            if (result == all_bikes[loop].id) {
-                brand_product.push(all_brands[loop])
-            }
-        }
-        console.log(brand_product)
-
-        document.querySelector('.bike_name').innerHTML = `${curent_product[0].bike_model}`
-        document.querySelector('.price').innerHTML = `${curent_product[0].daily_rate}`
-        document.querySelector('.price').innerHTML = `${curent_product[0].daily_rate}`
-        document.querySelector('.description').innerHTML = `${curent_product[0].description}`
 
 
         unit_chicker.innerHTML = `
@@ -563,7 +480,7 @@ function page_data_loader(tag) {
         $(".date_end").change((a) => {
             date_start_picker.max = today(deductDays(new Date(a.target.value), 1));
         })
-    } else if (tag == 'About') {
+    }else if (tag == 'About') {
         document.querySelector('.tc3').classList.add('bg-gradient-primary')
     }
 }
@@ -865,7 +782,7 @@ function bcat_reg(ths) {
 function get_page(relocate) {
     var link = rep(relocate);
     var entry = c_plate.get(link.toLowerCase());
-    if (entry) {
+    if(entry){
         console.log(relocate)
         document.title = entry.tittle;
         history.pushState(null, entry.tittle, relocate);
@@ -873,25 +790,25 @@ function get_page(relocate) {
         document.querySelector('.content').innerHTML = entry.content;
         sidebar_format();
         page_data_loader(entry.tag);
-    } else {
+    }else{
         // trrr
-        try {
+        try{
             var url = link.toLowerCase();
             var res = url.split("/");
             var pos = res.indexOf('product');
-            var result = res[pos + 1];
+            var result = res[pos+1];
             var onlyContainsNumbers = (str) => /^\d+$/.test(str);
-            if (onlyContainsNumbers(result) == true) {
+            if(onlyContainsNumbers(result) == true){
                 var check_var = false;
                 request_all_b();
                 var all_bikes = map_data.get('all_bikes');
-                for (let loop = 0; loop < all_bikes.length; loop++) {
-                    if (all_bikes[loop].id == result) {
+                for(let loop = 0; loop < all_bikes.length; loop++){
+                    if(all_bikes[loop].id == result){
                         console.log(all_bikes[loop].id)
                         check_var = true;
                     }
                 }
-                if (check_var) {
+                if(check_var){
                     var product_entry = c_plate.get('/product');
                     document.title = product_entry.tittle + `| ${result}`;
                     history.pushState(null, product_entry.tittle, `/product/${result}`);
@@ -899,13 +816,13 @@ function get_page(relocate) {
                     document.querySelector('.content').innerHTML = product_entry.content;
                     sidebar_format();
                     page_data_loader(product_entry.tag);
-                } else {
+                }else{
                     error
                 }
-            } else {
+            }else{
                 error
             }
-        } catch {
+        }catch{
             console.log("error")
         }
     }
@@ -931,9 +848,9 @@ function initializer() {
     request_all_brands();
     request_all_categories();
     var actor = map_data.get('active_u');
-    if (actor.status == 202) {
-        document.querySelector('.sub-layer').innerHTML = msg_content
-    } else {
+    if(actor.status == 202){
+        document.querySelector('.sub-layer').innerHTML = getFile("../../pages/client_partials/msg.html")
+    }else{
         document.querySelector('.sub-layer').innerHTML = ""
     }
 }
@@ -1176,7 +1093,7 @@ function check_unit() {
     var url = link.toLowerCase();
     var res = url.split("/");
     var pos = res.indexOf('product');
-    var result = res[pos + 1];
+    var result = res[pos+1];
     var id = result
 
     var starts = document.querySelector('.date_start').value;
@@ -1190,13 +1107,13 @@ function check_unit() {
     }).responseJSON;
     var to_check_exist = available_bikes.data;
     var exist = false;
-    for (let loop = 0; loop < to_check_exist.length; loop++) {
+    for(let loop = 0; loop < to_check_exist.length; loop++){
         console.log(to_check_exist[loop].id)
-        if (id == to_check_exist[loop].id) {
+        if(id == to_check_exist[loop].id){
             exist = true;
         }
     }
-    if (exist == true) {
+    if(exist == true){
         var s_badge = "badge badge-success";
         var chicker = document.querySelector('.chicker');
         chicker.innerHTML = `
@@ -1206,7 +1123,7 @@ function check_unit() {
         var sts = document.querySelector('#sts');
         sts.classList.add(...s_badge.split(" "));
         sts.innerHTML = 'AVAILABLE';
-    } else {
+    }else{
         var s_badge = "badge badge-danger";
         var sts = document.querySelector('#sts');
         sts.classList.add(...s_badge.split(" "));
@@ -1252,15 +1169,15 @@ function onlyNumberKey(evt) {
     return true;
 }
 
-function msg() {
-    // var valid_u = map_data.get('active_u');
+function set_actor(){
+    var valid_u = map_data.get('active_u');
     var tab = document.querySelector('#cl-msg');
     tab.classList.add('show');
-    com_client();
+    tab.setAttribute('actor_id', valid_u.raw[0].id)
 }
 
 
-function cl_msg_close() {
+function cl_msg_close(){
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
 }
