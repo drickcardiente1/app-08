@@ -818,6 +818,25 @@ async function showmsg(){
             for(var user of data){
                 user.sender == ""? adminmsg(user): clientmsg(user);
             }
+            document.location='#pointToScrollTo'
+        },
+        error: function (request, error) {
+            alert(error);
+        },
+    });
+}
+async function remsg(){
+    await msg();
+}
+async function check(){
+    await $.ajax({
+        url: "/client_query/check-msg",
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            if(data.status == 202){
+                remsg()
+            }
         },
         error: function (request, error) {
             alert(error);
@@ -825,19 +844,19 @@ async function showmsg(){
     });
 }
 
-function msg(){
+async function msg(){
     // var valid_u = map_data.get('active_u');
     var tab = document.querySelector('#cl-msg');
     tab.classList.add('show');
-    // intervalID = setInterval(showmsg, 1000);
-    showmsg()
+    await showmsg()
+    intervalID = setInterval(check, 1000);
 }
 
 
 function cl_msg_close(){
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
-    // clearInterval(intervalID);
+    clearInterval(intervalID);
 }
 
 function bcat(ths) {

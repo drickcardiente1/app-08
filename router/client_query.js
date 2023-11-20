@@ -12,6 +12,10 @@ var m = String(this_date.getMonth() + 1).padStart(2, '0');
 var year = this_date.getFullYear();
 const today = `${year}-${m}-${day}`;
 
+const promise_query = (qr) => {
+    return new Promise((resolve, reject) => {db.query(qr, (err, data) => { err ? reject(err) : resolve(data) })})
+};       
+
 
 function get_today(d_now) {
     var dc = new Date(d_now)
@@ -503,6 +507,44 @@ client_queries.post('/galleries', (req, res) => {
         })
     })();
 });
+client_queries.post('/check-msg', (req, res) => {
+    qry = `SELECT * FROM messages WHERE sender = '${req.session.user_id}' OR receiver = '${req.session.user_id}'`;
+    (async () => {
+        await new Promise((resolve, reject) => {
+            db.query(qry, (err, data) => {
+                if (err) {
+                    reject(res.send({ code: 404 }))
+                } else {
+                    resolve(data)
+                };
+            })
+        }).then(data => {
+            var tag = false, id = [];
+            for (var x of data){
+                if(x.status.includes(1)){
+                    tag = true
+                    id.push(x.id)
+                }
+            }
+            if(tag == true){
+                (async () => {
+                    for (let ids of id) {
+                        qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`
+                        await promise_query(qry)
+                    }
+                    res.json({ status: 202 });
+                    res.end();
+                })();
+            }else{
+                res.json({ status: 404 });
+                res.end();
+            }
+        }).catch(rs => {
+            console.log("Error such table found ", rs);
+        })
+    })();
+});
+
 
 client_queries.post('/show-msg', (req, res) => {
     if (req.session.logged_in) {
@@ -531,7 +573,7 @@ client_queries.post('/show-msg', (req, res) => {
 
 client_queries.post('/send-msg', (req, res) => {
     if (req.session.logged_in) {
-        qry = `INSERT INTO messages(id, sender, messages) VALUES ('', '${req.session.user_id}', '${req.body.message}' )`;
+        qry = `INSERT INTO messages(id, sender, messages, status) VALUES ('', '${req.session.user_id}', '${req.body.message}', '1' )`;
         (async () => {
             await new Promise((resolve, reject) => {
                 db.query(qry, (err, data) => {
