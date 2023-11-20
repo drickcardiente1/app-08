@@ -821,7 +821,7 @@ async function showmsg(){
             document.location='#pointToScrollTo'
         },
         error: function (request, error) {
-            alert(error);
+            location.reload();
         },
     });
 }
@@ -839,7 +839,7 @@ async function check(){
             }
         },
         error: function (request, error) {
-            alert(error);
+            location.reload();
         },
     });
 }
@@ -1096,7 +1096,7 @@ function updatepwd() {
     }
 }
 
-function s_up() {
+async function s_up() {
     var f_name = document.querySelector('.name').value;
     var l_name = document.querySelector('.last_name').value;
     var addr = document.querySelector('.address').value;
@@ -1173,7 +1173,7 @@ function s_up() {
         pwd_error.innerHTML = "Atleast 1 number";
     }
     if (flag == true) {
-        $.ajax({
+        await $.ajax({
             url: "/client_query/reg_client",
             method: "POST",
             data: { firstname: f_name, lastname: l_name, username: u_name, address: addr, contact: cont_num, gender: gend, password: pwd },
@@ -1183,31 +1183,33 @@ function s_up() {
                     Swal.fire(
                         'Users Successfuly Registered',
                     )
-                    $.ajax({
-                        url: "/auth/client-login",
-                        method: "POST",
-                        data: { um: u_name, pd: pwd },
-                        dataType: "JSON",
-                        success: function (data) {
-                            if (data.status == 202) {
-                                map_data.set('active_u', data.raw)
-                                initializer();
-                                get_page('/');
-                                first_load();
-                            } else if (data.status == 203) {
-                                window.location.href = '/admin'
-                            }
-                            else {
-                                map_data.set('active_u', '')
-                                Swal.fire(
-                                    'No user founds',
-                                )
-                            }
-                        },
-                        error: function (request, error) {
-                            alert(error);
-                        },
-                    });
+                    (async ()=> {
+                        await $.ajax({
+                            url: "/auth/client-login",
+                            method: "POST",
+                            data: { um: u_name, pd: pwd },
+                            dataType: "JSON",
+                            success: function (data) {
+                                if (data.status == 202) {
+                                    map_data.set('active_u', data.raw)
+                                    initializer();
+                                    get_page('/');
+                                    first_load();
+                                } else if (data.status == 203) {
+                                    window.location.href = '/admin'
+                                }
+                                else {
+                                    map_data.set('active_u', '')
+                                    Swal.fire(
+                                        'No user founds',
+                                    )
+                                }
+                            },
+                            error: function (request, error) {
+                                location.reload();
+                            },
+                        });
+                    })();
                 }
             },
             error: function (request, error) {
@@ -1383,7 +1385,7 @@ async function check_availble() {
             looper1();
         },
         error: function (request, error) {
-            alert(error);
+            location.reload();
         },
     });
 }
@@ -1397,7 +1399,7 @@ async function request_actor() {
             map_data.set('active_u', data)
         },
         error: function (request, error) {
-            alert(error);
+            location.reload();
         },
     });
 }
@@ -1411,7 +1413,7 @@ async function request_my_bookings() {
             map_data.set('my-bookings', data.raw);
         },
         error: function (request, error) {
-            alert(error);
+            location.reload();
         },
     });
 }
