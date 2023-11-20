@@ -1,10 +1,10 @@
 const mysql = require("mysql2");
 
 var db = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database:"4357461_mbrdb",
+    host: "sql.freedb.tech",
+    user: "freedb_example-user",
+    password: "%?bnY!9GNMDAem?",
+    database:"freedb_4357461_mbrdb",
     port:"3306"
 });
 
