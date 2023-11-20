@@ -828,8 +828,8 @@ async function showmsg(){
 async function remsg(){
     await msg();
 }
-async function check(){
-    await $.ajax({
+function check(){
+    $.ajax({
         url: "/client_query/check-msg",
         method: "POST",
         dataType: "JSON",
@@ -848,6 +848,7 @@ async function msg(){
     // var valid_u = map_data.get('active_u');
     var tab = document.querySelector('#cl-msg');
     tab.classList.add('show');
+    document.querySelector(".indicate").innerHTML = ""
     await showmsg()
     intervalID = setInterval(check, 1000);
 }
@@ -1474,6 +1475,28 @@ async function request_galleries() {
     });
 }
 
+function msgnotif(){
+    $.ajax({
+        url: "/client_query/notif-msg",
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            if(data.status == 202){
+                console.log(data.unread)
+                document.querySelector(".indicate").innerHTML = 
+                `
+                <span
+                    class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                    <span class="small">${data.unread}</span>
+                </span>
+                `
+            }
+        },
+        error: function (request, error) {
+            location.reload();
+        },
+    });
+}
 
 async function initializer() {
     await request_actor();
@@ -1485,6 +1508,7 @@ async function initializer() {
     var actor = map_data.get('active_u');
     if(actor.status == 202){
         document.querySelector('.sub-layer').innerHTML = layout.get('msg')
+        setInterval(msgnotif, 1000)
     }else{
         document.querySelector('.sub-layer').innerHTML = ""
     }

@@ -532,7 +532,7 @@ client_queries.post('/check-msg', (req, res) => {
                         qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`
                         await promise_query(qry)
                     }
-                    res.json({ status: 202 });
+                    res.json({ status: 202, "unread": id.length });
                     res.end();
                 })();
             }else{
@@ -544,6 +544,38 @@ client_queries.post('/check-msg', (req, res) => {
         })
     })();
 });
+client_queries.post('/notif-msg', (req, res) => {
+    qry = `SELECT * FROM messages WHERE sender = '${req.session.user_id}' OR receiver = '${req.session.user_id}'`;
+    (async () => {
+        await new Promise((resolve, reject) => {
+            db.query(qry, (err, data) => {
+                if (err) {
+                    reject(res.send({ code: 404 }))
+                } else {
+                    resolve(data)
+                };
+            })
+        }).then(data => {
+            var tag = false, id = [];
+            for (var x of data){
+                if(x.status.includes(1)){
+                    tag = true
+                    id.push(x.id)
+                }
+            }
+            if(tag == true){
+                res.json({ status: 202, "unread": id.length });
+                res.end();
+            }else{
+                res.json({ status: 404 });
+                res.end();
+            }
+        }).catch(rs => {
+            console.log("Error such table found ", rs);
+        })
+    })();
+});
+
 
 
 client_queries.post('/show-msg', (req, res) => {
