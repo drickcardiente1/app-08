@@ -1,0 +1,14 @@
+            <div class="row justify-content-start mb-4" style="width: 100% !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                    <p class="text-sm">Lorem ipsum dolor </p>
+                    <p>user</p>
+                </div>
+                <p style="color: black !important;">time</p>
+            </div>
+            <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                    <p class="text-sm"></p>
+                    <p>user</p>
+                </div>
+                <p style="color: black !important;">time</p>
+            </div>

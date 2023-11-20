@@ -8,6 +8,15 @@ var db = mysql.createPool({
     port:"3306"
 });
 
+
+// var db = mysql.createPool({
+//     host: "localhost",
+//     user: "root",
+//     password: "",
+//     database:"4357461_mbrdb",
+//     port:"3306"
+// });
+
 db.getConnection((error)=>{
     if(error){
         console.log(error);

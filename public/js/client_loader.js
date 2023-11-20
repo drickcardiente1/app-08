@@ -747,17 +747,97 @@ function onlyNumberKey(evt) {
     return true;
 }
 
+var intervalID;
+
+async function send(){
+    var msg = document.querySelector('.msg');
+    var msg_box = document.querySelector('.msg-box');
+    await $.ajax({
+        url: "/client_query/send-msg",
+        data: {"message": msg.value},
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            console.log(data)
+            if(data.status == 202){
+                console.log("success")
+            }else{
+                msg_box.innerHTML = 
+                `
+                <div class="row justify-content-end mb-4 text-center">
+                    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 25px; background-color: #344767 !important;">
+                    <h5>Please Refresh Page</h5>
+                    </div>
+                </div>
+                `
+            }
+            msg.value = "";
+        },
+        error: function (request, error) {
+            msg_box.innerHTML = "OFFLINE"
+        },
+    });
+}
+
+function adminmsg(user){
+    var date = new Date(user.date_send)
+    var box_msg = document.querySelector('.msg-box');
+    box_msg.innerHTML +=
+    `
+    <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
+        <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+            <p class="text-sm">${user.messages}</</p>
+            <p>ADMIN</p>
+        </div>
+        <p style="color: black !important;">${date.toUTCString().replace(' GMT', '')}</p>
+    </div>
+    `
+}
+function clientmsg(user){
+    var date = new Date(user.date_send)
+    var box_msg = document.querySelector('.msg-box');
+    box_msg.innerHTML +=
+    `
+    <div class="row justify-content-start mb-4" style="width: 100% !important;">
+        <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+            <p class="text-sm">${user.messages}</p>
+            <p>ME</p>
+        </div>
+        <p style="color: black !important;">${date.toUTCString().replace(' GMT', '')}</p>
+    </div>
+    `
+}
+
+async function showmsg(){
+    document.querySelector('.msg-box').innerHTML = "";
+    await $.ajax({
+        url: "/client_query/show-msg",
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            for(var user of data){
+                user.sender == ""? adminmsg(user): clientmsg(user);
+            }
+        },
+        error: function (request, error) {
+            alert(error);
+        },
+    });
+}
+
 function msg(){
     // var valid_u = map_data.get('active_u');
     var tab = document.querySelector('#cl-msg');
     tab.classList.add('show');
-    com_client();
+    // intervalID = setInterval(showmsg, 1000);
+    showmsg()
 }
 
 
 function cl_msg_close(){
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
+    // clearInterval(intervalID);
 }
 
 function bcat(ths) {

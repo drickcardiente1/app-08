@@ -504,5 +504,56 @@ client_queries.post('/galleries', (req, res) => {
     })();
 });
 
+client_queries.post('/show-msg', (req, res) => {
+    if (req.session.logged_in) {
+        qry = `SELECT * FROM messages WHERE sender = '${req.session.user_id}' OR receiver = '${req.session.user_id}'`;
+        (async () => {
+            await new Promise((resolve, reject) => {
+                db.query(qry, (err, data) => {
+                    if (err) {
+                        reject(res.send({ code: 404 }))
+                    } else {
+                        resolve(data)
+                    };
+                })
+            }).then(client => {
+                res.json(client);
+                res.end();
+            }).catch(rs => {
+                console.log("Error such table found ", rs);
+            })
+        })();
+    } else {
+        res.json({ status: 404 });
+        res.end();
+    }
+});
+
+client_queries.post('/send-msg', (req, res) => {
+    if (req.session.logged_in) {
+        qry = `INSERT INTO messages(id, sender, messages) VALUES ('', '${req.session.user_id}', '${req.body.message}' )`;
+        (async () => {
+            await new Promise((resolve, reject) => {
+                db.query(qry, (err, data) => {
+                    if (err) {
+                        reject(res.send({ code: 404 }))
+                    } else {
+                        resolve(data)
+                    };
+                })
+            }).then(data => {
+                res.json({ status: 202 });
+                res.end();
+            }).catch(rs => {
+                console.log("Error such table found ", rs);
+            })
+        })();
+    } else {
+        res.json({ status: 404 });
+        res.end();
+    }
+});
+
+
 
 module.exports = client_queries;
