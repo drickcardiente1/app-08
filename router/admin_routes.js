@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -23,7 +23,7 @@ router.get('/sign-in/', async (req, res) => {
         res.end();
     } else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -35,7 +35,7 @@ router.get('/profile', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -47,7 +47,7 @@ router.get('/Motorbikes', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -59,7 +59,7 @@ router.get('/Motorbikes/add', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -71,7 +71,7 @@ router.get('/bookinglist/', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -83,7 +83,7 @@ router.get('/bookingreports', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -95,7 +95,7 @@ router.get('/clients', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -107,7 +107,7 @@ router.get('/clients/:id', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -119,7 +119,7 @@ router.get('/brandlist', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -131,7 +131,7 @@ router.get('/brandlist/add', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
@@ -144,7 +144,7 @@ router.get('/categorylist', async (req, res) => {
     }
     else {
         res.writeHead(200, { "Content-Type": "text/html" });
-        const html = fs.readFileSync(__dirname + "../../pages/admin/index.html", "utf-8");
+        const html = fs.readFileSync(__dirname + "/../pages/admin/index.html", "utf-8");
         res.end(html);
     }
 })
