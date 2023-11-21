@@ -988,8 +988,8 @@ function sign_out_admin() {
         dataType: "JSON",
         success: function (data) {
             initializer();
-            get_page('/');
             first_load();
+            get_page('/');
         }
     });
 }
@@ -1463,6 +1463,7 @@ function msgnotif() {
     });
 }
 async function initializer() {
+    document.querySelector('.sub-layer').innerHTML = ""
     await request_actor();
     await request_my_bookings();
     await request_all_b();
@@ -1476,6 +1477,7 @@ async function initializer() {
     } else {
         document.querySelector('.sub-layer').innerHTML = ""
     }
+    document.querySelector('.layer').innerHTML = ""
 }
 async function first_load() {
     document.querySelector('.layer').innerHTML = `
@@ -1678,7 +1680,6 @@ body {
     </div>
 </div>
     `
-    document.querySelector('.sub-layer').innerHTML = ""
     await start()
     await initializer();
     document.querySelector('.layer').innerHTML = ``
