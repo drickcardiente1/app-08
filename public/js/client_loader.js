@@ -3,6 +3,7 @@ const layout = new Map([]);
 const map_data = new Map([]);
 const c_plate = new Map([]);
 var from = [], to = []
+var intervalID;
 const rep = ne => {
     var l_slice = ne.slice(-1);
     if (l_slice === "/") {
@@ -14,7 +15,6 @@ const rep = ne => {
         return ne;
     }
 }
-
 function today(d_now) {
     var dc = new Date(d_now)
     var day = String(dc.getDate()).padStart(2, '0');
@@ -22,19 +22,16 @@ function today(d_now) {
     var year = String(dc.getFullYear());
     return `${year}-${month}-${day}`
 }
-
 function addDays(date, days) {
     var currentDate = date.getDate();
     date.setDate(currentDate + days);
     return date;
 }
-
 function deductDays(date, days) {
     var currentDate = date.getDate();
     date.setDate(currentDate - days);
     return date;
 }
-
 const templating = async (url, name) => {
     await $.ajax({
         url: url,
@@ -48,7 +45,6 @@ const templating = async (url, name) => {
         },
     });
 };
-
 const start = async () => {
     var static_template = [
         { "url": "/template/client_layer", "template": "layer" }
@@ -76,13 +72,11 @@ const start = async () => {
     c_plate.set(`/product`, { tittle: `TE Motorbikes | product`, tag: "product", layer: layout.get('layer'), content: layout.get('product') })
     c_plate.set(`/book`, { tittle: `TE Motorbikes | BOOK`, tag: "book", layer: layout.get('layer'), content: layout.get('product') })
 };
-
 function startclear(ths) {
     if (ths.value == '') {
         ths.value = today(new Date());
     }
 }
-
 function endclear(ths) {
     if (ths.value == '') {
         document.querySelector('.date_start').value = today(new Date());;
@@ -90,7 +84,6 @@ function endclear(ths) {
         ths.min = today(addDays(new Date(), 1))
     }
 }
-
 function sidebar_format() {
     var valid_u = map_data.get('active_u');
     if (valid_u.status == 202) {
@@ -560,7 +553,6 @@ function page_data_loader(tag) {
         document.querySelector('.tc3').classList.add('bg-gradient-primary')
     }
 }
-
 function sbmt_in() {
     var nm = document.getElementById('uname').value;
     var pd = document.getElementById('pwd').value;
@@ -607,7 +599,6 @@ function sbmt_in() {
         });
     }
 }
-
 function looper1() {
     var starts = document.querySelector('.date_start').value;
     var ends = document.querySelector('.date_end').value;
@@ -672,7 +663,6 @@ function looper1() {
         functi
     }
 }
-
 function check_unit() {
     var link = window.location.pathname;
     var url = link.toLowerCase();
@@ -717,7 +707,6 @@ function check_unit() {
         sts.innerHTML = 'UNAVAILABLE';
     }
 }
-
 function book_mode() {
     var check_var = false;
     request_all_b();
@@ -729,8 +718,6 @@ function book_mode() {
     }
     check_var ? book_page() : "";
 }
-
-
 function keyDown(e) {
     var e = window.event || e;
     var key = e.keyCode;
@@ -738,7 +725,6 @@ function keyDown(e) {
         e.preventDefault();
     }
 }
-
 function checkWhitespace(event) {
     var data = event.clipboardData.getData("text/plain");
     var isNullOrContainsWhitespace = (!data || data.length === 0 || /\s/g.test(data));
@@ -747,16 +733,12 @@ function checkWhitespace(event) {
     }
 
 }
-
 function onlyNumberKey(evt) {
     var ASCIICode = (evt.which) ? evt.which : evt.keyCode
     if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
         return false;
     return true;
 }
-
-var intervalID;
-
 async function send() {
     var msg = document.querySelector('.msg');
     var msg_box = document.querySelector('.msg-box');
@@ -786,7 +768,6 @@ async function send() {
         },
     });
 }
-
 function adminmsg(user) {
     var date = new Date(user.date_send)
     var box_msg = document.querySelector('.msg-box');
@@ -815,7 +796,6 @@ function clientmsg(user) {
     </div>
     `
 }
-
 async function showmsg() {
     document.querySelector('.msg-box').innerHTML = "";
     await $.ajax({
@@ -851,7 +831,6 @@ function check() {
         },
     });
 }
-
 async function msg() {
     // var valid_u = map_data.get('active_u');
     var tab = document.querySelector('#cl-msg');
@@ -860,13 +839,11 @@ async function msg() {
     await showmsg()
     intervalID = setInterval(check, 1000);
 }
-
 function cl_msg_close() {
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
     clearInterval(intervalID);
 }
-
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
     var vr = ths.getAttribute('data');
@@ -874,7 +851,6 @@ function bcat(ths) {
     target.innerHTML = ths.innerHTML;
     target.setAttribute('data', vr);
 }
-
 function bcat_reg(ths) {
     var target = document.getElementsByClassName('bct_reg')[0];
     var vr = ths.getAttribute('data');
@@ -882,8 +858,6 @@ function bcat_reg(ths) {
     target.innerHTML = ths.innerHTML;
     target.setAttribute('data', vr);
 }
-
-
 function detail(e) {
     var all_bikes = map_data.get('all_bikes');
     var all_brands = map_data.get('all_brands');
@@ -985,7 +959,6 @@ function detail(e) {
     ${footing}
     `;
 }
-
 function canbook(e) {
     var id = e.getAttribute('d_id');
     $.ajax({
@@ -1008,7 +981,6 @@ function canbook(e) {
         },
     });
 }
-
 function sign_out_admin() {
     $.ajax({
         url: "/auth/logout",
@@ -1021,7 +993,6 @@ function sign_out_admin() {
         }
     });
 }
-
 function updatepwd() {
     var old_p = document.getElementById('old_p');
     var new_p = document.getElementById('nw_p');
@@ -1103,7 +1074,6 @@ function updatepwd() {
         });
     }
 }
-
 async function s_up() {
     var f_name = document.querySelector('.name').value;
     var l_name = document.querySelector('.last_name').value;
@@ -1226,8 +1196,6 @@ async function s_up() {
         });
     }
 }
-
-
 function update_info_client() {
     var valid_u = map_data.get('active_u');
     var f_name = document.querySelector('.f_name');
@@ -1309,8 +1277,6 @@ function update_info_client() {
         });
     }
 }
-
-
 function get_page(relocate) {
     var link = rep(relocate);
     var url = link.toLowerCase();
@@ -1379,7 +1345,6 @@ function get_page(relocate) {
     var onlyContainsNumbers = (str) => /^\d+$/.test(str);
     entry ? normal_mode() : onlyContainsNumbers(result) ? product_mode() : onlyContainsNumbers(result2) ? book_mode() : "";
 }
-
 async function check_availble() {
     var starts = document.querySelector('.date_start').value;
     var ends = document.querySelector('.date_end').value;
@@ -1397,7 +1362,6 @@ async function check_availble() {
         },
     });
 }
-
 async function request_actor() {
     await $.ajax({
         url: '/client_query/u_active',
@@ -1411,7 +1375,6 @@ async function request_actor() {
         },
     });
 }
-
 async function request_my_bookings() {
     await $.ajax({
         url: '/client_query/my_bookings',
@@ -1425,7 +1388,6 @@ async function request_my_bookings() {
         },
     });
 }
-
 async function request_all_b() {
     await $.ajax({
         url: '/client_query/all_bikes',
@@ -1439,7 +1401,6 @@ async function request_all_b() {
         },
     });
 }
-
 async function request_all_brands() {
     await $.ajax({
         url: '/client_query/all_brands',
@@ -1453,7 +1414,6 @@ async function request_all_brands() {
         },
     });
 }
-
 async function request_all_categories() {
     await $.ajax({
         url: '/client_query/all_categories',
@@ -1467,7 +1427,6 @@ async function request_all_categories() {
         },
     });
 }
-
 async function request_galleries() {
     await $.ajax({
         url: '/client_query/galleries',
@@ -1481,7 +1440,6 @@ async function request_galleries() {
         },
     });
 }
-
 function msgnotif() {
     $.ajax({
         url: "/client_query/notif-msg",
@@ -1504,7 +1462,6 @@ function msgnotif() {
         },
     });
 }
-
 async function initializer() {
     await request_actor();
     await request_my_bookings();
@@ -1520,8 +1477,6 @@ async function initializer() {
         document.querySelector('.sub-layer').innerHTML = ""
     }
 }
-
-
 async function first_load() {
     document.querySelector('.layer').innerHTML = `
     <style>
@@ -1729,9 +1684,6 @@ body {
     document.querySelector('.layer').innerHTML = ``
     get_page(window.location.pathname)
 }
-
-
-
 async function book() {
     var valid_u = map_data.get('active_u');
     console.log(valid_u)
@@ -1793,7 +1745,5 @@ async function book() {
         });
     }
 }
-
-
 window.addEventListener("load", first_load(), true);
 
