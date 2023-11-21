@@ -370,6 +370,7 @@ function page_data_loader(tag) {
             }
             document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
+            document.querySelector('.price').setAttribute("data", bike[0].daily_rate ? bike[0].daily_rate : 0 )
             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
             document.querySelector('.category').innerHTML = category.length >=1 ? category[0].category : "N/A" 
             console.log(brand)
@@ -486,6 +487,7 @@ function page_data_loader(tag) {
             }
             document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
             document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
+            document.querySelector('.price').setAttribute("data", bike[0].daily_rate ? bike[0].daily_rate : 0 )
             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
 
             document.querySelector('.category').innerHTML = category.length >=1 ? category[0].category : "N/A" 
@@ -525,20 +527,24 @@ function page_data_loader(tag) {
                 <div class="row border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
                     <div class="col-lg-3 mt-lg-n2 mt-2">
                         <div class="input-group input-group-static my-3">
+                            <div class="input-group input-group-static my-3">
                             <label>Date Start</label>
-                            ${from[0]}
+                            <input value="${from[0]}" type="date" class="form-control date_start" disabled>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3 mt-lg-n2 mt-2">
                         <div class="input-group input-group-static my-3">
-                            <label>Date end</label>
-                            ${to[0]}
+                            <div class="input-group input-group-static my-3">
+                            <label>Date Start</label>
+                            <input value="${to[0]}" type="date" class="form-control date_end" disabled>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-3 mt-lg-n2 chicker">
                         <label>&nbsp;</label>
                         <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: 2vh !important;"
-                            onclick="check_unit()">BOOK NOW</button>
+                            onclick=" book()">BOOK NOW</button>
                     </div>
                     <span class="" id="sts"></span>
                 </div>
@@ -693,11 +699,13 @@ function check_unit() {
         }
     }
     if(exist == true){
+        document.querySelector('.date_start').setAttribute('disabled', '')
+        document.querySelector('.date_end').setAttribute('disabled', '')
         var s_badge = "badge badge-success";
         var chicker = document.querySelector('.chicker');
         chicker.innerHTML = `
         <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: -2.6vh !important;"
-        onclick="check_unit()">BOOK NOW</button>
+        onclick="book()">BOOK NOW</button>
         `
         var sts = document.querySelector('#sts');
         sts.classList.add(...s_badge.split(" "));
@@ -852,7 +860,6 @@ async function msg(){
     await showmsg()
     intervalID = setInterval(check, 1000);
 }
-
 
 function cl_msg_close(){
     var tab = document.querySelector('#cl-msg');
@@ -1520,6 +1527,71 @@ async function first_load() {
     await initializer();
     get_page(window.location.pathname)
 }
+
+
+
+async function book(){
+    var valid_u = map_data.get('active_u');
+    console.log(valid_u)
+    if(valid_u.status != 202){
+        initializer();
+        get_page('/sign-in');
+        first_load();
+    }else{
+        var link = rep(window.location.pathname);
+        var url = link.toLowerCase();
+        var res = url.split("/");
+        var pos = res.indexOf('product');
+        var rs1 = res[pos + 1];
+        var pos2 = res.indexOf('book');
+        var rs2 = res[pos2 + 1];
+
+        
+        var start = document.querySelector('.date_start').value
+        var end = document.querySelector('.date_end').value
+        var price = document.querySelector('.price').getAttribute('data')
+        await Swal.fire({
+            title: "Insert Drivers License",
+            input: "file",
+            inputAttributes: {
+                accept: "image/jpeg, image/png, image/jpg",
+                "aria-label": "Select Image",
+            },
+            showCancelButton: true,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $('#loader').modal('show'); 
+                if(result.value){
+                    var data = new FormData();
+                    data.append('license', result.value);
+                    data.append('start', start);
+                    data.append('end', end);
+                    data.append('price', price);
+                    data.append('bike_id', rs1 ? rs1 : rs2);
+                    (async () => {
+                        await fetch('/client_query/book',{
+                            method: 'POST',
+                            body: data
+                        }).then(res =>{
+                            $('#loader').modal('hide'); 
+                            initializer();
+                            get_page('/my-bookings');
+                            first_load();
+                            Swal.fire("BOOK SUCCESSFULLY", "", "success");
+                        }).catch(()=>{
+                            $('#loader').modal('hide'); 
+                            window.location.reload()
+                        })
+                    })()
+                }else{
+                    book()
+                }
+            }
+        });
+    }
+}
+
 
 window.addEventListener("load", first_load(), true);
 

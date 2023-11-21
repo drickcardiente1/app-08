@@ -139,6 +139,25 @@ function sbmt_in() {
     }
 }
 
+function strt(t_name) {
+    if (t_name == "Add Motorbike") {
+        t_name = "Motorbikes";
+    } else if (t_name == "profile") {
+        var a = document.getElementsByClassName('a');
+        for (let i = 0; i < a.length; i++) {
+            a[i].classList.remove('active')
+        }
+    } else {
+        var a = document.getElementsByClassName('a');
+        var elem = document.getElementById(t_name);
+        for (let i = 0; i < a.length; i++) {
+            a[i].classList.remove('active')
+        }
+        elem.classList.add("active");
+    }
+}
+
+
 function next(ne) {
     document.getElementsByClassName("tag")[0].innerHTML = "";
     document.getElementsByClassName("bdy")[0].innerHTML = "";
@@ -149,7 +168,8 @@ function next(ne) {
     history.pushState(null, entry.tittle, ne);
     strt(entry.tag);
     document.getElementsByClassName("bdy")[0].innerHTML = entry.content;
-    add_data_page(entry.tag);
+    console.log(entry.tag)
+    page_data_loader(entry.tag);
 }
 
 
@@ -562,5 +582,7 @@ function page_data_loader(tag) {
         document.querySelector('.tc3').classList.add('bg-gradient-primary')
     }
 }
+
+
 
 window.addEventListener("load", first_load(), false);

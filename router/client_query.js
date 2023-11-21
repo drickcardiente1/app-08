@@ -4,13 +4,13 @@ const client_queries = express.Router();
 client_queries.use(express.static(__dirname));
 const db = require('../db');
 var md5 = require('md5');
-const e = require('express');
-
 var this_date = new Date()
 var day = String(this_date.getDate()).padStart(2, '0');
 var m = String(this_date.getMonth() + 1).padStart(2, '0');
 var year = this_date.getFullYear();
 const today = `${year}-${m}-${day}`;
+var cloudinary = require('../middleware/cloudinary')
+var upload = require('../middleware/multer')
 
 const promise_query = (qr) => {
     return new Promise((resolve, reject) => {db.query(qr, (err, data) => { err ? reject(err) : resolve(data) })})
@@ -627,6 +627,70 @@ client_queries.post('/send-msg', (req, res) => {
         res.end();
     }
 });
+
+
+// client_queries.post('/book', (req, res) => {
+//     if (req.session.logged_in) {
+//         qry = `INSERT INTO messages(id, sender, messages, status) VALUES ('', '${req.session.user_id}', '${req.body.message}', '1' )`;
+//         (async () => {
+//             await new Promise((resolve, reject) => {
+//                 db.query(qry, (err, data) => {
+//                     if (err) {
+//                         reject(res.send({ code: 404 }))
+//                     } else {
+//                         resolve(data)
+//                     };
+//                 })
+//             }).then(data => {
+//                 res.json({ status: 202 });
+//                 res.end();
+//             }).catch(rs => {
+//                 console.log("Error such table found ", rs);
+//             })
+//         })();
+//     } else {
+//         res.json({ status: 404 });
+//         res.end();
+//     }
+// });
+
+
+client_queries.post('/book',upload.single('license'), (req, res) => {
+    console.log(req.body.start)
+    var date1 = new Date(req.body.start);
+    var date2 = new Date(req.body.end); 
+    var Difference_In_Time = date2.getTime() - date1.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24); 
+    var price = (req.body.price * Difference_In_Days)
+    if (req.session.logged_in) {
+        (async () => {
+            var result = await cloudinary.uploader.upload(req.file.path);
+            return result
+        })().then((images) => {
+            var qry
+            (async () => {
+                qry = `INSERT INTO rent_list(id, client_id, bike_id, date_start, date_end, rent_days, amount_received, amount_topay, balance, status, date_created, date_updated) VALUES ('', '${req.session.user_id}', '${req.body.bike_id}', '${req.body.start}', '${req.body.end}', '${Difference_In_Days}', '0', '${price}', '${price}', '0', '${today}', '')`;
+                await promise_query(qry)
+            })().then(() => {
+                console.log("job done")
+                res.sendStatus(202)
+                res.end();
+            }).catch(() => {
+                console.log("error 2")
+                res.sendStatus(404)
+                res.end();
+            })
+        }).catch(() => {
+            res.sendStatus(404)
+            res.end();
+        })
+    } else {
+        res.json({ status: 404 });
+        res.end();
+    }
+});
+
+
 
 
 
