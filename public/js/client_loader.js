@@ -1723,6 +1723,7 @@ body {
     </div>
 </div>
     `
+    document.querySelector('.sub-layer').innerHTML = ""
     await start()
     await initializer();
     document.querySelector('.layer').innerHTML = ``
