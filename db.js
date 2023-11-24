@@ -10,11 +10,11 @@ var db = mysql.createPool({
 
 
 // var db = mysql.createPool({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database:"4357461_mbrdb",
-//     port:"3306"
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "freedb_4357461_mbrdb",
+//   port: "3306",
 // });
 
 db.getConnection((error)=>{

@@ -8,18 +8,6 @@ const map1 = new Map([]);
 var removd = [];
 var filtered;
 var v2;
-const rep = ne => {
-    const l_slice = ne.slice(-1);
-    if (l_slice === "/") {
-        let url = ne;
-        url = url.slice(0, -1);
-        return url;
-    }
-    else {
-        return ne;
-    }
-}
-
 const templating = async (url, name) => {
     await $.ajax({
         url: url,
@@ -33,7 +21,19 @@ const templating = async (url, name) => {
         },
     });
 };
-
+const gather = async (url, name) => {
+    await $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "JSON",
+        success: function (data) {
+            map1.set(name, data.raw)
+        },
+        error: function (request, error) {
+            alert(error);
+        },
+    });
+};
 const start = async () => {
     var static_template = [
         { "url": "/adstemplate/add_bike", "template": "add_bike" }
@@ -52,37 +52,21 @@ const start = async () => {
     for (let procedure of static_template) {
         await templating(procedure.url, procedure.template);
     }
-    admin_template_data.set(`/${root_name}`,{tittle: `${page_tittle_main} | ADMIN | Dashboard`,tag: "dashboard",layer: layout.get('layer-index'),content: layout.get('dashboard')})
-    admin_template_data.set(`/${root_name}/profile`,{tittle: `${page_tittle_main} | ADMIN | Dashboard`,tag: "profile",layer: layout.get('layer'),content: layout.get('profile')})
+    admin_template_data.set(`/${root_name}`,{tittle: `${page_tittle_main} | ADMIN | Dashboard`,tag: "dashboard",content: layout.get('dashboard')})
+    admin_template_data.set(`/${root_name}/profile`,{tittle: `${page_tittle_main} | ADMIN | Dashboard`,tag: "profile",content: layout.get('profile')})
     admin_template_data.set(`/${root_name}/sign-in`,{tittle: `${page_tittle_main} | ADMIN | Sign-in`,layer: layout.get('layer-s-in')})
-    admin_template_data.set(`/${root_name}/motorbikes`,{tittle: `${page_tittle_main} | ADMIN | BIKE LIST`,tag: "Motorbikes",layer: layout.get('layer'),content: layout.get('bike_list')})
-    admin_template_data.set(`/${root_name}/motorbikes/add`,{tittle: `${page_tittle_main} | ADMIN | BIKE LIST`,tag: "Add Motorbike",layer: layout.get('layer'),content: layout.get('add_bike')})
-    admin_template_data.set(`/${root_name}/bookinglist`,{tittle: `${page_tittle_main} | ADMIN | BOOKING LIST`,tag: "bookinglist",layer: layout.get('layer'),content: layout.get('booking_list')})
-    admin_template_data.set(`/${root_name}/bookingreports`,{tittle: `${page_tittle_main} | ADMIN | BOOKING REPORTS`,tag: "bookingreports",layer: layout.get('layer'),content: layout.get('booking_report')})
-    admin_template_data.set(`/${root_name}/clients`,{tittle: `${page_tittle_main} | ADMIN | Clients`,tag: "clients",layer: layout.get('layer'),content: layout.get('client_list')})
-    admin_template_data.set(`/${root_name}/brandlist`,{tittle: `${page_tittle_main} | ADMIN | BRAND LIST`,tag: "brandlist",layer: layout.get('layer'),content: layout.get('brand_list')})
-    admin_template_data.set(`/${root_name}/categorylist`,{tittle: `${page_tittle_main} | ADMIN | CATEGORY LIST`,tag: "categorylist",layer: layout.get('layer'),content: layout.get('category_list')})
+    admin_template_data.set(`/${root_name}/motorbikes`,{tittle: `${page_tittle_main} | ADMIN | BIKE LIST`,tag: "Motorbikes",content: layout.get('bike_list')})
+    admin_template_data.set(`/${root_name}/motorbikes/add`,{tittle: `${page_tittle_main} | ADMIN | BIKE LIST`,tag: "Add Motorbike",content: layout.get('add_bike')})
+    admin_template_data.set(`/${root_name}/bookinglist`,{tittle: `${page_tittle_main} | ADMIN | BOOKING LIST`,tag: "bookinglist",content: layout.get('booking_list')})
+    admin_template_data.set(`/${root_name}/bookingreports`,{tittle: `${page_tittle_main} | ADMIN | BOOKING REPORTS`,tag: "bookingreports",content: layout.get('booking_report')})
+    admin_template_data.set(`/${root_name}/clients`,{tittle: `${page_tittle_main} | ADMIN | Clients`,tag: "clients",content: layout.get('client_list')})
+    admin_template_data.set(`/${root_name}/brandlist`,{tittle: `${page_tittle_main} | ADMIN | BRAND LIST`,tag: "brandlist",content: layout.get('brand_list')})
+    admin_template_data.set(`/${root_name}/categorylist`,{tittle: `${page_tittle_main} | ADMIN | CATEGORY LIST`,tag: "categorylist",content: layout.get('category_list')})
 };
-
-const gathering = async (url, name) => {
-    await $.ajax({
-        url: url,
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map1.set(name, data.raw)
-        },
-        error: function (request, error) {
-            alert(error);
-        },
-    });
-};
-
-
-async function initializer() {
+const data_initializer = async()=> {
     var subjects = [
         { "url": "/query/bike_list", "name": "bikes" },
-        { "url": "/query/clients_list", "name": "users" },
+        { "url": "/query/clients_list", "name": "clients" },
         { "url": "/query/brands", "name": "brand_list" },
         { "url": "/query/categories", "name": "categories" },
         { "url": "/query/rent_list", "name": "rent_list" },
@@ -90,12 +74,10 @@ async function initializer() {
         { "url": "/query/active_user", "name": "user" }
     ]
     for (let subj of subjects) {
-        await gathering(subj.url, subj.name);
+        await gather(subj.url, subj.name);
     }
-    first_load();
 }
-
-function sbmt_in() {
+const sign_in = () => {
     var nm = document.getElementById('uname').value;
     var pd = document.getElementById('pwd').value;
     if (!nm && pd) {
@@ -122,8 +104,7 @@ function sbmt_in() {
             success: function (data) {
                 if (data.status == 202) {
                     (async () => {
-                        location.pathname = '/admin'
-                        await initializer();
+                        await analizer("/admin/");
                     })();
                 }
                 else {
@@ -138,219 +119,517 @@ function sbmt_in() {
         });
     }
 }
+const get_page = (tag) => {
+    if (tag == 'dashboard') {
+        var t_bikes = document.getElementsByClassName("total_motorbikes")[0];
+        var d_bikes = document.getElementsByClassName("d_bikes")[0];
+        var usrs = document.getElementsByClassName("usrs")[0];
+        var brands = document.getElementsByClassName("brands")[0];
+        var categories = document.getElementsByClassName("categories_board")[0];
+        categories.innerHTML = "";
+        var y = map1.get('categories')
+        categories.innerHTML = y.length;
+        brands.innerHTML = "";
+        var x = map1.get('brand_list')
+        brands.innerHTML = x.length;
 
-function strt(t_name) {
-    if (t_name == "Add Motorbike") {
-        t_name = "Motorbikes";
-    } else if (t_name == "profile") {
-        var a = document.getElementsByClassName('a');
-        for (let i = 0; i < a.length; i++) {
-            a[i].classList.remove('active')
-        }
-    } else {
-        var a = document.getElementsByClassName('a');
-        var elem = document.getElementById(t_name);
-        for (let i = 0; i < a.length; i++) {
-            a[i].classList.remove('active')
-        }
-        elem.classList.add("active");
+        usrs.innerHTML = "";
+        var u = map1.get("clients");
+        usrs.innerHTML = u.length;
+
+
+        t_bikes.innerHTML = "";
+        var a = map1.get('bikes')
+        t_bikes.innerHTML = a.length;
+
+
     }
-}
-
-
-function next(ne) {
-    document.getElementsByClassName("tag")[0].innerHTML = "";
-    document.getElementsByClassName("bdy")[0].innerHTML = "";
-    const ul = rep(ne);
-    const entry = admin_template_data.get(ul.toLowerCase());
-    document.getElementsByClassName("tag")[0].innerHTML = entry.tag;
-    document.title = entry.tittle;
-    history.pushState(null, entry.tittle, ne);
-    strt(entry.tag);
-    document.getElementsByClassName("bdy")[0].innerHTML = entry.content;
-    console.log(entry.tag)
-    page_data_loader(entry.tag);
-}
-
-
-function get_page(location) {
-    var link = rep(location);
-    var url = link.toLowerCase();
-    var entry = admin_template_data.get(url);
-
-    function normal_mode(){
-        document.title = entry.tittle;
-        history.pushState(null, entry.tittle, location);
-        document.querySelector('.layer').innerHTML = entry.layer;
-        console.log(document.querySelector('.layer').innerHTML)
-        console.log(entry.content)
-        entry.content ? document.querySelector('.bdy').innerHTML = entry.content : console.log("hello")
-        page_data_loader(entry.tag);
-    }
-    entry ? normal_mode() : onlyContainsNumbers(result)? product_mode() : onlyContainsNumbers(result2)? book_mode() : "";
-}
-
-
-
-async function first_load() {
-    await start();
-    get_page(window.location.pathname)
-}
-
-function page_data_loader(tag) {
-    if (tag == 'Home') {
-        document.querySelector('.tc').classList.add('bg-gradient-primary')
-        var date_now = today(new Date())
-        var date_start_picker = document.querySelector('.date_start');
-        var date_end_picker = document.querySelector('.date_end');
-        date_start_picker.setAttribute('min', date_now);
-        date_start_picker.setAttribute('value', date_now);
-        date_start_picker.setAttribute('max', date_now);
-        date_end_picker.setAttribute('min', today(addDays(new Date(date_now), 1)));
-        date_end_picker.setAttribute('value', today(addDays(new Date(date_now), 1)));
-
-        $(".date_start").change((a) => {
-            if (a.target.value) {
-                date_end_picker.min = today(addDays(new Date(a.target.value), 1))
+    else if (tag == 'Motorbikes') {
+        var a = map1.get('bikes')
+        var categories = map1.get('categories');
+        var brand_list = map1.get('brand_list');
+        var t = document.getElementsByClassName("todisplay")[0];
+        function gdt(dt) {
+            var dc = new Date(dt)
+            var day = String(dc.getDate()).padStart(2, '0');
+            var month = String(dc.getMonth() + 1).padStart(2, '0');
+            var year = String(dc.getFullYear());
+            var hours = String(dc.getHours());
+            var minutes = String(dc.getMinutes());
+            return `${year}-${month}-${day} ${hours}:${minutes}`
+        }
+        for (let loop = 0; loop < a.length; loop++) {
+            var crtd = gdt(a[loop].date_created);
+            var brnd = "N/A", type = "N/A";
+            for (let b = 0; b < brand_list.length; b++) {
+                console.log(brand_list[b].name);
+                if (a[loop].brand_id == brand_list[b].id) {
+                    brnd = brand_list[b].name
+                }
             }
-        })
-
-        $(".date_end").change((a) => {
-            date_start_picker.max = today(deductDays(new Date(a.target.value), 1));
-        })
-        var check_data = map_data.get('available_bikes')
-        if (check_data && check_data.length > 0) {
-            looper1();
-        }
-    } else if (tag == 'Sign-in') {
-        var valid_u = map_data.get('active_u');
-        if (valid_u.status == 202 || valid_u.status == 203) {
-            get_page('/');
-        }
-    } else if (tag == 'Sign-up') {
-        var valid_u = map_data.get('active_u');
-        if (valid_u.status == 202 || valid_u.status == 203) {
-            get_page('/');
-        } else {
-            $("#reg").keypress(function (event) {
-                if (event.which == 13) {
-                    event.preventDefault();
-                    s_up();
+            for (let c = 0; c < categories.length; c++) {
+                if (a[loop].category_id == categories[c].id) {
+                    type = categories[c].category
                 }
-            });
-        }
-    } else if (tag == 'Categories') {
-        document.querySelector('.tc2').classList.add('bg-gradient-primary')
-        var odd_even = document.querySelector('.odd-even');
-        var all_bikes = map_data.get('all_bikes');
-        var all_categories = map_data.get('all_categories');
-        var bikes = [];
-        for (let loop = 0; loop < all_categories.length; loop++) {
-
-            for (let loop2 = 0; loop2 < all_bikes.length; loop2++) {
-                if(all_categories[loop].id == all_bikes[loop2].category_id){
-                    console.log(all_categories[loop].id )
-                    bikes.push(all_bikes[loop2])
-                }
-            };
-
-            if(bikes.length != 0){
-                odd_even.innerHTML += `
-                <div class="col-lg-3">
-                    <div class="position-sticky pb-lg-5 pb-3 mt-lg-0 mt-5 ps-2" style="top: 100px">
-                        <h3>${all_categories[loop].category}</h3>
-                    </div>
-                </div>
-    
-                <div class="col-lg-9">
-                    <div class="row mt-3 cat${all_categories[loop].id}">
-                    </div>
-                </div>
-                `
-                for (let loop3 = 0; loop3 < bikes.length; loop3++) {
-                    var ct = document.querySelector(`.cat${all_categories[loop].id}`);
-                    ct.innerHTML +=            
-                    `
-                    <div class="col-md-4">
-                        <a onclick="get_page('/product/${bikes[loop3].id}');" href="javascript:;">
-                            <div class="card shadow-lg move-on-hover min-height-160 min-height-160">
-                                <img class="w-100 my-auto"
-                                    src="${bikes[loop3].avatar}"
-                                    alt="newsletter">
-                            </div>
-                            <div class="mt-2 ms-2">
-                                <h6 class="mb-0">${bikes[loop3].bike_model}</h6>
-                                <p class="text-secondary text-sm font-weight-normal">${bikes[loop3].description}</p>
-                            </div>
+            }
+            t.innerHTML += `
+            <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
+                <div class="card" data-animation="true">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <a class="d-block blur-shadow-image">
+                            <img src="${a[loop].avatar}" class="img-fluid border-radius-lg" alt="Responsive image">
                         </a>
+                        <div class="colored-shadow"
+                            style="background-image: url(${a[loop].avatar});">
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mt-n6 mx-auto">
+                            <a d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"">
+                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i>
+                            </a>
+                            <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="delete">
+                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                            </a>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label> Bike Type </label>
+                                    <input placeholder="${type}" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label> Bike Brand </label>
+                                    <input placeholder="${brnd}" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label> Bike Model</label>
+                                    <input placeholder="${a[loop].bike_model}" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group input-group-static">
+                                    <label> Date Created </label>
+                                    <input placeholder="${crtd}" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-dynamic">
+                    </div>
+                </div>
+            </div>
+            `
+        }
+        var bike_search = document.querySelector('.bike_search');
+        bike_search.addEventListener('keyup', e => {
+            if (e.target.value == "") {
+                t.innerHTML = "";
+                for (let loop = 0; loop < a.length; loop++) {
+                    var crtd = gdt(a[loop].date_created);
+                    var brnd, type;
+                    for (let b = 0; b < brand_list.length; b++) {
+                        if (a[loop].brand_id == brand_list[b].id) {
+                            brnd = brand_list[b].name
+                        }
+                    }
+
+                    for (let c = 0; c < categories.length; c++) {
+                        if (a[loop].category_id == categories[c].id) {
+                            type = categories[c].category
+                        }
+                    }
+                    t.innerHTML += `
+                    <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
+                        <div class="card" data-animation="true">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <a class="d-block blur-shadow-image">
+                                    <img src="${a[loop].avatar}" alt="img-blur-shadow"
+                                        class="img-fluid shadow border-radius-lg">
+                                </a>
+                                <div class="colored-shadow"
+                                    style="background-image: url(${a[loop].avatar});">
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="mt-n6 mx-auto">
+                                    <a d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"">
+                                        <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i>
+                                    </a>
+                                    <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="delete">
+                                        <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                                    </a>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label> Bike Type </label>
+                                            <input placeholder="${type}" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label> Bike Brand </label>
+                                            <input placeholder="${brnd}" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label> Bike Model</label>
+                                            <input placeholder="${a[loop].bike_model}" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="input-group input-group-static">
+                                            <label> Date Created </label>
+                                            <input placeholder="${crtd}" type="text" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-dynamic">
+                            </div>
+                        </div>
                     </div>
                     `
-                };
+                }
+            } else {
+                t.innerHTML = "";
+                var tosearch = [];
+                var to_map = [...map1.entries()][0][1];
+                for (let m = 0; m < to_map.length; m++) {
+                    var dc = new Date(to_map[m].date_created)
+                    var day = String(dc.getDate()).padStart(2, '0');
+                    var month = String(dc.getMonth() + 1).padStart(2, '0');
+                    var year = String(dc.getFullYear());
+                    var hours = String(dc.getHours());
+                    var minutes = String(dc.getMinutes());
+                    var bike_model = to_map[m].bike_model, brand, category, date_created = `${year}-${month}-${day} ${hours}:${minutes}`, id = to_map[m].id;
+                    for (let c = 0; c < categories.length; c++) {
+                        if (to_map[m].category_id == categories[c].id) {
+                            category = categories[c].category;
+                        }
+                    }
+                    for (let b = 0; b < brand_list.length; b++) {
+
+                        if (to_map[m].brand_id == brand_list[b].id) {
+                            brand = brand_list[b].name;
+                        }
+                    }
+                    tosearch.push({ 'id': id, 'model': bike_model.toLowerCase(), 'type': category.toLowerCase(), 'brand': brand.toLowerCase(), 'date_created': date_created })
+                }
+                var tg_val = String(e.target.value)
+                let by_bike_model = tosearch.filter(function (tosearch) {
+                    var tsm = String(tosearch.model);
+                    return tsm.includes(tg_val.toLowerCase());
+                }).map(function (tosearch) {
+                    return tosearch.id;
+                })
+                let by_category = tosearch.filter(function (tosearch) {
+                    var tsm = String(tosearch.type);
+                    return tsm.includes(tg_val.toLowerCase());
+                }).map(function (tosearch) {
+                    return tosearch.id;
+                })
+                let by_brand = tosearch.filter(function (tosearch) {
+                    var tsm = String(tosearch.brand);
+                    return tsm.includes(tg_val.toLowerCase());
+                }).map(function (tosearch) {
+                    return tosearch.id;
+                })
+                let by_date = tosearch.filter(function (tosearch) {
+                    var tsm = String(tosearch.date_created);
+                    return tsm.includes(tg_val.toLowerCase());
+                }).map(function (tosearch) {
+                    return tosearch.id;
+                })
+                function removedoplicates(arr) {
+                    return arr.filter((el, index) => arr.indexOf(el) === index)
+                }
+                var combinedArray1 = by_bike_model.concat(by_category);
+                var combinedArray2 = by_brand.concat(by_date);
+                var combinedArray = combinedArray1.concat(combinedArray2);
+                var combined = removedoplicates(combinedArray)
+                for (let x = 0; x < combined.length; x++) {
+                    for (let loop = 0; loop < a.length; loop++) {
+                        if (combined[x] == a[loop].id) {
+                            var crtd = gdt(a[loop].date_created);
+                            var brnd, type;
+                            for (let b = 0; b < brand_list.length; b++) {
+                                if (a[loop].brand_id == brand_list[b].id) {
+                                    brnd = brand_list[b].name
+                                }
+                            }
+                            for (let c = 0; c < categories.length; c++) {
+                                if (a[loop].category_id == categories[c].id) {
+                                    type = categories[c].category
+                                }
+                            }
+                            t.innerHTML += `
+                            <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
+                                <div class="card" data-animation="true">
+                                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                        <a class="d-block blur-shadow-image">
+                                            <img src="${a[loop].avatar}" alt="img-blur-shadow"
+                                                class="img-fluid shadow border-radius-lg">
+                                        </a>
+                                        <div class="colored-shadow"
+                                            style="background-image: url(${a[loop].avatar});">
+                                        </div>
+                                    </div>
+                                    <div class="card-body text-center">
+                                            <div class="mt-n6 mx-auto">
+                                                <a d_id="${loop}" onclick="edt_b(this)" type="button" class="btn btn-link text-info ms-auto border-0" data-bs-toggle="modal" data-bs-target="#edbk"">
+                                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i>
+                                                </a>
+                                                <a onclick="del_b(this)" d_id="${a[loop].id}" class="btn btn-link text-danger ms-auto border-0" data-bs-toggle="tooltip"
+                                                    data-bs-placement="bottom" title="delete">
+                                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                                                </a>
+                                            </div>
+                                        <div class="row mt-4">
+                                            <div class="col-6">
+                                                <div class="input-group input-group-static">
+                                                    <label> Bike Type </label>
+                                                    <input placeholder="${type}" type="text" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="input-group input-group-static">
+                                                    <label> Bike Brand </label>
+                                                    <input placeholder="${brnd}" type="text" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-4">
+                                            <div class="col-6">
+                                                <div class="input-group input-group-static">
+                                                    <label> Bike Model</label>
+                                                    <input placeholder="${a[loop].bike_model}" type="text" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="input-group input-group-static">
+                                                    <label> Date Created </label>
+                                                    <input placeholder="${crtd}" type="text" class="form-control" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group input-group-dynamic">
+                                    </div>
+                                </div>
+                            </div>
+                            `
+                        }
+                    }
+                }
             }
-          console.log(bikes.length)
-          bikes = [];
+        });
+    }
+    else if (tag == 'bookinglist') {
+        filter_remove();
+    } else if (tag == 'bookingreports') {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var this_month = String(today.getMonth() + 1).padStart(2, '0');
+        var past_month = String(today.getMonth() + 1).padStart(2, '0');
+        var thisyyyy = today.getFullYear() - 1;
+        var lastyyyy = today.getFullYear();
+        var sstrt = document.getElementById('d_start');
+        var eeend = document.getElementById('d_end');
+        sstrt.value = `${thisyyyy}-${past_month}-${dd}`;
+        $('#d_start').attr('max', `${lastyyyy}-${this_month}-${dd}`);
+        eeend.value = `${lastyyyy}-${this_month}-${dd}`;
+        $('#d_end').attr('min', `${thisyyyy}-${past_month}-${dd}`);
+        $("#d_start").change((a) => {
+            if (a.target.value) {
+                var tocompare = document.getElementById('d_end');
+                var this_date = new Date(a.target.value)
+                var added1day = addDays(this_date, 2)
+                var added_day = String(added1day.getDate()).padStart(2, '0');
+                var this_m = String(added1day.getMonth() + 1).padStart(2, '0');
+                var year = added1day.getFullYear();
+                var d2move = `${year}-${this_m}-${added_day}`
+                if (d2move >= tocompare.value) {
+                    tocompare.value = d2move;
+                    tocompare.min = d2move;
+                } else {
+                    $('#d_end').attr('min', d2move);
+                }
+            }
+        })
+        $("#d_end").change((a) => {
+            if (a.target.value) {
+                var tocompare = document.getElementById('d_start');
+                var this_date = new Date(a.target.value)
+                var deduct2day = deductDays(this_date, 2)
+                var deducted_day = String(deduct2day.getDate()).padStart(2, '0');
+                var this_m = String(deduct2day.getMonth() + 1).padStart(2, '0');
+                var year = deduct2day.getFullYear();
+                var d2move = `${year}-${this_m}-${deducted_day}`
+                $('#d_start').attr('max', d2move);
+            }
+        })
+        $('#examp').DataTable({
+            dom: 'Bfrtip',
+            "bInfo": false,
+            "bPaginate": false,
+            buttons: [],
+            searching: false,
+        });
+    }else if (tag == 'clients') {
+        // saba-diha
+        try{
+            var clients = map1.get('users')
+            var table = document.getElementsByClassName('clients_list')[0]
+            for (let c = 0 ; c < clients.length; c++){
+                var dc = new Date(clients[c].date_created), d_up = new Date(clients[c].date_updated), l_ln = new Date(clients[c].last_login), addr, gndr;
+                if(clients[c].address == ""){
+                    addr = "N/A";
+                }else{
+                    addr = clients[c].address
+                }
+
+                if(clients[c].gender == ""){    
+                    gndr = "N/A";
+                }else{
+                    gndr = clients[c].gender
+                }
+                table.innerHTML += `
+                <center>
+                <tr class="text-center">
+                    <td>${clients[c].id}</td>
+                    <td>${clients[c].firstname}</td>
+                    <td>${clients[c].lastname}</td>
+                    <td>${gndr}</td>
+                    <td>${clients[c].contact}</td>
+                    <td>${clients[c].email}</td>
+                    <td>${addr}</td>
+                    <td>${l_ln.toLocaleDateString()}</td>
+                    <td>${dc.toLocaleDateString()}</td>
+                    <td>${d_up.toLocaleDateString()}</td>
+                    <td>
+                        <button onclick='next("/admin/clients/${clients[c].id}")' type="button" class="btn btn-link text-info ms-auto border-0" title="edit"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
+                        <a onclick="del_cl(this)" d_id="${clients[c].id}" class="btn btn-link text-danger ms-auto border-0" title="delete">
+                            <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                        </a>
+                    </td>
+                </tr>
+                </center>
+                `
+            }
+            
+            $('#example3').DataTable({
+                dom: 'Bfrtip',
+                language: {
+                    searchPlaceholder: "Search",
+                    search: "",
+                },
+                "bInfo": false,
+                buttons: [],
+                'columnDefs': [
+                    {
+                        'searchable': false,
+                        'targets': [-1],
+                        bSortable: false,
+                        aTargets: [-1, -2]
+                    },
+                ]
+            });
+        }catch{
+            //abcd
+            var conf = window.location.pathname
+            
+            var url = conf.toLowerCase();
+            var res = url.split("/");
+            var pos = res.indexOf('clients');
+            var result = res[pos+1];
+            var x = map1.get('users')
+            var info = [];
+            for(let cl = 0; cl < x.length; cl++){
+                if(x[cl].id == result){
+                    info.push(x[cl])
+                }
+            }
+            console.log(info);
+            function today(td) {
+                var this_date = new Date(td)
+                var day = String(this_date.getDate()).padStart(2, '0');
+                var m = String(this_date.getMonth() + 1).padStart(2, '0');
+                var year = this_date.getFullYear();
+                return `${year}-${m}-${day}`;
+            }
+            var add, gnd;
+            if(info[0].address == ""){
+                add = "N/A"
+            }else{
+                add = info[0].address
+            }
+
+            if(info[0].gender == ""){
+                gnd = "N/A"
+            }else{
+                gnd = info[0].gender
+            }
+
+            var display_f_name = document.getElementsByClassName('display_full_name')[0]
+            var display_type = document.getElementsByClassName('display_type')[0]
+            display_f_name.innerHTML = `${info[0].firstname} ${info[0].lastname}`
+            document.querySelector('.cl_avatar').setAttribute('src', info[0].avatar)
+            document.querySelector('.cp').setAttribute('d_id', info[0].id)
+            display_type.innerHTML = "client";
+            document.getElementById("display_id").placeholder = `${info[0].id}`;
+            document.getElementById("f_name").placeholder = `${info[0].firstname}`;
+            document.getElementById("l_name").placeholder = `${info[0].lastname}`;
+            document.getElementById("u_name").placeholder = `${info[0].email}`;
+            document.getElementById("last_login").placeholder = `${today(info[0].last_login)}`;
+            document.getElementById("date_added").placeholder = `${today(info[0].date_created)}`;
+            document.getElementById("date_updated").placeholder = `${today(info[0].date_updated)}`;
+            document.querySelector('.cl_inf').setAttribute('data_id', result)
+            document.querySelector('.updid').setAttribute('data_id', result)
+            document.getElementById("address").placeholder = `${add}`;
+            document.querySelector('.bct7').setAttribute('data', gnd)
+            document.querySelector('.bct7').innerHTML = gnd;
+            document.getElementById("contact").placeholder = `${info[0].contact}`;
         }
-    } else if (tag == 'profile') {
-        var valid_u = map_data.get('active_u');
-        document.querySelector('.display_full_name').innerHTML = `${valid_u.raw[0].firstname.toUpperCase()} ${valid_u.raw[0].lastname.toUpperCase()}`;
-        document.querySelector('.disp-id').placeholder = valid_u.raw[0].id;
-        document.querySelector('.f_name').placeholder = valid_u.raw[0].firstname;
-        document.querySelector('.l_name').placeholder = valid_u.raw[0].lastname;
-        document.querySelector('.date_updated').placeholder = today(new Date(valid_u.raw[0].date_updated));
-        document.querySelector('.date_added').placeholder = today(new Date(valid_u.raw[0].date_created));
-        document.querySelector('.last_login').placeholder = today(new Date(valid_u.raw[0].last_login));
-        document.querySelector('.u_name').placeholder = valid_u.raw[0].email;
-        document.querySelector('.address').placeholder = valid_u.raw[0].address;
-        document.querySelector('.contact').placeholder = valid_u.raw[0].contact;
-        document.querySelector('.bct').innerHTML = valid_u.raw[0].gender;
-        document.querySelector('.bct').setAttribute('data', valid_u.raw[0].gender)
-    } else if (tag == 'my-bookings') {
-        var b_list = map_data.get('my-bookings');
-        var my_booking_list = document.querySelector('.my_booking_list');
-        for (let loop = 0; loop < b_list.length; loop++) {
-            var d_booked = new Date(b_list[loop].date_created), d_start = new Date(b_list[loop].date_start), d_end = new Date(b_list[loop].date_end), stats
-            if (b_list[loop].status == "0") {
-                stats =
-                    `
-                <span class="text-warning">PENDING</span>
-                `;
-            } else if (b_list[loop].status == "1") {
-                stats =
-                    `
-                <span class="text-info">CONFIRMED</span>
-                `;
-            } else if (b_list[loop].status == "2") {
-                stats =
-                    `
-                <span class="text-danger">CANCELLED</span>
-                `;
-            } else if (b_list[loop].status == "3") {
-                stats =
-                    `
-                <span class="text-success">PICK UP</span>
-                `;
-            } else if (b_list[loop].status == "4") {
-                stats =
-                    `
-                <span class="text-secondary">RETURNED</span>
-                `;
+    }
+    else if (tag == 'brandlist') {
+        var brands = map1.get('brand_list')
+        var table = document.getElementsByClassName('brand_list')[0]
+        for (let b = 0; b < brands.length; b++) {
+            var stats, dc = new Date(brands[b].date_created), dp = new Date(brands[b].date_updated);
+            if (brands[b].status == "0") {
+                stats = "inactive"
+            } else if (brands[b].status == "1") {
+                stats = "active"
             }
-            my_booking_list.innerHTML += `
+            table.innerHTML += `
             <center>
             <tr class="text-center">
-                <td>${b_list[loop].id}</td>
-                <td>${d_booked.toLocaleDateString()}</td>
-                <td>${d_start.toLocaleDateString()}</td>
-                <td>${d_end.toLocaleDateString()}</td>
+                <td>${brands[b].id}</td>
+                <td>${brands[b].name}</td>
+                <td>${dc.toLocaleDateString()}</td>
+                <td>${dp.toLocaleDateString()}</td>
                 <td>${stats}</td>
                 <td>
-                    <button d_id="${loop}" onclick="detail(this)" type="button" class="btn btn-link text-info ms-auto border-0" title="details" data-bs-toggle="modal" data-bs-target="#edt_cat"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">dehaze</i></button>
+                    <button d_id="${brands[b].id}" onclick="edit_br(this)" type="button" class="btn btn-link text-info ms-auto border-0" title="edit" data-bs-toggle="modal" data-bs-target="#edt_m"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
+                    <a onclick="del_br(this)" d_id="${brands[b].id}" class="btn btn-link text-danger ms-auto border-0" title="delete">
+                        <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                    </a>
                 </td>
             </tr>
             </center>
             `
         }
-        $('#my_bookings').DataTable({
+        $('#example').DataTable({
             dom: 'Bfrtip',
             language: {
                 searchPlaceholder: "Search",
@@ -367,222 +646,165 @@ function page_data_loader(tag) {
                 },
             ]
         });
-    }else if (tag == 'product') {
-        console.log("hello world")
-        var link = rep(window.location.pathname);
-        var url = link.toLowerCase();
-        var res = url.split("/");
-        var pos = res.indexOf('product');
-        var result = res[pos + 1];
-        var onlyContainsNumbers = (str) => /^\d+$/.test(str);
-        function on(){
-            console.log(result)
-            var all_bikes = map_data.get('all_bikes');
-            var all_brands = map_data.get('all_brands');
-            var all_categories = map_data.get('all_categories');
-            var all_galleries = map_data.get('galleries');
-            var bike = [], brand = [], category = [], galery = [], bike_id;
-            for (var bikes of all_bikes) {
-                result == bikes.id ? (bike.push(bikes), bike_id=bikes.id):""
+    }else if (tag == 'categorylist') {
+        var categories = map1.get('categories')
+        var table = document.getElementsByClassName('category_list')[0]
+        for (let c = 0; c < categories.length; c++) {
+            var stats, dc = new Date(categories[c].date_created), dp = new Date(categories[c].date_updated);
+            if (categories[c].status == "0") {
+                stats = "inactive"
+            } else if (categories[c].status == "1") {
+                stats = "active"
             }
-            for (var brands of all_brands) {
-                bike[0].brand_id == brands.id ? brand.push(brands):""
-            }
-            for (var categories of all_categories) {
-                console.log(categories.id)
-                bike[0].category_id == categories.id ? category.push(categories):""
-            }
-            for (var galleries of all_galleries) {
-                bike_id == galleries.bike_id ? galery.push(galleries):""
-            }
-            document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
-            document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
-            document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
-            document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
-            console.log(brand)
-            document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
-            document.querySelector('.product-avatar').innerHTML =
+            table.innerHTML += `
+            <center>
+            <tr class="text-center">
+                <td>${categories[c].id}</td>
+                <td>${categories[c].category}</td>
+                <td>${dc.toLocaleDateString()}</td>
+                <td>${dp.toLocaleDateString()}</td>
+                <td>${stats}</td>
+                <td>
+                    <button d_id="${categories[c].id}" onclick="edit_cat(this)" type="button" class="btn btn-link text-info ms-auto border-0" title="edit" data-bs-toggle="modal" data-bs-target="#edt_cat"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
+                    <a onclick="remove_cat(this)" d_id="${categories[c].id}" class="btn btn-link text-danger ms-auto border-0" title="delete">
+                        <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                    </a>
+                </td>
+            </tr>
+            </center>
             `
-                <img class="w-100 border-radius-lg shadow-lg mx-auto"
-                src="${bike[0].avatar}" alt="chair">
-            `
-            var gal = document.querySelector('.galeries');
-            gal.innerHTML = ""
-            for (var galleries of all_galleries) {
-                gal.innerHTML +=        
-                `
-               <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
-                   <div class="card" data-animation="true">
-                       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                           <a class="d-block blur-shadow-image">
-                               <img src="${galleries.image}" class="img-fluid border-radius-lg" alt="Responsive image">
-                           </a>
-                           <div class="colored-shadow"
-                               style="background-image: url(${galleries.image});">
-                           </div>
-                       </div>
-                   </div>
-               </div>
-               `
-            }
-
-
-
-
-
-
-
-
-
-            var u = map_data.get('active_u');
-            var unit_chicker = document.querySelector('.unit-chicker');
-            function adds(){
-                unit_chicker.innerHTML = ``
-            }
-            function not_adds(){
-                unit_chicker.innerHTML = `
-                <div class="row border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-                    <div class="col-lg-3 mt-lg-n2 mt-2">
-                        <div class="input-group input-group-static my-3">
-                            <label>Date Start</label>
-                            <input type="date" class="form-control date_start" onchange="startclear(this);">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 mt-lg-n2 mt-2">
-                        <div class="input-group input-group-static my-3">
-                            <label>Date end</label>
-                            <input type="date" class="form-control date_end" onchange="endclear(this);">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 mt-lg-n2 chicker">
-                        <label>&nbsp;</label>
-                        <button type="button" class="btn bg-gradient-primary" style="margin-left: 7vh !important; bottom: 2vh !important;"
-                            onclick="check_unit()">Check Availablity</button>
-                    </div>
-                    <span class="" id="sts"></span>
-                </div>
-                
-                `
-                var date_now = today(new Date())
-                var date_start_picker = document.querySelector('.date_start');
-                var date_end_picker = document.querySelector('.date_end');
-                date_start_picker.setAttribute('min', date_now);
-                date_start_picker.setAttribute('value', date_now);
-                date_start_picker.setAttribute('max', date_now);
-                date_end_picker.setAttribute('min', today(addDays(new Date(date_now), 1)));
-                date_end_picker.setAttribute('value', today(addDays(new Date(date_now), 1)));
-                $(".date_start").change((a) => {
-                    if (a.target.value) {
-                        date_end_picker.min = today(addDays(new Date(a.target.value), 1))
-                    }
-                })
-
-                $(".date_end").change((a) => {
-                    date_start_picker.max = today(deductDays(new Date(a.target.value), 1));
-                })
-            }
-            u.status == 203 ? adds() : not_adds()
         }
-        // make condition here if user admin client or guest
-        onlyContainsNumbers(result) ? on() : console.log("display werror");
-    }else if (tag == 'book') {
-        var u = map_data.get('active_u');
-        var link = rep(window.location.pathname);
-        var url = link.toLowerCase();
-        var res = url.split("/");
-        var pos = res.indexOf('book');
-        var result = res[pos + 1];
-        var onlyContainsNumbers = (str) => /^\d+$/.test(str);
-        function on(){
-            console.log(result)
-            var all_bikes = map_data.get('all_bikes');
-            var all_brands = map_data.get('all_brands');
-            var all_categories = map_data.get('all_categories');
-            var all_galleries = map_data.get('galleries');
-            var bike = [], brand = [], category = [], galery = [], bike_id;
-            for (var bikes of all_bikes) {
-                result == bikes.id ? (bike.push(bikes), bike_id=bikes.id):""
-            }
-            for (var brands of all_brands) {
-                bike[0].brand_id == brands.id ? brand.push(brands):""
-            }
-            for (var categories of all_categories) {
-                console.log(categories.id)
-                bike[0].category_id == categories.id ? category.push(categories):""
-            }
-            for (var galleries of all_galleries) {
-                bike_id == galleries.bike_id ? galery.push(galleries):""
-            }
-            document.querySelector('.bike_name').innerHTML = bike[0].bike_model ? bike[0].bike_model : "N/A" 
-            document.querySelector('.price').innerHTML =  bike[0].daily_rate ? bike[0].daily_rate : "N/A" 
-            document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A" 
-            document.querySelector('.category').innerHTML = category[0].category ? category[0].category : "N/A" 
-            console.log(brand)
-            document.querySelector('.brand').innerHTML = brand[0].name ? brand[0].name : "N/A" 
-            document.querySelector('.product-avatar').innerHTML =
-            `
-                <img class="w-100 border-radius-lg shadow-lg mx-auto"
-                src="${bike[0].avatar}" alt="chair">
-            `
-            var gal = document.querySelector('.galeries');
-            gal.innerHTML = ""
-            for (var galleries of all_galleries) {
-                gal.innerHTML +=        
-                `
-               <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4" style="margin-bottom: 7vh !important;">
-                   <div class="card" data-animation="true">
-                       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                           <a class="d-block blur-shadow-image">
-                               <img src="${galleries.image}" class="img-fluid border-radius-lg" alt="Responsive image">
-                           </a>
-                           <div class="colored-shadow"
-                               style="background-image: url(${galleries.image});">
-                           </div>
-                       </div>
-                   </div>
-               </div>
-               `
-            }
-
-            var unit_chicker = document.querySelector('.unit-chicker');
-            function adds(){
-                unit_chicker.innerHTML = ``
-            }
-            function not_adds(){
-                unit_chicker.innerHTML = `
-                <div class="row border-radius-md pb-4 p-3 mx-sm-0 mx-1 position-relative">
-                    <div class="col-lg-3 mt-lg-n2 mt-2">
-                        <div class="input-group input-group-static my-3">
-                            <label>Date Start</label>
-                            ${from[0]}
-                        </div>
-                    </div>
-                    <div class="col-lg-3 mt-lg-n2 mt-2">
-                        <div class="input-group input-group-static my-3">
-                            <label>Date end</label>
-                            ${to[0]}
-                        </div>
-                    </div>
-                    <div class="col-lg-3 mt-lg-n2 chicker">
-                        <label>&nbsp;</label>
-                        <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: 2vh !important;"
-                            onclick="check_unit()">BOOK NOW</button>
-                    </div>
-                    <span class="" id="sts"></span>
-                </div>
-                
-                `
-            }
-            u.status == 203 ? adds() : not_adds()
-            
+        $('#example2').DataTable({
+            dom: 'Bfrtip',
+            language: {
+                searchPlaceholder: "Search",
+                search: "",
+            },
+            "bInfo": false,
+            buttons: [],
+            'columnDefs': [
+                {
+                    'searchable': false,
+                    'targets': [-1],
+                    bSortable: false,
+                    aTargets: [-1, -2]
+                },
+            ]
+        });
+    }else if (tag == 'profile') {
+        console.log("hellow profile")
+        var x = map1.get('user')
+        var display_f_name = document.getElementsByClassName('display_full_name')[0]
+        var display_type = document.getElementsByClassName('display_type')[0]
+        document.querySelector('.my-profile').setAttribute('src',x[0].avatar)
+        display_f_name.innerHTML = `${x[0].firstname} ${x[0].lastname}`
+        var tp;
+        if (x[0].type = 1) {
+            tp = "admin"
+        } else {
+            tp = "client"
         }
-        // make condition here if user admin client or guest
-        onlyContainsNumbers(result) && from[0] ? on() : (document.querySelector('.layer').innerHTML = `<h1>404 NOT FOUND </h1>`, document.querySelector('.sub-layer').innerHTML = ``);
-    }else if (tag == 'About') {
-        document.querySelector('.tc3').classList.add('bg-gradient-primary')
+        function today(td) {
+            var this_date = new Date(td)
+            var day = String(this_date.getDate()).padStart(2, '0');
+            var m = String(this_date.getMonth() + 1).padStart(2, '0');
+            var year = this_date.getFullYear();
+            return `${year}-${m}-${day}`;
+        }
+        display_type.innerHTML = tp;
+        document.getElementById("display_id").placeholder = `${x[0].id}`;
+        document.getElementById("f_name").placeholder = `${x[0].firstname}`;
+        document.getElementById("l_name").placeholder = `${x[0].lastname}`;
+        document.getElementById("u_name").placeholder = `${x[0].username}`;
+        document.getElementById("last_login").placeholder = `${today(x[0].last_login)}`;
+        document.getElementById("date_added").placeholder = `${today(x[0].date_added)}`;
+        document.getElementById("date_updated").placeholder = `${today(x[0].date_updated)}`;
+    } else if (tag == 'Add Motorbike') {
+        $('#onkp').keypress(function (e) {
+            if (this.value.length == 0 && e.which == 48) {
+                return false;
+            }
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            }
+        });
+        var x = map1.get('categories')
+        var x2 = map1.get('brand_list')
+        var target = document.getElementsByClassName('bct')[0];
+        var target2 = document.getElementsByClassName('bct2')[0];
+        var target3 = document.getElementsByClassName('bct3')[0];
+        target3.setAttribute('data_id', 1)
+        target.innerHTML = x[0].category;
+        target.setAttribute('data_id', x[0].id)
+        target2.innerHTML = x2[0].name;
+        target2.setAttribute('data_id', x2[0].id)
+        var tb_bt = document.getElementsByClassName('bt')[0];
+        var tb_bt2 = document.getElementsByClassName('bt2')[0];
+
+        for (var l = 0; l < x.length; l++) {
+            tb_bt.innerHTML += `<li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="${x[l].id}" onclick="bcat(this)">${x[l].category}</a></li>`
+        }
+        for (var l = 0; l < x.length; l++) {
+            tb_bt2.innerHTML += `<li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="${x2[l].id}" onclick="bcat2(this)">${x2[l].name}</a></li>`
+        }
+    }
+    else {
+        console.log("else")
     }
 }
-
-
-
-window.addEventListener("load", first_load(), false);
+const rep = ne => {
+    const l_slice = ne.slice(-1);
+    if (l_slice === "/") {
+        let url = ne;
+        url = url.slice(0, -1);
+        return url;
+    }
+    else {
+        return ne;
+    }
+}
+const page_handler = async url => {
+    var sub_url = url.toLowerCase();
+    await data_initializer().then(() => {
+        var curent_url = rep(sub_url);
+        const entry = admin_template_data.get(curent_url);
+        document.title = entry.tittle;
+        history.pushState(
+          null,
+          entry.tittle,
+          location.protocol + "//" + location.host + curent_url + location.hash
+        );
+        document.querySelector(".bdy").innerHTML = entry.content
+        get_page(entry.tag);
+    });
+}
+const analizer = async(url)=>{
+    await start().then(()=>{
+        (async () => {
+            await $.ajax({
+                url: '/query/active_user',
+                method: "POST",
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.status == 202) {
+                      var layer = document.querySelector(".layer");
+                      layer.innerHTML = "";
+                      layer.innerHTML = layout.get("layer-index");
+                      page_handler(url);
+                    } else {
+                      var locate = window.location.pathname.toLowerCase();
+                      var layer = document.querySelector(".layer");
+                      const entry = admin_template_data.get(rep(locate));
+                      document.title = entry.tittle;
+                      history.pushState(null, entry.tittle, rep(locate));
+                      layer.innerHTML += entry.layer;
+                    }
+                },
+                error: function (request, error) {
+                    console.log(error)
+                },
+            });
+        })();
+    })
+}
+window.addEventListener("load", analizer(window.location.pathname), false);

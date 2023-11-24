@@ -21,7 +21,7 @@
                     <ul class="nav">
                         <li class="nav-item active">
                             <a class="nav-link text-white a" href='javascript:;' id="dashboard"
-                                onclick='next("/admin")'>
+                                onclick='page_handler("/admin")'>
                                 <i class="material-icons-round opacity-10 ac">dashboard</i>
                                 <span class="sidenav-normal  ms-2  ps-1">Dashboard</span>
                             </a>
@@ -37,7 +37,7 @@
                     <ul class="nav">
                         <li class="nav-item active">
                             <a class="nav-link text-white a " id_no="5" href='javascript:;' id="Motorbikes"
-                                onclick='next("/admin/motorbikes/")'>
+                                onclick='page_handler("/admin/motorbikes/")'>
                                 <i class="material-icons-round opacity-10 ac">motorcycle</i>
                                 <span class="sidenav-normal ms-2 ps-1">Bike List</span>
                             </a>
@@ -53,7 +53,7 @@
                     <ul class="nav">
                         <li class="nav-item active">
                             <a class="nav-link text-white a" href='javascript:;' id="bookinglist"
-                                onclick='next("/admin/bookinglist/")'>
+                                onclick='page_handler("/admin/bookinglist/")'>
                                 <i class="material-icons-round opacity-10 ac">content_paste</i>
                                 <span class="sidenav-normal ms-2 ps-1">Booking List</span>
                             </a>
@@ -69,7 +69,7 @@
                     <ul class="nav">
                         <li class="nav-item active">
                             <a class="nav-link text-white a" href='javascript:;' id="bookingreports"
-                                onclick='next("/admin/bookingreports/")'>
+                                onclick='page_handler("/admin/bookingreports/")'>
                                 <i class="material-icons-round opacity-10 ac">filter_frames</i>
                                 <span class="sidenav-normal ms-2 ps-1">Booking Reports</span>
                             </a>
@@ -85,7 +85,7 @@
                     <ul class="nav">
                         <li class="nav-item active">
                             <a class="nav-link text-white a" href='javascript:;' id="clients"
-                                onclick='next("/admin/clients")'>
+                                onclick='page_handler("/admin/clients")'>
                                 <i class="material-icons-round opacity-10 ac">people</i>
                                 <span class="sidenav-normal ms-2 ps-1">Clients</span>
                             </a>
@@ -103,13 +103,13 @@
                 <div class="collapse  show " id="dashboardsExamples">
                     <ul class="nav ">
                         <li class="nav-item active">
-                            <a class="nav-link text-white a " id="brandlist" onclick='next("/admin/brandlist/")'>
+                            <a class="nav-link text-white a " id="brandlist" onclick='page_handler("/admin/brandlist/")'>
                                 <i class="material-icons-round opacity-10">wb_auto</i>
                                 <span class="sidenav-normal  ms-2  ps-1">Brand List</span>
                             </a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link text-white a " id="categorylist" onclick='next("/admin/categorylist/")'>
+                            <a class="nav-link text-white a " id="categorylist" onclick='page_handler("/admin/categorylist/")'>
                                 <i class="material-icons-round opacity-10">view_list</i>
                                 <span class="sidenav-normal  ms-2  ps-1">Category List</span>
                             </a>
@@ -182,7 +182,7 @@
                         <ul class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
                             <li class="mb-2">
                                 <a class="dropdown-item border-radius-md" href="javascript:void(0)"
-                                    onclick='next("/admin/profile")'>
+                                    onclick='page_handler("/admin/profile")'>
                                     <div class="d-flex align-items-center py-1">
                                         <span class="material-icons">account_circle</span>
                                         <div class="ms-2">
@@ -430,12 +430,7 @@
                     <i class="material-icons">clear</i>
                 </button>
             </div>
-
         </div>
-
-
-
-
         <div class="row">
             <div class="col-4 scrollbar-y msg-usrs-row" style="height: 50vh !important; overflow: scroll; padding: 0;" >
             </div>
@@ -447,31 +442,5 @@
             <div class="row msg_sender">
             </div>
         </div>
-
     </div>
 </div>
-
-
-
-<!-- <div class="row justify-content-start mt-2" style="width: 100% !important;">
-    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white"
-        style="border-radius: 0 25px 25px 0px; background-color: #344767 !important;">
-        <p class="text-sm">Lorem ipsum dolor </p>
-        <p>user</p>
-    </div>
-    <p style="color: black !important;">time</p>
-</div>
-<div class="row justify-content-end mt-2"
-    style="width: 100% !important; margin-left: 2vh !important;">
-    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white"
-        style="border-radius: 25px 0 0 25px; background-color: #344767 !important;">
-        <p class="text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Explicabo
-            tenetur
-            similique porro voluptas illum blanditiis..</p>
-        <p>user</p>
-    </div>
-    <p style="color: black !important;">time</p>
-</div> -->
-
-
-
