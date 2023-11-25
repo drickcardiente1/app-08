@@ -968,9 +968,6 @@ function canbook(e) {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                Swal.fire(
-                    'Booking Cancelled Successfully',
-                )
                 initializer();
                 get_page('/my-bookings');
                 first_load();
@@ -1042,9 +1039,6 @@ function updatepwd() {
                                             dataType: "JSON",
                                             success: function (data) {
                                                 if (data.status == 202) {
-                                                    Swal.fire(
-                                                        'password Updated',
-                                                    )
                                                     old_p.value = "";
                                                     new_p.value = "";
                                                     confnew_p.value = "";
@@ -1265,9 +1259,6 @@ function update_info_client() {
             dataType: "JSON",
             success: function (data) {
                 if (data.status == 202) {
-                    Swal.fire(
-                        'Users info succesfully updated',
-                    )
                     initializer();
                     get_page('/profile');
                     first_load();
@@ -1734,7 +1725,6 @@ async function book() {
                             initializer();
                             get_page('/my-bookings');
                             first_load();
-                            Swal.fire("BOOK SUCCESSFULLY", "", "success");
                         }).catch(() => {
                             $('#loader').modal('hide');
                             window.location.reload()
