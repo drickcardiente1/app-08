@@ -1471,6 +1471,7 @@ async function initializer() {
     await request_all_categories();
     await request_galleries();
     var actor = map_data.get('active_u');
+    console.log(actor)
     if (actor.status == 202) {
         document.querySelector('.sub-layer').innerHTML = layout.get('msg')
         setInterval(msgnotif, 1000)
