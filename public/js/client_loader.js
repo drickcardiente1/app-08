@@ -1480,6 +1480,7 @@ async function initializer() {
     document.querySelector('.layer').innerHTML = ""
 }
 async function first_load() {
+    document.querySelector(".sub-layer").innerHTML = "";
     document.querySelector('.layer').innerHTML = `
     <style>
     *,
