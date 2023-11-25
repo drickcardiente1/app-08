@@ -370,7 +370,7 @@ queries.post('/addbike', upload.fields([{ name: 'Default', maxCount: 1 }, { name
             })().then((images) => {
                 console.log(images.avatar.length)
                 console.log(images.galeries.length)
-                qry = `INSERT INTO bike_list(id, brand_id, category_id, bike_model, description, avatar, daily_rate, status, date_created, date_updated) VALUES ('', '${bike_category}', '${brand_category}', '${model}', '${discription}', '${images.avatar[0]}', '${daily_rate}', '${status}', '${today}', '${today}')`;
+                qry = `INSERT INTO bike_list(id, brand_id, category_id, bike_model, description, avatar, daily_rate, status, date_created, date_updated) VALUES ('', '${brand_category}', '${bike_category}', '${model}', '${discription}', '${images.avatar[0]}', '${daily_rate}', '${status}', '${today}', '${today}')`;
                 (async () => {
                     await new Promise((resolve, reject) => {
                         db.query(qry, (err, data) => { err ? reject(res.send({ code: 404 })) : resolve(data) });

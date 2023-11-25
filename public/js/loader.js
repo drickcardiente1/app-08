@@ -843,17 +843,17 @@ const rep = (ne) => {
 };
 const page_handler = async (url) => {
   var sub_url = url.toLowerCase();
-    activetag_remove();
-    var curent_url = rep(sub_url);
-    const entry = admin_template_data.get(curent_url);
-    document.title = entry.tittle;
-    history.pushState(
-      null,
-      entry.tittle,
-      location.protocol + "//" + location.host + curent_url + location.hash
-    );
-    document.querySelector(".bdy").innerHTML = entry.content;
-    get_page(entry.tag);
+  activetag_remove();
+  var curent_url = rep(sub_url);
+  const entry = admin_template_data.get(curent_url);
+  document.title = entry.tittle;
+  history.pushState(
+    null,
+    entry.tittle,
+    location.protocol + "//" + location.host + curent_url + location.hash
+  );
+  document.querySelector(".bdy").innerHTML = entry.content;
+  get_page(entry.tag);
 };
 const activetag_remove = () => {
   var a = document.getElementsByClassName("a");
@@ -894,4 +894,167 @@ const analizer = async (url) => {
     })();
   });
 };
+function val_nb() {
+  var err = false;
+  var bike_category = document.getElementsByClassName("bct")[0].getAttribute("data_id");
+  var brand_category = document.getElementsByClassName("bct2")[0].getAttribute("data_id");
+  var status = document.getElementsByClassName("bct3")[0].getAttribute("data_id");
+  var daily_rate = document.getElementById("onkp").value;
+  var model = document.getElementById("mdl").value;
+  var discription = document.getElementById("disc").value;
+  var err2 = document.getElementsByClassName("lb2")[0];
+    var err3 = document.getElementsByClassName("lb3")[0];
+  // are nko
+  err2.innerHTML = "";
+  err3.innerHTML = "";
+
+  // are sa b
+  if (daily_rate == "") {
+    err = true;
+    err2.innerHTML = "Please input daily rate";
+  }
+  if (model == "") {
+    err = true;
+    err3.innerHTML = "Please input model";
+  }
+  // galery: mult_img.files[0]
+  if (!err) {
+    can();
+    Swal.fire({
+      title: "Please Wait !",
+      html: '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    var singel = document.querySelector(".sing-img");
+    var mult_img = document.querySelector(".mult-img");
+    var data = new FormData();
+    for (let loop = 0; loop < mult_img.files.length; loop++) {
+      data.append("Galeries", mult_img.files[loop]);
+    }
+
+    data.append("Default", singel.files[0]);
+    data.append("bike_category", bike_category);
+    data.append("brand_category", brand_category);
+    data.append("status", status);
+    data.append("daily_rate", daily_rate);
+    data.append("model", model);
+    data.append("discription", discription);
+    fetch("/query/addbike", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => {
+        analizer("/admin/motorbikes/add");
+        Swal.close();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Motorbike Added",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((rs) => {
+        recan();
+        Swal.fire("Failed to upload profile");
+        // and here
+        singel.value = "";
+      });
+  }
+}
+function bcat(ths) {
+    var target = document.getElementsByClassName('bct')[0];
+    var vr = ths.getAttribute('data_id');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data_id', vr)
+    console.log(ths.innerHTML);
+}
+function bcat2(ths) {
+    var target = document.getElementsByClassName('bct2')[0];
+    var vr = ths.getAttribute('data_id');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data_id', vr)
+    console.log(ths.innerHTML);
+}
+function bcat3(ths) {
+    var target = document.getElementsByClassName('bct3')[0];
+    var vr = ths.getAttribute('data_id');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data_id', vr)
+}
+function bcat4(ths) {
+    var target = document.getElementsByClassName('bct4')[0];
+    var vr = ths.getAttribute('data_id');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data_id', vr)
+}
+function bcat5(ths) {
+    var target = document.getElementsByClassName('bct5')[0];
+    var vr = ths.getAttribute('data_id');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data_id', vr);
+}
+function bcat6(ths) {
+    var target = document.getElementsByClassName('bct6')[0];
+    var vr = ths.getAttribute('data_id');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data_id', vr);
+}
+function bcat7(ths) {
+    var target = document.getElementsByClassName('bct7')[0];
+    var vr = ths.getAttribute('data');
+    target.innerHTML = "";
+    target.innerHTML = ths.innerHTML;
+    target.setAttribute('data', vr);
+}
+function can() {
+  var bot1 = document.getElementById("dashboard");
+  bot1.style.pointerEvents = "none";
+  bot1.style.cursor = "none";
+  var bot2 = document.getElementById("Motorbikes");
+  bot2.style.pointerEvents = "none";
+  bot2.style.cursor = "none";
+  var bot3 = document.getElementById("bookinglist");
+  bot3.style.pointerEvents = "none";
+  bot3.style.cursor = "none";
+  var bot4 = document.getElementById("bookingreports");
+  bot4.style.pointerEvents = "none";
+  bot4.style.cursor = "none";
+  var bot5 = document.getElementById("brandlist");
+  bot5.style.pointerEvents = "none";
+  bot5.style.cursor = "none";
+  var bot6 = document.getElementById("categorylist");
+  bot6.style.pointerEvents = "none";
+  bot6.style.cursor = "none";
+  var bot7 = document.getElementById("clients");
+  bot7.style.pointerEvents = "none";
+  bot7.style.cursor = "none";
+}
+function recan() {
+  var bot1 = document.getElementById("dashboard");
+  bot1.style = "";
+  var bot2 = document.getElementById("Motorbikes");
+  bot2.style = "";
+  var bot3 = document.getElementById("bookinglist");
+  bot3.style = "";
+  var bot4 = document.getElementById("bookingreports");
+  bot4.style = "";
+  var bot5 = document.getElementById("brandlist");
+  bot5.style = "";
+  var bot6 = document.getElementById("categorylist");
+  bot6.style = "";
+  var bot7 = document.getElementById("clients");
+  bot7.style = "";
+}
+
 window.addEventListener("load", analizer(window.location.pathname), false);
