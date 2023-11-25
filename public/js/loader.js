@@ -966,6 +966,212 @@ function val_nb() {
       });
   }
 }
+
+function edt_b(ths) {
+  var t_id = ths.getAttribute("d_id");
+  $("#onkp").keypress(function (e) {
+    if (this.value.length == 0 && e.which == 48) {
+      return false;
+    }
+    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+      return false;
+    }
+  });
+  can();
+
+  var x = map1.get("categories");
+  var x2 = map1.get("brand_list");
+  var x4 = map1.get("bikes");
+
+  var target = document.getElementsByClassName("bct")[0];
+  var target2 = document.getElementsByClassName("bct2")[0];
+  var target3 = document.getElementsByClassName("bct3")[0];
+
+  var cat;
+  var br;
+  var tf;
+  for (let l = 0; l < x.length; l++) {
+    if (x[l].id == x4[t_id].category_id) {
+      cat = x[l].category;
+    }
+  }
+  for (let l = 0; l < x2.length; l++) {
+    if (x2[l].id == x4[t_id].brand_id) {
+      br = x2[l].name;
+    }
+  }
+  if (br == undefined) {
+    br = "N/A";
+  }
+  if (cat == undefined) {
+    cat = "N/A";
+  }
+  if (x4[t_id].status) {
+    tf = "Active";
+  } else {
+    tf = "InActive";
+  }
+
+  target.setAttribute("data_id", x4[t_id].category_id);
+  target.innerHTML = cat;
+
+  target2.setAttribute("data_id", x4[t_id].brand_id);
+  target2.innerHTML = br;
+
+  target3.setAttribute("data_id", x4[t_id].status);
+  target3.innerHTML = tf;
+
+  var tb_bt = document.getElementsByClassName("bt")[0];
+  var tb_bt2 = document.getElementsByClassName("bt2")[0];
+  console.log(x4[t_id]);
+
+  var gal = document.querySelector(".galeries");
+  gal.innerHTML = "";
+  var bike_gallery = map1.get("bike_gallery");
+  for (let loop = 0; loop < bike_gallery.length; loop++) {
+    if (bike_gallery[loop].bike_id == x4[t_id].id) {
+      gal.innerHTML += `
+            <div class="col-lg-4 col-md-6 mt-5 mt-md-1 mb-4 remember${bike_gallery[loop].id}" style="margin-bottom: 7vh !important;">
+                <div class="card" data-animation="true">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <a class="d-block blur-shadow-image">
+                            <img src="${bike_gallery[loop].image}" class="img-fluid border-radius-lg" alt="Responsive image">
+                        </a>
+                        <div class="colored-shadow"
+                            style="background-image: url(${bike_gallery[loop].image});">
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="mt-n6 mx-auto">
+                            <a onclick="re_model(this)" d_id="${bike_gallery[loop].id}" tittle="SET AS DEFAULT" type="button" class="btn btn-link text-info ms-auto border-0" >
+                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">autorenew</i>
+                            </a>
+                            <a onclick="re_del(this)" d_id="${bike_gallery[loop].id}" tittle="REMOVE" class="btn btn-link text-danger ms-auto border-0">
+                                <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">delete</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+    }
+  }
+  // document.querySelector('.galeries').innerHTML
+
+  document.querySelector(".disp").innerHTML = `
+    <h5 class="modal-title thisbike" d_id="${x4[t_id].id}"  id="exampleModalLabel">BIKE #: ${x4[t_id].id}</h5>
+    `;
+  document.querySelector(".avt-1").src = x4[t_id].avatar;
+  document.querySelector(".avt-2").src = x4[t_id].avatar;
+  document.getElementById("onkp").placeholder = x4[t_id].daily_rate;
+  document.getElementById("mdl").placeholder = x4[t_id].bike_model;
+  document.getElementById("disc").placeholder = x4[t_id].description;
+  var localdtctd = new Date(x4[t_id].date_created);
+  var localdtupdt = new Date(x4[t_id].date_updated);
+  document.getElementById("created").placeholder = localdtctd.toDateString();
+  document.getElementById("updated").placeholder = localdtupdt.toDateString();
+
+  var sbm = document.getElementById("sbm");
+  sbm.setAttribute("onclick", "scsup(this)");
+  sbm.setAttribute("mbk_id", x4[t_id].id);
+
+  tb_bt.innerHTML = "";
+  tb_bt2.innerHTML = "";
+  for (var l = 0; l < x.length; l++) {
+    tb_bt.innerHTML += `<li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="${x[l].id}" onclick="bcat(this)">${x[l].category}</a></li>`;
+  }
+  for (var l = 0; l < x2.length; l++) {
+    tb_bt2.innerHTML += `<li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="${x2[l].id}" onclick="bcat2(this)">${x2[l].name}</a></li>`;
+  }
+}
+function scsup(ths) {
+  can();
+  var bk_id = ths.getAttribute("mbk_id");
+  var bct = document.getElementsByClassName("bct")[0];
+  var bct2 = document.getElementsByClassName("bct2")[0];
+  var bct3 = document.getElementsByClassName("bct3")[0];
+  var cat = bct.getAttribute("data_id");
+  var brn = bct2.getAttribute("data_id");
+  var trfl = bct3.getAttribute("data_id");
+  var dsc = document.getElementById("disc");
+  var dr = document.getElementById("onkp");
+  var mdl = document.getElementById("mdl");
+  var avatar = document.querySelector(".avt-1").src;
+  var discription;
+  var daily_rate;
+  var model;
+  {
+    !dsc.value ? (discription = dsc.placeholder) : (discription = dsc.value);
+  }
+  {
+    !dr.value ? (daily_rate = dr.placeholder) : (daily_rate = dr.value);
+  }
+  {
+    !mdl.value ? (model = mdl.placeholder) : (model = mdl.value);
+  }
+  var mult_img = document.querySelector(".mult-gal");
+  var data = new FormData();
+  Swal.fire({
+    title: "Please Wait !",
+    html: '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>',
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    onBeforeOpen: () => {
+      Swal.showLoading();
+    },
+  });
+  for (let loop = 0; loop < mult_img.files.length; loop++) {
+    data.append("Galeries", mult_img.files[loop]);
+  }
+  console.log(removd);
+  function ad_removed() {
+    for (let loop = 0; loop < removd.length; loop++) {
+      data.append("to_delate", removd[loop]);
+    }
+  }
+  console.log(removd.length);
+  removd ? ad_removed() : data.append("to_delate", undefined);
+  data.append("id", bk_id);
+  data.append("cat", cat);
+  data.append("brn", brn);
+  data.append("trfl", trfl);
+  data.append("discription", discription);
+  data.append("avatar", avatar);
+  data.append("daily_rate", daily_rate);
+  data.append("model", model);
+
+  fetch("/query/bike_update", {
+    method: "POST",
+    body: data,
+  })
+    .then((res) => {
+      request_all();
+      next("/admin/motorbikes/");
+      recan();
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Bike UPDATED SUCCESSFULLY",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    })
+    .catch((rs) => {
+      recan();
+      Swal.fire("Failed to upload Bike");
+      mult_img.value = "";
+    });
+  removd = [];
+}
+
+
+
+
+
+
+
+
+
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
     var vr = ths.getAttribute('data_id');

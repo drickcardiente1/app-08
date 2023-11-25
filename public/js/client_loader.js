@@ -62,15 +62,15 @@ const start = async () => {
     for (let procedure of static_template) {
         await templating(procedure.url, procedure.template);
     }
-    c_plate.set(``, { tittle: `TE Motorbikes | Home`, tag: "Home", layer: layout.get('layer'), content: layout.get('home') })
-    c_plate.set(`/categories`, { tittle: `TE Motorbikes | Categories`, tag: "Categories", layer: layout.get('layer'), content: layout.get('categories') })
-    c_plate.set(`/about`, { tittle: `TE Motorbikes | About`, tag: "About", layer: layout.get('layer'), content: layout.get('about') })
-    c_plate.set(`/sign-in`, { tittle: `TE Motorbikes | Sign-in`, tag: "Sign-in", layer: layout.get('layer'), content: layout.get('login') })
-    c_plate.set(`/sign-up`, { tittle: `TE Motorbikes | Sign-up`, tag: "Sign-up", layer: layout.get('layer'), content: layout.get('signup') })
-    c_plate.set(`/profile`, { tittle: `TE Motorbikes | My Account Details`, tag: "profile", layer: layout.get('layer'), content: layout.get('profile') })
-    c_plate.set(`/my-bookings`, { tittle: `TE Motorbikes | My bookings`, tag: "my-bookings", layer: layout.get('layer'), content: layout.get('bookings') })
-    c_plate.set(`/product`, { tittle: `TE Motorbikes | product`, tag: "product", layer: layout.get('layer'), content: layout.get('product') })
-    c_plate.set(`/book`, { tittle: `TE Motorbikes | BOOK`, tag: "book", layer: layout.get('layer'), content: layout.get('product') })
+    c_plate.set(``, { tittle: `JNJ Motorbikes | Home`, tag: "Home", layer: layout.get('layer'), content: layout.get('home') })
+    c_plate.set(`/categories`, { tittle: `JNJ Motorbikes | Categories`, tag: "Categories", layer: layout.get('layer'), content: layout.get('categories') })
+    c_plate.set(`/about`, { tittle: `JNJ Motorbikes | About`, tag: "About", layer: layout.get('layer'), content: layout.get('about') })
+    c_plate.set(`/sign-in`, { tittle: `JNJ Motorbikes | Sign-in`, tag: "Sign-in", layer: layout.get('layer'), content: layout.get('login') })
+    c_plate.set(`/sign-up`, { tittle: `JNJ Motorbikes | Sign-up`, tag: "Sign-up", layer: layout.get('layer'), content: layout.get('signup') })
+    c_plate.set(`/profile`, { tittle: `JNJ Motorbikes | My Account Details`, tag: "profile", layer: layout.get('layer'), content: layout.get('profile') })
+    c_plate.set(`/my-bookings`, { tittle: `JNJ Motorbikes | My bookings`, tag: "my-bookings", layer: layout.get('layer'), content: layout.get('bookings') })
+    c_plate.set(`/product`, { tittle: `JNJ Motorbikes | product`, tag: "product", layer: layout.get('layer'), content: layout.get('product') })
+    c_plate.set(`/book`, { tittle: `JNJ Motorbikes | BOOK`, tag: "book", layer: layout.get('layer'), content: layout.get('product') })
 };
 function startclear(ths) {
     if (ths.value == '') {
