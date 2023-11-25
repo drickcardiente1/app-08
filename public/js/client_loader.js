@@ -1463,8 +1463,7 @@ function msgnotif() {
     });
 }
 async function initializer() {
-    var sub_layer = document.querySelector('.sub-layer')
-    sub_layer ? (sub_layer.innerHTML = "") : "";
+    document.querySelector('.sub-layer').innerHTML = ""
     await request_actor();
     await request_my_bookings();
     await request_all_b();
@@ -1476,7 +1475,7 @@ async function initializer() {
         document.querySelector('.sub-layer').innerHTML = layout.get('msg')
         setInterval(msgnotif, 1000)
     } else {
-        sub_layer ? (sub_layer.innerHTML = "") : "";
+        document.querySelector('.sub-layer').innerHTML = ""
     }
     document.querySelector('.layer').innerHTML = ""
 }
@@ -1748,3 +1747,4 @@ async function book() {
     }
 }
 window.addEventListener("load", first_load(), true);
+
