@@ -987,8 +987,8 @@ function sign_out_admin() {
         method: "GET",
         dataType: "JSON",
         success: function (data) {
-            initializer();
             first_load();
+            initializer();
             get_page('/');
         }
     });
@@ -1463,7 +1463,6 @@ function msgnotif() {
     });
 }
 async function initializer() {
-    document.querySelector('.sub-layer').innerHTML = ""
     await request_actor();
     await request_my_bookings();
     await request_all_b();
