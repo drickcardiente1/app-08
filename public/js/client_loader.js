@@ -981,8 +981,8 @@ function canbook(e) {
         },
     });
 }
-function sign_out_admin() {
-    $.ajax({
+async function sign_out_admin() {
+    await $.ajax({
       url: "/auth/logout",
       method: "GET",
       dataType: "JSON",
