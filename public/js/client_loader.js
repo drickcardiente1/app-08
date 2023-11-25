@@ -986,7 +986,8 @@ async function sign_out_admin() {
       url: "/auth/logout",
       method: "GET",
       dataType: "JSON",
-      success: function (data) {
+        success: function (data) {
+          console.log(data)
         initializer();
         get_page("/");
         first_load();
