@@ -986,11 +986,12 @@ async function sign_out_admin() {
       url: "/auth/logout",
       method: "GET",
       dataType: "JSON",
-        success: function (data) {
-          console.log(data)
-        initializer();
-        get_page("/");
-        first_load();
+      success: function (data) {
+        if (data.status == 202) {
+          initializer();
+          get_page("/");
+          first_load();
+        }
       },
     });
 }
@@ -1365,15 +1366,21 @@ async function check_availble() {
 }
 async function request_actor() {
     await $.ajax({
-        url: '/client_query/u_active',
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map_data.set('active_u', data)
-        },
-        error: function (request, error) {
-            location.reload();
-        },
+      url: "/client_query/u_active",
+      method: "POST",
+      dataType: "JSON",
+      success: function (data) {
+        if (data.status == 202) {
+          document.querySelector(".sub-layer").innerHTML = layout.get("msg");
+          setInterval(msgnotif, 1000);
+        } else {
+          document.querySelector(".sub-layer").innerHTML = "";
+        }
+        map_data.set("active_u", data);
+      },
+      error: function (request, error) {
+        location.reload();
+      },
     });
 }
 async function request_my_bookings() {
@@ -1464,21 +1471,14 @@ function msgnotif() {
     });
 }
 async function initializer() {
-    await request_actor();
+    document.querySelector(".sub-layer").innerHTML = "";
     await request_my_bookings();
     await request_all_b();
     await request_all_brands();
     await request_all_categories();
     await request_galleries();
-    var actor = map_data.get('active_u');
-    console.log(actor)
-    if (actor.status == 202) {
-        document.querySelector('.sub-layer').innerHTML = layout.get('msg')
-        setInterval(msgnotif, 1000)
-    } else {
-        document.querySelector('.sub-layer').innerHTML = ""
-    }
-    document.querySelector('.layer').innerHTML = ""
+    await request_actor();
+
 }
 async function first_load() {
     document.querySelector(".sub-layer").innerHTML = "";
@@ -1684,7 +1684,6 @@ body {
     `
     await start()
     await initializer();
-    document.querySelector('.layer').innerHTML = ``
     get_page(window.location.pathname)
 }
 async function book() {
