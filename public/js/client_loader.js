@@ -983,14 +983,14 @@ function canbook(e) {
 }
 function sign_out_admin() {
     $.ajax({
-        url: "/auth/logout",
-        method: "GET",
-        dataType: "JSON",
-        success: function (data) {
-            first_load();
-            initializer();
-            get_page('/');
-        }
+      url: "/auth/logout",
+      method: "GET",
+      dataType: "JSON",
+      success: function (data) {
+        initializer();
+        get_page("/");
+        first_load();
+      },
     });
 }
 function updatepwd() {
