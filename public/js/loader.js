@@ -992,13 +992,13 @@ function val_nb() {
       .then((res) => {
         analizer("/admin/motorbikes/add");
         Swal.close();
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Motorbike Added",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        // Swal.fire({
+        //   position: "top-end",
+        //   icon: "success",
+        //   title: "Motorbike Added",
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        // });
       })
       .catch((rs) => {
         recan();
@@ -1190,17 +1190,16 @@ async function scsup(ths) {
       if (res.status == 202) {
         recan();
         analizer("/admin/motorbikes/");
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Bike UPDATED SUCCESSFULLY",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        // Swal.fire({
+        //   position: "top-end",
+        //   icon: "success",
+        //   title: "Bike UPDATED SUCCESSFULLY",
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        // });
       } else {
         analizer("/admin/motorbikes/");
         recan();
-        Swal.fire("Failed to update Bike");
       }
     })
     .catch((rs) => {
@@ -1592,7 +1591,6 @@ function upd_bl() {
     success: function (data) {
       if (data.status == 202) {
         if (data.status == 202) {
-          Swal.fire("Successfully updated");
           analizer("/admin/bookinglist");
         }
       }
@@ -2122,9 +2120,8 @@ function updt_b(ths) {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            Swal.fire("Brand Added Succesfully");
+            analizer("/admin/brandlist/");
           }
-          analizer("/admin/brandlist/");
         },
       });
     }
@@ -2160,7 +2157,6 @@ function del_br(ths) {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            Swal.fire("Model successfuly delate");
             recan();
             analizer("/admin/brandlist/");
           }
@@ -2211,9 +2207,8 @@ function add_b() {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            Swal.fire("Brand Added Succesfully");
+            analizer("/admin/brandlist/");
           }
-          analizer("/admin/brandlist/");
         },
       });
     }
@@ -2261,9 +2256,8 @@ function add_cat() {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            Swal.fire("category Added Succesfully");
+            analizer("/admin/categorylist/");
           }
-          analizer("/admin/categorylist/");
         },
       });
     }
@@ -2315,9 +2309,8 @@ function update_cat(ths) {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            Swal.fire("category updated Succesfully");
+            analizer("/admin/categorylist/");
           }
-          analizer("/admin/categorylist/");
         },
       });
     }
@@ -2393,7 +2386,6 @@ function remove_cat(ths) {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            Swal.fire("Category successfuly delated");
             recan();
             analizer("/admin/categorylist/");
           }
@@ -2489,13 +2481,13 @@ function update_cl_img(e) {
       .then((res) => {
         $("#loader").modal("hide");
         analizer(`/admin/clients/${id}`);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "PROFILE UPDATED SUCCESSFULLY",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        // Swal.fire({
+        //   position: "top-end",
+        //   icon: "success",
+        //   title: "PROFILE UPDATED SUCCESSFULLY",
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        // });
         // close here
       })
       .catch((rs) => {
@@ -2534,13 +2526,13 @@ function update_my_img() {
       .then((res) => {
         $("#loader").modal("hide");
         analizer("/admin/profile/");
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "PROFILE UPDATED SUCCESSFULLY",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        // Swal.fire({
+        //   position: "top-end",
+        //   icon: "success",
+        //   title: "PROFILE UPDATED SUCCESSFULLY",
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        // });
         // close here
       })
       .catch((rs) => {
@@ -2620,7 +2612,6 @@ function update_info() {
     success: function (data) {
       if (data.status == 202) {
         if (data.status == 202) {
-          Swal.fire("User info Updated");
           analizer("/admin/profile");
         }
       }
@@ -2701,7 +2692,6 @@ function update_info_client(ths) {
       success: function (data) {
         if (data.status == 202) {
           if (data.status == 202) {
-            Swal.fire("User info Updated");
             analizer(`/admin/clients`);
           }
         }
