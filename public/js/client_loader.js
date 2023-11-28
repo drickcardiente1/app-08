@@ -1616,7 +1616,7 @@ function format404() {
                                 <script>
                                     document.write(new Date().getFullYear())
                                 </script>
-                                TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                JNJ MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
                                 <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
                                 for a better web.
                             </div>
@@ -1696,7 +1696,7 @@ function format203(data) {
                                     <script>
                                         document.write(new Date().getFullYear())
                                     </script>
-                                    TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                    JNJ MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
                                     <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
                                     for a better web.
                                 </div>
@@ -1782,7 +1782,7 @@ function format202(data) {
                                     <script>
                                         document.write(new Date().getFullYear())
                                     </script>
-                                    TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                    JNJ MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
                                     <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
                                     for a better web.
                                 </div>
