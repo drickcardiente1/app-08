@@ -58,8 +58,7 @@ client_router.get('/book/:id', async (req, res) => {
 
 client_router.get('/profile', (req, res) => {
     if (!req.session.is_client) {
-        res.status(404);
-        res.send('Cannot GET /profile');
+        res.redirect(req.protocol + "://" + req.get("host"));
         res.end();
     }
     else {
@@ -71,8 +70,7 @@ client_router.get('/profile', (req, res) => {
 
 client_router.get('/my-bookings', (req, res) => {
     if (!req.session.is_client) {
-        res.status(404);
-        res.send('Cannot GET /profile');
+        res.redirect(req.protocol + "://" + req.get("host"));
         res.end();
     }
     else {

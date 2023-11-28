@@ -602,20 +602,20 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
             var qry
             (async () => {
                 qry = `UPDATE bike_list SET brand_id='${brand_id}', category_id='${category_id}', bike_model='${bike_model}', description='${description}', avatar='${avatar}', daily_rate='${daily_rate}', status='${status}', date_updated='${today}' WHERE id = ${bike_id};`;
-                console.log(await promise_query(qry));
+                await promise_query(qry);
             })().then(() => {
                 function obj() {
                     var qry;
                     (async () => {
                         qry = `DELETE FROM bike_gallery WHERE id='${to_delate}';`
-                        console.log(await promise_query(qry));
+                        await promise_query(qry);
                     })();
                 }
                 function obj2() {
                     (async () => {
                         for (var id of to_delate) {
                             qry = `DELETE FROM bike_gallery WHERE id='${id}';`
-                            console.log(await promise_query(qry));
+                            await promise_query(qry);
                         };
                     })();
                 }
@@ -634,13 +634,14 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
         function default_adding() {
             (async () => {
                 qry = `UPDATE bike_list SET brand_id='${brand_id}', category_id='${category_id}', bike_model='${bike_model}', description='${description}', avatar='${avatar}', daily_rate='${daily_rate}', status='${status}', date_updated='${today}' WHERE id = ${bike_id};`;
-                console.log(await promise_query(qry));
+                await promise_query(qry);
             })().then(() => {
                 console.log("job done")
                 res.sendStatus(202)
                 res.end();
-            }).catch(() => {
-                console.log("job done")
+            }).catch((error) => {
+                console.log(error)
+                console.log("job not done")
                 res.sendStatus(404)
                 res.end();
             })

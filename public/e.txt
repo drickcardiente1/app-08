@@ -1,0 +1,142 @@
+    (async () => {
+      await new Promise((resolve, reject) => {
+        db.query(sql_client, (err, data) => {
+          if (err) {
+            reject(res.send({ code: 500 }));
+          } else {
+            resolve(data);
+          }
+        });
+      })
+        .then((result) => {
+          if (result.length == 0) {
+            (async () => {
+              await new Promise((resolve, reject) => {
+                db.query(sql_admin, (err, data) => {
+                  if (err) {
+                    reject(res.send({ code: 500 }));
+                  } else {
+                    resolve(data);
+                  }
+                });
+              })
+                .then((result) => {
+                  if (result.length == 0) {
+                    res.json({ status: 404 });
+                    res.end();
+                  } else {
+                    req.session.is_admin = true;
+                    req.session.is_client = false;
+                    req.session.logged_in = true;
+                    req.session.user_id = result[0].id;
+                    req.session.uname = result[0].username;
+                    qry = `UPDATE users SET last_login='${today}' WHERE id='${req.session.user_id}';`;
+                    (async () => {
+                      await new Promise((resolve, reject) => {
+                        db.query(qry, (err, data) => {
+                          if (err) {
+                            reject(res.send({ code: 500 }));
+                          } else {
+                            resolve(data);
+                          }
+                        });
+                      })
+                        .then((rs) => {
+                          res.json({ status: 203, raw: result });
+                          res.end();
+                        })
+                        .catch((rs) => {
+                          console.log("Error such table found ", rs);
+                        });
+                    })();
+                  }
+                })
+                .catch((rs) => {
+                  console.log("Error such table found ", rs);
+                });
+            })();
+          } else {
+            req.session.is_admin = false;
+            req.session.is_client = true;
+            req.session.logged_in = true;
+            req.session.user_id = result[0].id;
+            req.session.uname = result[0].email;
+            qry = `UPDATE clients SET last_login='${today}' WHERE id='${req.session.user_id}';`;
+            (async () => {
+              await new Promise((resolve, reject) => {
+                db.query(qry, (err, data) => {
+                  if (err) {
+                    reject(res.send({ code: 500 }));
+                  } else {
+                    resolve(data);
+                  }
+                });
+              })
+                .then((rs) => {
+                  res.json({ status: 202, raw: result });
+                  res.end();
+                })
+                .catch((rs) => {
+                  console.log("Error such table found ", rs);
+                });
+            })();
+          }
+        })
+        .catch((rs) => {
+          console.log("Error such table found ", rs);
+        });
+    })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          if (result.length >= 1) {
+        (async () => {
+          console.log("sak2x 1");
+          req.session.is_admin = false;
+          console.log("sak2x 2");
+          req.session.is_client = true;
+          console.log("sak2x 3");
+          req.session.logged_in = true;
+          console.log("sak2x 4");
+          req.session.user_id = result[0].id;
+          console.log("sak2x 5");
+          req.session.uname = result[0].email;
+          console.log("sak2x 6");
+        })().then(() => {
+          res.json({ status: 202, raw: result });
+          res.end();
+        });
+      } else {
+        (async () => {
+          qry = `SELECT * FROM users WHERE username = '${uname}' AND password = '${md5(
+            pwd
+          )}';`;
+          var rs = await promise_query(qry);
+          return rs;
+        })().then((rs) => {
+          if (rs.length >= 1) {
+            req.session.is_admin = true;
+            req.session.is_client = false;
+            req.session.logged_in = true;
+            req.session.user_id = rs[0].id;
+            req.session.uname = rs[0].username;
+            res.json({ status: 203, raw: rs });
+            res.end();
+          } else {
+            res.json({ status: 404 });
+            res.end();
+          }
+        });
+      }

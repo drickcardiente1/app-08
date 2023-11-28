@@ -23917,7 +23917,7 @@ hr.horizontal.gray-light {
 }
 
 .sidenav {
-   z-index: 9999
+   z-index: 9998
 }
 
 .sidenav .navbar-brand,
@@ -26639,7 +26639,7 @@ round-slider.scaling:hover {
 
 .flatpickr-calendar.open {
    display: inline-block;
-   z-index: 99999
+   z-index: 99998
 }
 
 .flatpickr-calendar.animate.open {
@@ -29937,7 +29937,7 @@ Github: https://github.com/fiduswriter/Simple-DataTables
 .gu-mirror {
    position: fixed !important;
    margin: 0 !important;
-   z-index: 9999 !important
+   z-index: 9998 !important
 }
 
 .gu-hide {

@@ -8,6 +8,16 @@ const map1 = new Map([]);
 var removd = [];
 var filtered;
 var v2;
+function addDays(date, days) {
+  var currentDate = date.getDate();
+  date.setDate(currentDate + days);
+  return date;
+}
+function deductDays(date, days) {
+  var currentDate = date.getDate();
+  date.setDate(currentDate - days);
+  return date;
+}
 const templating = async (url, name) => {
   await $.ajax({
     url: url,
@@ -534,7 +544,7 @@ const get_page = (tag) => {
     document.querySelector("#clients").classList.add("active");
     // saba-diha
     try {
-      var clients = map1.get("users");
+      var clients = map1.get("clients");
       var table = document.getElementsByClassName("clients_list")[0];
       for (let c = 0; c < clients.length; c++) {
         var dc = new Date(clients[c].date_created),
@@ -567,7 +577,7 @@ const get_page = (tag) => {
                     <td>${dc.toLocaleDateString()}</td>
                     <td>${d_up.toLocaleDateString()}</td>
                     <td>
-                        <button onclick='next("/admin/clients/${
+                        <button onclick='analizer("/admin/clients/${
                           clients[c].id
                         }")' type="button" class="btn btn-link text-info ms-auto border-0" title="edit"><i class="material-icons position-relative ms-auto text-lg me-1 my-auto">edit</i></button>
                         <a onclick="del_cl(this)" d_id="${
@@ -606,7 +616,7 @@ const get_page = (tag) => {
       var res = url.split("/");
       var pos = res.indexOf("clients");
       var result = res[pos + 1];
-      var x = map1.get("users");
+      var x = map1.get("clients");
       var info = [];
       for (let cl = 0; cl < x.length; cl++) {
         if (x[cl].id == result) {
@@ -870,6 +880,7 @@ const analizer = async (url) => {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
+            console.log('202');
             (async () => {
               await data_initializer().then(() => {
                 var layer = document.querySelector(".layer");
@@ -879,6 +890,7 @@ const analizer = async (url) => {
               });
             })();
           } else {
+            console.log("else");
             var locate = window.location.pathname.toLowerCase();
             var layer = document.querySelector(".layer");
             const entry = admin_template_data.get(rep(locate));
@@ -1084,7 +1096,7 @@ function edt_b(ths) {
     tb_bt2.innerHTML += `<li><a class="dropdown-item border-radius-md" href="javascript:;" data_id="${x2[l].id}" onclick="bcat2(this)">${x2[l].name}</a></li>`;
   }
 }
-function scsup(ths) {
+async function scsup(ths) {
   can();
   var bk_id = ths.getAttribute("mbk_id");
   var bct = document.getElementsByClassName("bct")[0];
@@ -1140,38 +1152,485 @@ function scsup(ths) {
   data.append("daily_rate", daily_rate);
   data.append("model", model);
 
-  fetch("/query/bike_update", {
+  await fetch("/query/bike_update", {
     method: "POST",
     body: data,
   })
     .then((res) => {
-      request_all();
-      next("/admin/motorbikes/");
-      recan();
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Bike UPDATED SUCCESSFULLY",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      if (res.status == 202) {
+        recan();
+        analizer("/admin/motorbikes/");
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Bike UPDATED SUCCESSFULLY",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        analizer("/admin/motorbikes/");
+        recan();
+        Swal.fire("Failed to update Bike");
+      }
     })
     .catch((rs) => {
       recan();
-      Swal.fire("Failed to upload Bike");
+      Swal.fire("Failed to update Bike");
       mult_img.value = "";
     });
   removd = [];
 }
 
+function to_display_filtered_values(data, e_target) {
+  var t = document.getElementsByClassName("booking_list")[0];
+  function gdt(dt) {
+    var dc = new Date(dt);
+    var day = String(dc.getDate()).padStart(2, "0");
+    var month = String(dc.getMonth() + 1).padStart(2, "0");
+    var year = String(dc.getFullYear());
+    return `${year}-${month}-${day}`;
+  }
+  var clients = map1.get("clients");
+  t.innerHTML = "";
+  var tosearch = [];
+  var to_map = data;
+  for (let m = 0; m < to_map.length; m++) {
+    var book_id = to_map[m].id,
+      client_name,
+      date_booked = gdt(to_map[m].date_created),
+      pick_up = gdt(to_map[m].date_start),
+      returned = gdt(to_map[m].date_end),
+      rend_days = to_map[m].rent_days,
+      balance = to_map[m].balance;
+    for (let c = 0; c < clients.length; c++) {
+      if (clients[c].id == to_map[m].client_id) {
+        client_name = `${clients[c].firstname} ${clients[c].lastname}`;
+      }
+    }
+    tosearch.push({
+      id: book_id,
+      client_name: client_name.toLowerCase(),
+      date_booked: date_booked,
+      date_pickup: pick_up,
+      date_return: returned,
+      rent_days: rend_days,
+      balance: balance,
+    });
+  }
+  var tg_val = String(e_target);
+  let by_id = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.id);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  let by_name = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.client_name);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  let by_date_booked = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.date_booked);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  let by_date_puckup = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.date_pickup);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  let by_date_return = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.date_return);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  let by_rent_days = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.rent_days);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  let by_balance = tosearch
+    .filter(function (tosearch) {
+      var tsm = String(tosearch.balance);
+      return tsm.includes(tg_val.toLowerCase());
+    })
+    .map(function (tosearch) {
+      return tosearch.id;
+    });
+  function removedoplicates(arr) {
+    return arr.filter((el, index) => arr.indexOf(el) === index);
+  }
+  var combined = [];
+  var combination = [
+    by_id,
+    by_name,
+    by_date_booked,
+    by_date_puckup,
+    by_date_return,
+    by_rent_days,
+    by_balance,
+  ];
 
+  for (let comb = 0; comb < combination.length; comb++) {
+    combined = combined.concat(combination[comb]);
+  }
+  var to_display = [];
+  var combined_clear = removedoplicates(combined);
+  if (combined_clear.length == 0) {
+    t.innerHTML = "";
+  } else {
+    for (let td = 0; td < combined_clear.length; td++) {
+      for (let m = 0; m < to_map.length; m++) {
+        if (combined_clear[td] == to_map[m].id) {
+          to_display.push(to_map[m]);
+        }
+      }
+    }
+    rl_lop(to_display);
+  }
+}
+function fire(ths) {
+  can();
+  var d_id = ths.getAttribute("d_id");
+  var client_name = [],
+    bike_id = [],
+    status,
+    i_info = [];
+  var clients = map1.get("clients");
+  var rent_list = map1.get("rent_list");
+  var bikes = map1.get("bikes");
 
+  for (let rl = 0; rl < rent_list.length; rl++) {
+    if (rent_list[rl].id == d_id) {
+      i_info.push(rent_list[rl]);
+    }
+  }
+  for (let nm = 0; nm < clients.length; nm++) {
+    if (clients[nm].id == i_info[0].client_id) {
+      client_name.push(clients[nm]);
+    }
+  }
+  for (let b = 0; b < bikes.length; b++) {
+    if (bikes[b].id == i_info[0].bike_id) {
+      bike_id.push(bikes[b]);
+    }
+  }
+  if (i_info[0].status == "0") {
+    status = "PENDING";
+  }
+  if (i_info[0].status == "1") {
+    status = "CONFIRMED";
+  }
+  if (i_info[0].status == "2") {
+    status = "CANCELLED";
+  }
+  if (i_info[0].status == "3") {
+    status = "PICKED-UP";
+  }
+  if (i_info[0].status == "4") {
+    status = "RETURNED";
+  }
+  function gdt(dt) {
+    var dc = new Date(dt);
+    var day = String(dc.getDate()).padStart(2, "0");
+    var month = String(dc.getMonth() + 1).padStart(2, "0");
+    var year = String(dc.getFullYear());
+    return `${year}-${month}-${day}`;
+  }
 
+  document.querySelector("#id_tab").value = i_info[0].id;
+  var s_name = document.getElementById("link3");
+  var b_name = document.querySelector("#link2");
+  var balance = document.querySelector("#balance");
+  var c_name = document.querySelector("#nme");
+  var a1 = document.querySelector("#a1");
+  var a2 = document.querySelector("#a2");
+  var d_start = document.querySelector("#d_start");
+  var d_ends = document.querySelector("#d_ends");
+  var d_booked = document.querySelector("#d_booked");
+  var d_update = document.querySelector("#d_update");
+  var r_d = document.querySelector("#r_d");
+  var date1 = new Date(gdt(i_info[0].date_start));
+  var date2 = new Date(gdt(i_info[0].date_end));
+  var Difference_In_Time = date2.getTime() - date1.getTime();
+  var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
+  a1.placeholder = i_info[0].amount_received;
+  a2.placeholder = i_info[0].amount_topay;
+  a1.value = i_info[0].amount_received;
+  a2.value = i_info[0].amount_topay;
+  r_d.value = Difference_In_Days;
+  d_start.value = gdt(i_info[0].date_start);
+  d_ends.value = gdt(i_info[0].date_end);
+  d_booked.value = gdt(i_info[0].date_created);
+  d_update.value = gdt(i_info[0].date_updated);
+  c_name.setAttribute("d_id", client_name[0].id);
+  s_name.setAttribute("d_id", i_info[0].status);
+  b_name.setAttribute("d_id", bike_id[0].id);
+  balance.value = a2.value - a1.value;
+  c_name.value = `${client_name[0].firstname} ${client_name[0].lastname}`;
+  s_name.innerHTML = `${status}`;
+  b_name.placeholder = `${bike_id[0].bike_model}`;
 
+  $("#a1").keypress(function (e) {
+    if (this.value.length == 0 && e.which == 48) {
+      return false;
+    }
+    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+      return false;
+    }
+  });
 
+  a1.addEventListener("keyup", (e) => {
+    if (e.target.value == "") {
+      balance.value = a2.value - a1.value;
+    } else {
+      balance.value = a2.value - a1.value;
+    }
+  });
 
+  a2.addEventListener("keyup", (e) => {
+    if (e.target.value == "") {
+      balance.value = a2.value - a1.value;
+    } else {
+      balance.value = a2.value - a1.value;
+    }
+  });
+  $("#a2").keypress(function (e) {
+    if (this.value.length == 0 && e.which == 48) {
+      return false;
+    }
+    if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+      return false;
+    }
+  });
+}
+function toset(ths, target) {
+  var tg = document.getElementById(target);
+  var d_id = ths.getAttribute("d_id");
+  tg.setAttribute("d_id", d_id);
+  tg.innerHTML = ths.innerHTML;
+}
+function rl_lop(data) {
+  function gdt(dt) {
+    var dc = new Date(dt);
+    var day = String(dc.getDate()).padStart(2, "0");
+    var month = String(dc.getMonth() + 1).padStart(2, "0");
+    var year = String(dc.getFullYear());
+    return `${year}-${month}-${day}`;
+  }
+  var clients = map1.get("clients");
+  var t = document.getElementsByClassName("booking_list")[0];
+  t.innerHTML = "";
 
+  for (let loop = 0; loop < data.length; loop++) {
+    var client,
+      avatar,
+      date_booked = gdt(data[loop].date_created),
+      date_pick_up = gdt(data[loop].date_start),
+      date_return = gdt(data[loop].date_end),
+      status;
+    for (let u = 0; u < clients.length; u++) {
+      if (data[loop].client_id == clients[u].id) {
+        client = `${clients[u].firstname} ${clients[u].lastname}`;
+        avatar = clients[u].avatar;
+      }
+    }
+    console.log(avatar);
+    if (data[loop].status == "0") {
+      status = `
+                <button disabled class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">more_horiz</i>
+                </button>
+            `;
+    }
+    if (data[loop].status == "1") {
+      status = `
+                <button disabled class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">check</i>
+                </button>
+            `;
+    }
+    if (data[loop].status == "2") {
+      status = `
+                <button disabled class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">clear</i>
+                </button>
+            `;
+    }
+    if (data[loop].status == "3") {
+      status = `
+                <button disabled class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">graphic_eq</i>
+                </button>
+            `;
+    }
+    if (data[loop].status == "4") {
+      status = `
+                <button disabled class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                    <i class="material-icons text-sm" aria-hidden="true">keyboard_return</i>
+                </button>
+            `;
+    }
+    t.innerHTML += `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <p class="text-xs font-weight-normal ms-2 mb-0">${data[loop].id}
+                    </p>
+                </div>
+            </td>
+            <td class="text-xs font-weight-normal">
+                <div class="d-flex align-items-center">
+                    <img src="${avatar}" class="avatar avatar-xs me-2" alt="user image">
+                    <span>${client}</span>
+                </div>
+            </td>
+            <td class="font-weight-normal">
+                <span class="my-2 text-xs">${date_booked}</span>
+            </td>
+            <td class="text-xs font-weight-normal">${date_pick_up}</td>
+            <td class="text-xs font-weight-normal">
+                <span class="my-2 text-xs">${date_return}</span>
+            </td>
+            <td class="text-xs font-weight-normal">
+                <span class="my-2 text-xs">${data[loop].rent_days}</span>
+            </td>
+            <td class="text-xs font-weight-normal">
+                <span class="my-2 text-xs">${data[loop].balance}</span>
+            </td>
+            <td class="text-xs font-weight-normal">
+            ${status}
+            </td>
+            <td class="text-sm">
+                <a d_id="${data[loop].id}" href="javascript:;" onclick="(fire(this))" data-bs-toggle="modal" data-bs-target="#blst">
+                    <i class="material-icons text-secondary position-relative text-lg"
+                        style="color: skyblue !important;">
+                        edit
+                    </i>
+                </a>
+                <a href="javascript:;" data-bs-toggle="tooltip"
+                    data-bs-original-title="Delete product">
+                    <i data="${data[loop].id}" onclick="dell_booklist(this)"
+                        class="material-icons text-secondary position-relative text-lg"
+                        style="color: red !important;">
+                        delete
+                    </i>
+                </a>
+            </td>
+        </tr>
+        `;
+  }
+}
+function upd_bl() {
+  var id = document.querySelector("#id_tab");
+  var status_id = document.querySelector("#link3");
+  var receaved = document.querySelector("#a1");
+  var topay = document.querySelector("#a2");
+  var balance = document.querySelector("#balance");
+  var r_d = document.querySelector("#r_d");
+  var status = status_id.getAttribute("d_id");
+  $.ajax({
+    url: "/query/booking_update",
+    method: "POST",
+    data: {
+      id: id.value,
+      status: status,
+      receaved: receaved.value,
+      topay: topay.value,
+      balance: balance.value,
+      r_d: r_d.value,
+    },
+    dataType: "JSON",
+    success: function (data) {
+      if (data.status == 202) {
+        if (data.status == 202) {
+          Swal.fire("Successfully updated");
+          analizer("/admin/bookinglist");
+        }
+      }
+    },
+    error: function (request, error) {
+      alert(error);
+    },
+  });
+}
+
+function to_proccess(val) {
+  var booking_search = document.querySelector(".booking_search");
+  booking_search.addEventListener("keyup", (e) => {
+    var t = document.getElementsByClassName("booking_list")[0];
+    if (e.target.value == "") {
+      rl_lop(val);
+    } else {
+      to_display_filtered_values(val, e.target.value);
+    }
+  });
+}
+function filter_remove() {
+  filtered = 5;
+  rl_lop(map1.get("rent_list"));
+  to_proccess(map1.get("rent_list"));
+}
+function re_model(e) {
+  var bike_gallery = map1.get("bike_gallery");
+  var id = e.getAttribute("d_id");
+  for (let loop = 0; loop < bike_gallery.length; loop++) {
+    if (id == bike_gallery[loop].id) {
+      document.querySelector(".avt-1").src = bike_gallery[loop].image;
+      document.querySelector(".avt-2").src = bike_gallery[loop].image;
+    }
+  }
+}
+function cancup() {
+  removd = [];
+  document.getElementById("onkp").value = "";
+  document.getElementById("mdl").value = "";
+  document.getElementById("disc").value = "";
+  recan();
+}
+function cancup1() {
+  recan();
+}
+function cancup2() {
+  document.querySelector(".bn").value = "";
+  recan();
+}
+function cancup3() {
+  document.querySelector(".bnme").value = "";
+  recan();
+}
+function cancup4() {
+  document.querySelector(".cat_name").value = "";
+  document.querySelector(".cat_disc").value = "";
+  recan();
+}
+function cancup5() {
+  document.querySelector(".cnme").value = "";
+  document.getElementById("cat_disc").value = "";
+  recan();
+}
+function cancupx() {
+  document.querySelector(".input-prof").value = "";
+  recan();
+}
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
     var vr = ths.getAttribute('data_id');
@@ -1262,5 +1721,670 @@ function recan() {
   var bot7 = document.getElementById("clients");
   bot7.style = "";
 }
+function del_b(ths) {
+  var id = ths.getAttribute("d_id");
+  $.ajax({
+    url: "/query/dell_bike",
+    method: "POST",
+    data: { id: id },
+    dataType: "JSON",
+    success: function (data) {
+      if (data.status == 202) {
+        analizer("/admin/motorbikes/");
+      }
+    },
+    error: function (request, error) {
+      alert(error);
+    },
+  });
+}
+function re_del(e) {
+  var thisbike = document.querySelector(".thisbike").getAttribute("d_id");
+  var id = e.getAttribute("d_id");
+  var l = [id];
+  removd.push(l);
+  var x4 = map1.get("bikes");
+  var bike_gallery = map1.get("bike_gallery");
+  var avtr;
+  for (let loop = 0; loop < x4.length; loop++) {
+    if (thisbike == x4[loop].id) {
+      avtr = x4[loop].avatar;
+    }
+  }
+  console.log(x4);
+  var av = document.querySelector(".avt-1").src;
+  for (let loop = 0; loop < bike_gallery.length; loop++) {
+    if (av == bike_gallery[loop].image) {
+      document.querySelector(".avt-1").src = avtr;
+      document.querySelector(".avt-2").src = avtr;
+    }
+  }
+  document.querySelector(`.remember${id}`).innerHTML = "";
+}
+function dell_booklist(ths) {
+  var id = ths.getAttribute("data");
+  $.ajax({
+    url: "/query/dell_booklist",
+    method: "POST",
+    data: { id: id },
+    dataType: "JSON",
+    success: function (data) {},
+    error: function (request, error) {
+      alert(error);
+    },
+  });
+  v2 = "example";
+  if (filtered == 0) {
+    analizer(window.location.pathname)
+    filter_pending();
+  } else if (filtered == 1) {
+    analizer(window.location.pathname);
+    filter_confirmed();
+  } else if (filtered == 2) {
+    analizer(window.location.pathname);
+    filter_canceled();
+  } else if (filtered == 3) {
+    analizer(window.location.pathname);
+    filter_pickedup();
+  } else if (filtered == 4) {
+    analizer(window.location.pathname);
+    filter_returned();
+  } else if (filtered == 5) {
+    analizer(window.location.pathname);
+    filter_remove();
+  } else {
+    analizer(window.location.pathname);
+  }
+}
+function filter_remove() {
+  filtered = 5;
+  rl_lop(map1.get("rent_list"));
+  to_proccess(map1.get("rent_list"));
+}
+function filter_pending() {
+  filtered = 0;
+  var default_val = [];
+  var rent_list = map1.get("rent_list");
+  var t = document.getElementsByClassName("booking_list")[0];
+  for (let loop = 0; loop < rent_list.length; loop++) {
+    if (rent_list[loop].status == "0") {
+      default_val.push(rent_list[loop]);
+    }
+  }
+  if (default_val.length == 0) {
+    t.innerHTML = "";
+  } else {
+    rl_lop(default_val);
+    to_proccess(default_val);
+  }
+}
+function filter_confirmed() {
+  filtered = 1;
+  var default_val = [];
+  var rent_list = map1.get("rent_list");
+  var t = document.getElementsByClassName("booking_list")[0];
+  for (let loop = 0; loop < rent_list.length; loop++) {
+    if (rent_list[loop].status == "1") {
+      default_val.push(rent_list[loop]);
+    }
+  }
+  if (default_val.length == 0) {
+    t.innerHTML = "";
+  } else {
+    rl_lop(default_val);
+    to_proccess(default_val);
+  }
+}
+function filter_canceled() {
+  filtered = 2;
+  var default_val = [];
+  var rent_list = map1.get("rent_list");
+  var t = document.getElementsByClassName("booking_list")[0];
+  for (let loop = 0; loop < rent_list.length; loop++) {
+    if (rent_list[loop].status == "2") {
+      default_val.push(rent_list[loop]);
+    }
+  }
+  if (default_val.length == 0) {
+    t.innerHTML = "";
+  } else {
+    rl_lop(default_val);
+    to_proccess(default_val);
+  }
+}
+function filter_pickedup() {
+  filtered = 3;
+  var default_val = [];
+  var rent_list = map1.get("rent_list");
+  var t = document.getElementsByClassName("booking_list")[0];
+  for (let loop = 0; loop < rent_list.length; loop++) {
+    if (rent_list[loop].status == "3") {
+      default_val.push(rent_list[loop]);
+    }
+  }
+  if (default_val.length == 0) {
+    t.innerHTML = "";
+  } else {
+    rl_lop(default_val);
+    to_proccess(default_val);
+  }
+}
+function filter_returned() {
+  filtered = 4;
+  var default_val = [];
+  var rent_list = map1.get("rent_list");
+  var t = document.getElementsByClassName("booking_list")[0];
+  for (let loop = 0; loop < rent_list.length; loop++) {
+    if (rent_list[loop].status == "4") {
+      default_val.push(rent_list[loop]);
+    }
+  }
+  if (default_val.length == 0) {
+    t.innerHTML = "";
+  } else {
+    rl_lop(default_val);
+    to_proccess(default_val);
+  }
+}
+function filter_dates() {
+  var date_start = document.getElementById("d_start").value;
+  var date_end = document.getElementById("d_end").value;
+  var t = document.getElementsByClassName("report_filter")[0];
+  t.innerHTML = "";
+  var rent_list = map1.get("rent_list");
+  var u = map1.get("clients");
+  var b = map1.get("bikes");
+  if (!date_start && date_end) {
+    console.log("no start");
+  }
+  if (!date_end && date_start) {
+    console.log("no end");
+  }
+  if (!date_end && !date_start) {
+    console.log("empty all");
+  }
+  if (date_end && date_start) {
+    var check = [];
+    // sanaol
+    function tc() {
+      for (let loop = 0; loop < rent_list.length; loop++) {
+        var created = new Date(`${rent_list[loop].date_created}`);
+        var started = new Date(`${rent_list[loop].date_start}`);
+        var end = new Date(`${rent_list[loop].date_end}`);
+        var updated = new Date(`${rent_list[loop].date_updated}`);
 
+        var fullname;
+        var bike;
+
+        for (let loop2 = 0; loop2 < u.length; loop2++) {
+          if (u[loop2].id == rent_list[loop].client_id) {
+            fullname = `${u[loop2].firstname} ${u[loop2].lastname}`;
+          }
+        }
+
+        for (let loop3 = 0; loop3 < b.length; loop3++) {
+          if (b[loop3].id == rent_list[loop].bike_id) {
+            bike = b[loop3].bike_model;
+          }
+        }
+
+        var stats = rent_list[loop].status;
+        var newstats = "";
+        if (stats == "0") {
+          newstats = "Pending";
+        } else if (stats == "1") {
+          newstats = "Confirmed";
+        } else if (stats == "2") {
+          newstats = "Cancelled";
+        } else if (stats == "3") {
+          newstats = "Picked up";
+        } else if (stats == "4") {
+          newstats = "Returned";
+        }
+
+        var created_date = new Date(rent_list[loop].date_created);
+        var day = String(created_date.getDate()).padStart(2, "0");
+        var m = String(created_date.getMonth() + 1).padStart(2, "0");
+        var year = created_date.getFullYear();
+        var to_find = `${year}-${m}-${day}`;
+
+        if (to_find >= date_start && to_find <= date_end) {
+          check.push(rent_list[loop].id);
+          t.innerHTML += `
+                    <center>
+                    <tr class="text-center">
+                        <td>${rent_list[loop].id}</td>
+                        <td>${fullname}</td>
+                        <td>${bike}</td>
+                        <td>${created.toLocaleDateString()}</td>
+                        <td>${started.toLocaleDateString()}</td>
+                        <td>${end.toLocaleDateString()}</td>
+                        <td>${rent_list[loop].rent_days}</td>
+                        <td>${rent_list[loop].amount_topay}</td>
+                        <td>${rent_list[loop].amount_received}</td>
+                        <td>${rent_list[loop].balance}</td>
+                        <td>${newstats}</td>
+                        <td>${updated.toLocaleDateString()}</td>
+                    </tr>
+                    </center>
+                    `;
+        }
+      }
+    }
+    tc();
+    if (check.length == 0) {
+      $("#examp").DataTable().clear();
+      $("#examp").DataTable().destroy();
+      $("#examp").DataTable({
+        dom: "Bfrtip",
+        bInfo: false,
+        bPaginate: false,
+        buttons: [],
+        searching: false,
+      });
+    } else {
+      $("#examp").DataTable().clear();
+      $("#examp").DataTable().destroy();
+      tc();
+      $("#examp").DataTable({
+        dom: "Bfrtip",
+        language: {
+          searchPlaceholder: "Search",
+          search: "",
+        },
+        bInfo: false,
+        buttons: [
+          {
+            extend: "csv",
+            className: "fred",
+          },
+          "excel",
+          {
+            extend: "pdfHtml5",
+            orientation: "landscape",
+            pageSize: "LEGAL",
+          },
+        ],
+        columnDefs: [
+          {
+            searchable: false,
+            targets: [-1],
+            bSortable: false,
+            aTargets: [-1, -2],
+          },
+        ],
+      });
+    }
+  }
+}
+function edit_br(ths) {
+  can();
+  var brands = map1.get("brand_list");
+  var th_id = ths.getAttribute("d_id");
+  document.querySelector(".i").value = th_id;
+  document.querySelector(".u").setAttribute("d_id", th_id);
+  var stat_ac, stat_id, dc_db, du_db, nme;
+  var bct4 = document.querySelector(".bct4");
+  var d_creat = document.querySelector(".dc");
+  var d_up = document.querySelector(".du");
+  var bnme = document.querySelector(".bnme");
+  function gdt(dt) {
+    var dc = new Date(dt);
+    var day = String(dc.getDate()).padStart(2, "0");
+    var month = String(dc.getMonth() + 1).padStart(2, "0");
+    var year = String(dc.getFullYear());
+    return `${year}-${month}-${day}`;
+  }
+  for (let b = 0; b < brands.length; b++) {
+    if (brands[b].id == th_id) {
+      stat_id = brands[b].status;
+      nme = brands[b].name;
+      dc_db = gdt(brands[b].date_created);
+      du_db = gdt(brands[b].date_updated);
+    }
+  }
+  bnme.placeholder = nme;
+  d_creat.value = dc_db;
+  d_up.value = du_db;
+  if (stat_id == "0") {
+    stat_ac = "inactive";
+  } else {
+    stat_ac = "active";
+  }
+  bct4.setAttribute("data_id", stat_id);
+  bct4.innerHTML = stat_ac;
+}
+function updt_b(ths) {
+  var t_id = ths.getAttribute("d_id");
+  var brands = map1.get("brand_list");
+  var target1 = document.querySelector(".bct4");
+  var target2 = document.querySelector(".bnme");
+  var brand_name = target2.value;
+  var brand_stats = target1.getAttribute("data_id");
+  if (brand_name == "") {
+    Swal.fire("Please input Brand name").then(() => {
+      target2.value = "";
+      var myModal = new bootstrap.Modal(document.getElementById("edt_m"));
+      myModal.show();
+    });
+  } else {
+    var bol = true;
+    for (let b = 0; b < brands.length; b++) {
+      var bd = brands[b].name.toLowerCase();
+      var cat_f_db = bd.replace(/ /g, "");
+      var bn = brand_name.toLowerCase();
+      var cat_f_db2 = bn.replace(/ /g, "");
+      if (cat_f_db == cat_f_db2 && brands[b].id != t_id) {
+        bol = false;
+        Swal.fire("Brand is already exist").then(() => {
+          target2.value = "";
+          var myModal = new bootstrap.Modal(document.getElementById("edt_m"));
+          myModal.show();
+        });
+      }
+    }
+    if (bol) {
+      target2.value = "";
+      $.ajax({
+        url: "/query/updatebrnd",
+        method: "POST",
+        data: { b_id: t_id, brand_name: brand_name, brand_stats: brand_stats },
+        dataType: "JSON",
+        success: function (data) {
+          if (data.status == 202) {
+            Swal.fire("Brand Added Succesfully");
+          }
+          analizer("/admin/brandlist/");
+        },
+      });
+    }
+  }
+}
+function del_br(ths) {
+  // dito2
+  var id = ths.getAttribute("d_id");
+  var x2 = map1.get("brand_list");
+  var nm;
+
+  for (let x = 0; x < x2.length; x++) {
+    if (x2[x].id == id) {
+      nm = x2[x].name;
+    }
+  }
+
+  can();
+  Swal.fire({
+    title: "warning",
+    text: `Warning the Motorbikes that set in ${nm} will automaticaly set to N/A`,
+    icon: "warning",
+    showCancelButton: true,
+    allowOutsideClick: false,
+    confirmButtonColor: "#3085d6",
+    confirmButtonText: "OK",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: "/query/dell_brnd",
+        method: "POST",
+        data: { id: id },
+        dataType: "JSON",
+        success: function (data) {
+          if (data.status == 202) {
+            Swal.fire("Model successfuly delate");
+            recan();
+            analizer("/admin/brandlist/");
+          }
+        },
+        error: function (request, error) {
+          alert(error);
+        },
+      });
+    } else if (result.isDismissed) {
+      recan();
+    }
+  });
+}
+function add_b() {
+  var brands = map1.get("brand_list");
+  var target1 = document.querySelector(".bct3");
+  var target2 = document.querySelector(".bn");
+  var brand_name = target2.value;
+  var brand_stats = target1.getAttribute("data_id");
+  if (brand_name == "") {
+    Swal.fire("Please input Brand name").then(() => {
+      target2.value = "";
+      var myModal = new bootstrap.Modal(document.getElementById("add_m"));
+      myModal.show();
+    });
+  } else {
+    var bol = true;
+    for (let b = 0; b < brands.length; b++) {
+      var bd = brands[b].name.toLowerCase();
+      var cat_f_db = bd.replace(/ /g, "");
+      var bn = brand_name.toLowerCase();
+      var cat_f_db2 = bn.replace(/ /g, "");
+      if (cat_f_db == cat_f_db2) {
+        bol = false;
+        Swal.fire("Brand is already exist").then(() => {
+          target2.value = "";
+          var myModal = new bootstrap.Modal(document.getElementById("add_m"));
+          myModal.show();
+        });
+      }
+    }
+    if (bol) {
+      target2.value = "";
+      $.ajax({
+        url: "/query/addbrand",
+        method: "POST",
+        data: { brand_name: brand_name, brand_stats: brand_stats },
+        dataType: "JSON",
+        success: function (data) {
+          if (data.status == 202) {
+            Swal.fire("Brand Added Succesfully");
+          }
+          analizer("/admin/brandlist/");
+        },
+      });
+    }
+  }
+}
+function add_cat() {
+  // dito
+  var cat_nm = document.querySelector(".cat_name");
+  var cat_disc = document.querySelector(".cat_disc");
+  var cat_st = document.querySelector(".bct5");
+  var name = cat_nm.value;
+  var discription = cat_disc.value;
+  var stats = cat_st.getAttribute("data_id");
+  var categories = map1.get("categories");
+  if (name == "") {
+    Swal.fire("Please input Category name").then(() => {
+      cat_nm.value = "";
+      cat_disc.value = "";
+      var myModal = new bootstrap.Modal(document.getElementById("add_c"));
+      myModal.show();
+    });
+  } else {
+    var bol = true;
+    for (let cat = 0; cat < categories.length; cat++) {
+      var cat_db = categories[cat].category.toLowerCase();
+      var cat_f_db = cat_db.replace(/ /g, "");
+      var cat_f_db2 = name.replace(/ /g, "");
+      if (cat_f_db.toLowerCase() == cat_f_db2.toLowerCase()) {
+        bol = false;
+        Swal.fire("Category is already exist").then(() => {
+          cat_nm.value = "";
+          cat_disc.value = "";
+          var myModal = new bootstrap.Modal(document.getElementById("add_c"));
+          myModal.show();
+        });
+      }
+    }
+    if (bol) {
+      cat_nm.value = "";
+      cat_disc.value = "";
+      $.ajax({
+        url: "/query/addcategory",
+        method: "POST",
+        data: { name: name, discription: discription, stats: stats },
+        dataType: "JSON",
+        success: function (data) {
+          if (data.status == 202) {
+            Swal.fire("category Added Succesfully");
+          }
+          analizer("/admin/categorylist/");
+        },
+      });
+    }
+  }
+}
+function update_cat(ths) {
+  // dito
+  var t_id = ths.getAttribute("d_id");
+  var st_id = document.querySelector(".bct6");
+  var c_name = document.querySelector(".cnme");
+  var c_disc = document.getElementById("cat_disc");
+  var categories = map1.get("categories");
+  var stat = st_id.getAttribute("data_id"),
+    name = c_name.value,
+    discript = c_disc.value;
+  if (c_name.value == "") {
+    Swal.fire("Please input Category name").then(() => {
+      c_name.value = "";
+      c_disc.value = "";
+      var myModal = new bootstrap.Modal(document.getElementById("edt_cat"));
+      myModal.show();
+    });
+  } else {
+    var bol = true;
+    for (let cat = 0; cat < categories.length; cat++) {
+      var cat_db = categories[cat].category.toLowerCase();
+      var cat_f_db = cat_db.replace(/ /g, "");
+      var cat_f_db2 = c_name.value.replace(/ /g, "");
+      if (
+        cat_f_db.toLowerCase() == cat_f_db2.toLowerCase() &&
+        categories[cat].id != t_id
+      ) {
+        bol = false;
+        Swal.fire("Category is already exist").then(() => {
+          c_name.value = "";
+          c_disc.value = "";
+          var myModal = new bootstrap.Modal(document.getElementById("edt_cat"));
+          myModal.show();
+        });
+      }
+    }
+    if (bol) {
+      c_name.value = "";
+      c_disc.value = "";
+      $.ajax({
+        url: "/query/upp_cat",
+        method: "POST",
+        data: { id: t_id, name: name, discription: discript, stats: stat },
+        dataType: "JSON",
+        success: function (data) {
+          if (data.status == 202) {
+            Swal.fire("category updated Succesfully");
+          }
+          analizer("/admin/categorylist/");
+        },
+      });
+    }
+  }
+}
+function edit_cat(ths) {
+  var th_id = ths.getAttribute("d_id");
+  document.querySelector(".u").setAttribute("d_id", th_id);
+  document.querySelector(".cat_i").value = th_id;
+  var st_id = document.querySelector(".bct6");
+  var c_name = document.querySelector(".cnme");
+  var c_disc = document.getElementById("cat_disc");
+  var c_create = document.querySelector(".cat_create");
+  var c_up = document.querySelector(".cat_up");
+  var categories = map1.get("categories");
+  var stat_id, stat_name, cat_name, cat_disc, date_created, date_updated;
+  function gdt(dt) {
+    var dc = new Date(dt);
+    var day = String(dc.getDate()).padStart(2, "0");
+    var month = String(dc.getMonth() + 1).padStart(2, "0");
+    var year = String(dc.getFullYear());
+    return `${year}-${month}-${day}`;
+  }
+  for (let cat = 0; cat < categories.length; cat++) {
+    if (categories[cat].id == th_id) {
+      stat_id = categories[cat].status;
+      cat_name = categories[cat].category;
+      cat_disc = categories[cat].description;
+      date_created = gdt(categories[cat].date_created);
+      date_updated = gdt(categories[cat].date_updated);
+      if (stat_id == "0") {
+        stat_name = "INACTIVE";
+      } else if (stat_id == "1") {
+        stat_name = "ACTIVE";
+      }
+    }
+  }
+  st_id.setAttribute("data_id", stat_id);
+  st_id.innerHTML = stat_name;
+  c_name.placeholder = cat_name;
+  c_disc.placeholder = cat_disc;
+  c_create.value = date_created;
+  c_up.value = date_updated;
+  // diri
+}
+
+function remove_cat(ths) {
+  var id = ths.getAttribute("d_id");
+  var categories = map1.get("categories");
+  var name;
+
+  for (let cat = 0; cat < categories.length; cat++) {
+    if (categories[cat].id == id) {
+      name = categories[cat].category;
+    }
+  }
+
+  can();
+  Swal.fire({
+    title: "warning",
+    text: `Warning the Motorbikes that set in ${name} will automaticaly set to N/A`,
+    icon: "warning",
+    showCancelButton: true,
+    allowOutsideClick: false,
+    confirmButtonColor: "#3085d6",
+    confirmButtonText: "OK",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: "/query/dell_cat",
+        method: "POST",
+        data: { id: id },
+        dataType: "JSON",
+        success: function (data) {
+          if (data.status == 202) {
+            Swal.fire("Category successfuly delated");
+            recan();
+            analizer("/admin/categorylist/");
+          }
+        },
+        error: function (request, error) {
+          alert(error);
+        },
+      });
+    } else if (result.isDismissed) {
+      recan();
+    }
+  });
+}
+function sign_out() {
+  $.ajax({
+    url: "/auth/logout",
+    method: "POST",
+    dataType: "JSON",
+    success: function (data) {
+      analizer("/admin/sign-in");
+    },
+  });
+}
 window.addEventListener("load", analizer(window.location.pathname), false);

@@ -25,7 +25,8 @@ function get_today(d_now) {
     return `${year}-${month}-${day}`
 }
 
-client_queries.post('/available_bikes', (req, res) => {
+client_queries.post('/available_bikes',upload.single(), (req, res) => {
+    console.log(req.body)
     var starts = req.body.start;
     var ends = req.body.ends;
     qry = "SELECT * FROM `rent_list`";
@@ -186,6 +187,7 @@ client_queries.post('/u_active', (req, res) => {
                         reject(res.send({ code: 404 }))
                     } else {
                         resolve(data)
+
                     };
                 })
             }).then(result => {

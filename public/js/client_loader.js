@@ -84,88 +84,6 @@ function endclear(ths) {
         ths.min = today(addDays(new Date(), 1))
     }
 }
-function sidebar_format() {
-    var valid_u = map_data.get('active_u');
-    if (valid_u.status == 202) {
-        document.querySelector('.prf').innerHTML =
-            `
-            <img alt="Image"
-            src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-404.jpg"
-            class="avatar">
-            <div class="ms-3">
-                <h6 class="mb-0 d-block text-md text-white" style="color: blue !important;">${valid_u.raw[0].firstname.toUpperCase()} ${valid_u.raw[0].lastname.toUpperCase()}</h6>
-                <span class="text-sm text-white opacity-8">ACCOUNT TYPE : CLIENT</span>
-            </div>
-        `
-        document.querySelector('.profile_context').innerHTML =
-            `
-            <hr class="horizontal dark my-3">
-            <center>
-                <div class="buttons mb-0">
-                    <button type="button" onclick="get_page('/profile')" class="btn btn-rounded btn-outline-secondary">Manage Account</button>
-                </div>
-            </center>
-            <hr class="horizontal dark my-3" style="margin-top: 0 !important;">
-            <center>
-                <div class="buttons">
-                    <button type="button" onclick="get_page('/my-bookings')" class="btn btn-rounded btn-outline-secondary">My Booking</button>
-                </div>
-            </center>
-            <hr class="horizontal dark my-3" style="margin-top: 0 !important;">
-            <center>
-                <div class="buttons">
-                    <button type="button" onclick='sign_out_admin()' class="btn btn-rounded btn-outline-secondary">Sign out</button>
-                </div>
-            </center>
-            <hr class="horizontal dark my-3"  style="margin-top: 0 !important;">
-        `
-    } else if (valid_u.status == 203) {
-        document.querySelector('.prf').innerHTML =
-            `
-            <img alt="Image"
-            src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/material-design-system/presentation/account/error-404.jpg"
-            class="avatar">
-            <div class="ms-3">
-                <h6 style="color: blue !important;" class="mb-0 d-block text-white">${valid_u.raw[0].firstname.toUpperCase()} ${valid_u.raw[0].lastname.toUpperCase()}</h6>
-                <span class="text-sm text-white opacity-8">ACCOUNT TYPE : ADMIN</span>
-            </div>
-
-        `
-        document.querySelector('.profile_context').innerHTML =
-            `
-            <hr class="horizontal dark my-3">
-                <center>
-                    <div class="buttons">
-                        <button type="button" onclick="window.location.href='/admin'" class="btn btn-rounded bg-gradient-primary mt-4">Admin page</button>
-                    </div>
-                </center>
-            <hr class="horizontal dark my-3">
-            <center>
-                    <div class="buttons">
-                        <button type="button" onclick='sign_out_admin()' class="btn btn-rounded btn-outline-secondary mt-4 ms-2">Sign out</button>
-                    </div>
-                </center>
-            <hr class="horizontal dark my-3">
-        `
-    } else {
-        document.querySelector('.prf').innerHTML =
-            `
-        <div class="ms-3">
-            <h6 class="mb-0 d-block text-white">Guest</h6>
-        </div>
-        `
-        document.querySelector('.profile_context').innerHTML =
-            `
-        <center>
-            <div class="buttons">
-                <p>Sign in or Sign up</p>
-                <button type="button" onclick="get_page('/sign-in')" class="btn btn-rounded bg-gradient-primary mt-4">Sign in</button>
-                <button type="button" onclick="get_page('/sign-up')" class="btn btn-rounded btn-outline-secondary mt-4 ms-2">Sign up</button>
-            </div>
-        </center>
-        `
-    }
-}
 function page_data_loader(tag) {
     if (tag == 'Home') {
         document.querySelector('.tc').classList.add('bg-gradient-primary')
@@ -192,27 +110,25 @@ function page_data_loader(tag) {
             looper1();
         }
     } else if (tag == 'Sign-in') {
-        var valid_u = map_data.get('active_u');
-        if (valid_u.status == 202 || valid_u.status == 203) {
-            get_page('/');
-        }
+        var actor = map_data.get("actor");
+        actor.status == 202 || actor.status == 203 ? initializer("/") : "";
     } else if (tag == 'Sign-up') {
-        var valid_u = map_data.get('active_u');
-        if (valid_u.status == 202 || valid_u.status == 203) {
-            get_page('/');
-        } else {
-            $("#reg").keypress(function (event) {
-                if (event.which == 13) {
-                    event.preventDefault();
-                    s_up();
-                }
+        var actor = map_data.get("actor");
+        actor.status == 202 || actor.status == 203
+          ? initializer("/")
+          : $("#reg").keypress(function (event) {
+              if (event.which == 13) {
+                event.preventDefault();
+                s_up();
+              }
             });
-        }
     } else if (tag == 'Categories') {
         document.querySelector('.tc2').classList.add('bg-gradient-primary')
         var odd_even = document.querySelector('.odd-even');
-        var all_bikes = map_data.get('all_bikes');
-        var all_categories = map_data.get('all_categories');
+        var all_bikes = map_data.get('all_bikes').raw;
+        var all_categories = map_data.get("all_categories").raw;
+        console.log(all_bikes)
+        console.log(all_categories)
         var bikes = [];
         for (let loop = 0; loop < all_categories.length; loop++) {
 
@@ -258,21 +174,23 @@ function page_data_loader(tag) {
             bikes = [];
         }
     } else if (tag == 'profile') {
-        var valid_u = map_data.get('active_u');
-        document.querySelector('.display_full_name').innerHTML = `${valid_u.raw[0].firstname.toUpperCase()} ${valid_u.raw[0].lastname.toUpperCase()}`;
-        document.querySelector('.disp-id').placeholder = valid_u.raw[0].id;
-        document.querySelector('.f_name').placeholder = valid_u.raw[0].firstname;
-        document.querySelector('.l_name').placeholder = valid_u.raw[0].lastname;
-        document.querySelector('.date_updated').placeholder = today(new Date(valid_u.raw[0].date_updated));
-        document.querySelector('.date_added').placeholder = today(new Date(valid_u.raw[0].date_created));
-        document.querySelector('.last_login').placeholder = today(new Date(valid_u.raw[0].last_login));
-        document.querySelector('.u_name').placeholder = valid_u.raw[0].email;
-        document.querySelector('.address').placeholder = valid_u.raw[0].address;
-        document.querySelector('.contact').placeholder = valid_u.raw[0].contact;
-        document.querySelector('.bct').innerHTML = valid_u.raw[0].gender;
-        document.querySelector('.bct').setAttribute('data', valid_u.raw[0].gender)
+        var valid_u = map_data.get("actor");
+        valid_u = valid_u.raw
+        document.querySelector('.display_full_name').innerHTML = `${valid_u[0].firstname.toUpperCase()} ${valid_u[0].lastname.toUpperCase()}`;
+        document.querySelector('.disp-id').placeholder = valid_u[0].id;
+        document.querySelector('.f_name').placeholder = valid_u[0].firstname;
+        document.querySelector('.l_name').placeholder = valid_u[0].lastname;
+        document.querySelector('.date_updated').placeholder = today(new Date(valid_u[0].date_updated));
+        document.querySelector('.date_added').placeholder = today(new Date(valid_u[0].date_created));
+        document.querySelector('.last_login').placeholder = today(new Date(valid_u[0].last_login));
+        document.querySelector('.u_name').placeholder = valid_u[0].email;
+        document.querySelector('.address').placeholder = valid_u[0].address;
+        document.querySelector('.contact').placeholder = valid_u[0].contact;
+        document.querySelector('.bct').innerHTML = valid_u[0].gender;
+        document.querySelector('.bct').setAttribute('data', valid_u[0].gender)
     } else if (tag == 'my-bookings') {
-        var b_list = map_data.get('my-bookings');
+        var b_list = map_data.get('my-bookings').raw;
+        console.log(b_list)
         var my_booking_list = document.querySelector('.my_booking_list');
         for (let loop = 0; loop < b_list.length; loop++) {
             var d_booked = new Date(b_list[loop].date_created), d_start = new Date(b_list[loop].date_start), d_end = new Date(b_list[loop].date_end), stats
@@ -302,6 +220,7 @@ function page_data_loader(tag) {
                 <span class="text-secondary">RETURNED</span>
                 `;
             }
+            console.log(my_booking_list);
             my_booking_list.innerHTML += `
             <center>
             <tr class="text-center">
@@ -317,22 +236,22 @@ function page_data_loader(tag) {
             </center>
             `
         }
-        $('#my_bookings').DataTable({
-            dom: 'Bfrtip',
-            language: {
-                searchPlaceholder: "Search",
-                search: "",
+        $("#my_bookings").DataTable({
+          dom: "Bfrtip",
+          language: {
+            searchPlaceholder: "Search",
+            search: "",
+          },
+          bInfo: false,
+          buttons: [],
+          columnDefs: [
+            {
+              searchable: false,
+              targets: [-1],
+              bSortable: false,
+              aTargets: [-1, -2],
             },
-            "bInfo": false,
-            buttons: [],
-            'columnDefs': [
-                {
-                    'searchable': false,
-                    'targets': [-1],
-                    bSortable: false,
-                    aTargets: [-1, -2]
-                },
-            ]
+          ],
         });
     } else if (tag == 'product') {
         var link = rep(window.location.pathname);
@@ -342,11 +261,10 @@ function page_data_loader(tag) {
         var result = res[pos + 1];
         var onlyContainsNumbers = (str) => /^\d+$/.test(str);
         function on() {
-            console.log(result)
-            var all_bikes = map_data.get('all_bikes');
-            var all_brands = map_data.get('all_brands');
-            var all_categories = map_data.get('all_categories');
-            var all_galleries = map_data.get('galleries');
+            var all_bikes = map_data.get('all_bikes').raw;
+            var all_brands = map_data.get('all_brands').raw;
+            var all_categories = map_data.get('all_categories').raw;
+            var all_galleries = map_data.get('galleries').raw;
             var bike = [], brand = [], category = [], galery = [], bike_id;
             for (var bikes of all_bikes) {
                 result == bikes.id ? (bike.push(bikes), bike_id = bikes.id) : ""
@@ -392,16 +310,8 @@ function page_data_loader(tag) {
                </div>
                `
             }
-
-
-
-
-
-
-
-
-
-            var u = map_data.get('active_u');
+            var actor = map_data.get('actor');
+            console.log(actor);
             var unit_chicker = document.querySelector('.unit-chicker');
             function adds() {
                 unit_chicker.innerHTML = ``
@@ -448,12 +358,12 @@ function page_data_loader(tag) {
                     date_start_picker.max = today(deductDays(new Date(a.target.value), 1));
                 })
             }
-            u.status == 203 ? adds() : not_adds()
+            actor.status == 203 ? adds() : not_adds();
         }
         // make condition here if user admin client or guest
         onlyContainsNumbers(result) ? on() : "";
     } else if (tag == 'book') {
-        var u = map_data.get('active_u');
+        var actor = map_data.get('actor');
         var link = rep(window.location.pathname);
         var url = link.toLowerCase();
         var res = url.split("/");
@@ -461,10 +371,10 @@ function page_data_loader(tag) {
         var result = res[pos + 1];
         var onlyContainsNumbers = (str) => /^\d+$/.test(str);
         function on() {
-            var all_bikes = map_data.get('all_bikes');
-            var all_brands = map_data.get('all_brands');
-            var all_categories = map_data.get('all_categories');
-            var all_galleries = map_data.get('galleries');
+            var all_bikes = map_data.get('all_bikes').raw;
+            var all_brands = map_data.get('all_brands').raw;
+            var all_categories = map_data.get('all_categories').raw;
+            var all_galleries = map_data.get('galleries').raw;
             var bike = [], brand = [], category = [], galery = [], bike_id;
             for (var bikes of all_bikes) {
                 result == bikes.id ? (bike.push(bikes), bike_id = bikes.id) : ""
@@ -544,16 +454,16 @@ function page_data_loader(tag) {
                 
                 `
             }
-            u.status == 203 ? adds() : not_adds()
+            actor.status == 203 ? adds() : not_adds()
 
         }
         // make condition here if user admin client or guest
-        onlyContainsNumbers(result) && from[0] ? on() : (document.querySelector('.layer').innerHTML = `<h1>404 NOT FOUND </h1>`, document.querySelector('.sub-layer').innerHTML = ``);
+        onlyContainsNumbers(result) && from[0] ? on() : initializer('/');
     } else if (tag == 'About') {
         document.querySelector('.tc3').classList.add('bg-gradient-primary')
     }
 }
-function sbmt_in() {
+async function sbmt_in() {
     var nm = document.getElementById('uname').value;
     var pd = document.getElementById('pwd').value;
     if (!nm && pd) {
@@ -572,30 +482,24 @@ function sbmt_in() {
         )
     }
     if (nm && pd) {
-        $.ajax({
-            url: "/auth/client-login",
-            method: "POST",
-            data: { um: nm, pd: pd },
-            dataType: "JSON",
-            success: function (data) {
-                if (data.status == 202) {
-                    map_data.set('active_u', data.raw)
-                    initializer();
-                    get_page('/');
-                    first_load();
-                } else if (data.status == 203) {
-                    window.location.href = '/admin'
-                }
-                else {
-                    map_data.set('active_u', '')
-                    Swal.fire(
-                        'No user founds',
-                    )
-                }
-            },
-            error: function (request, error) {
-                alert(error);
-            },
+      var data = new FormData();
+      console.log(nm, pd);
+      data.append("um", nm);
+      data.append("pd", pd);
+      console.log(data);
+      await fetch("/auth/client-login", {
+        method: "POST",
+        body: data,
+      })
+        .then((response) => response.json())
+          .then((data) => {
+              if (data.status == 202) {
+                    initializer("/");
+              }else if (data.status == 203) {
+                    window.location.href = "/admin";
+              } else {
+                  Swal.fire(`No users Found`)
+              }
         });
     }
 }
@@ -608,8 +512,10 @@ function looper1() {
     to = []
     from.push(starts)
     to.push(ends)
-    home_result.innerHTML =
-        `
+    if (to_load.length == 0) {
+      home_result.innerHTML = `<center><h4>NO AVAILABLE MOTORBIKE FROM : ${starts} TO :${ends}</h4><center>`;
+    } else {
+      home_result.innerHTML = `
     <div class="row pt-lg-6">
         <div class="col-lg-3">
             <div class="position-sticky pb-lg-5 pb-3 mt-lg-0 mt-5 ps-2" style="top: 100px">
@@ -623,11 +529,10 @@ function looper1() {
             </div>
         </div>
     </div>
-    `
-    var u = map_data.get('active_u');
-    for (let loop = 0; loop < to_load.length; loop++) {
-        document.querySelector('.looper').innerHTML +=
-            `
+    `;
+      var u = map_data.get("active_u");
+      for (let loop = 0; loop < to_load.length; loop++) {
+        document.querySelector(".looper").innerHTML += `
         <div class="col-md-4 mt-md-0 mt-4">
             <a onclick="get_page('/book/${to_load[loop].id}');" href="javascript:;" >
                 <div class="card move-on-hover">
@@ -641,13 +546,12 @@ function looper1() {
             </a>
         </div>
         `;
-    }
-    function add_loop() {
+      }
+      function add_loop() {
         for (let loop = 0; loop < to_load.length; loop++) {
-            document.querySelector('.looper').innerHTML +=
-                `
+          document.querySelector(".looper").innerHTML += `
             <div class="col-md-4 mt-md-0 mt-4">
-                <a onclick="get_page('/book/${to_load[loop].id}'); datefrom_to();" href="javascript:;" >
+                <a onclick="initializer('/book/${to_load[loop].id}'); datefrom_to();" href="javascript:;" >
                     <div class="card move-on-hover">
                         <img class="w-100"
                             src="${to_load[loop].avatar}"
@@ -660,57 +564,64 @@ function looper1() {
             </div>
             `;
         }
-        functi
+        functi;
+      }
     }
 }
-function check_unit() {
-    var link = window.location.pathname;
-    var url = link.toLowerCase();
-    var res = url.split("/");
-    var pos = res.indexOf('product');
-    var result = res[pos + 1];
-    var id = result
+async function check_unit() {
+  var link = window.location.pathname;
+  var url = link.toLowerCase();
+  var res = url.split("/");
+  var pos = res.indexOf("product");
+  var result = res[pos + 1];
+  var id = result;
 
-    var starts = document.querySelector('.date_start').value;
-    var ends = document.querySelector('.date_end').value;
-    var available_bikes = $.ajax({
-        async: false,
-        url: "/client_query/available_bikes",
-        data: { start: starts, ends: ends },
-        type: 'POST',
-        dataType: "JSON",
-    }).responseJSON;
-    var to_check_exist = available_bikes.data;
-    var exist = false;
-    for (let loop = 0; loop < to_check_exist.length; loop++) {
-        console.log(to_check_exist[loop].id)
+  var starts = document.querySelector(".date_start").value;
+  var ends = document.querySelector(".date_end").value;
+
+  var form = new FormData();
+  form.append("start", starts);
+  form.append("ends", ends);
+  $("#loader2").modal("show");
+  await fetch("/client_query/available_bikes", {
+    method: "POST",
+    body: form,
+  })
+    .then((data) => data.json())
+    .then((val) => {
+      $("#loader2").modal("hide");
+      var to_check_exist = val.data;
+      var exist = false;
+      for (let loop = 0; loop < to_check_exist.length; loop++) {
+        console.log(to_check_exist[loop].id);
         if (id == to_check_exist[loop].id) {
-            exist = true;
+          exist = true;
         }
-    }
-    if (exist == true) {
-        document.querySelector('.date_start').setAttribute('disabled', '')
-        document.querySelector('.date_end').setAttribute('disabled', '')
+      }
+      if (exist == true) {
+        document.querySelector(".date_start").setAttribute("disabled", "");
+        document.querySelector(".date_end").setAttribute("disabled", "");
         var s_badge = "badge badge-success";
-        var chicker = document.querySelector('.chicker');
+        var chicker = document.querySelector(".chicker");
         chicker.innerHTML = `
         <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: -2.6vh !important;"
         onclick="book()">BOOK NOW</button>
-        `
-        var sts = document.querySelector('#sts');
+        `;
+        var sts = document.querySelector("#sts");
         sts.classList.add(...s_badge.split(" "));
-        sts.innerHTML = 'AVAILABLE';
-    } else {
+        sts.innerHTML = "AVAILABLE";
+      } else {
         var s_badge = "badge badge-danger";
-        var sts = document.querySelector('#sts');
+        var sts = document.querySelector("#sts");
         sts.classList.add(...s_badge.split(" "));
-        sts.innerHTML = 'UNAVAILABLE';
-    }
+        sts.innerHTML = "UNAVAILABLE";
+      }
+    });
 }
 function book_mode() {
     var check_var = false;
-    request_all_b();
     var all_bikes = map_data.get('all_bikes');
+    console.log(all_bikes);
     for (let loop = 0; loop < all_bikes.length; loop++) {
         if (all_bikes[loop].id == result2) {
             check_var = true;
@@ -859,11 +770,11 @@ function bcat_reg(ths) {
     target.setAttribute('data', vr);
 }
 function detail(e) {
-    var all_bikes = map_data.get('all_bikes');
-    var all_brands = map_data.get('all_brands');
-    var all_categories = map_data.get('all_categories');
-    var b_list = map_data.get('my-bookings');
-    var valid_u = map_data.get('active_u');
+    var all_bikes = map_data.get('all_bikes').raw;
+    var all_brands = map_data.get('all_brands').raw;
+    var all_categories = map_data.get('all_categories').raw;
+    var b_list = map_data.get('my-bookings').raw;
+    var valid_u = map_data.get('actor');
     var id = e.getAttribute('d_id')
     var d_start = new Date(b_list[id].date_start), d_end = new Date(b_list[id].date_end), stats, footing;
     var bike = [];
@@ -968,9 +879,7 @@ function canbook(e) {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                initializer();
-                get_page('/my-bookings');
-                first_load();
+                initializer("/my-bookings");
             }
         },
         error: function (request, error) {
@@ -979,19 +888,12 @@ function canbook(e) {
     });
 }
 async function sign_out_admin() {
-    await $.ajax({
-      url: "/auth/logout",
-      method: "GET",
-      dataType: "JSON",
-      success: function (data) {
-        if (data.status == 202) {
-          initializer();
-          get_page("/");
-          first_load();
-        }
-      },
-    });
-}
+  await fetch("/auth/logout", {
+    method: "POST",
+  }).then(() => {
+      initializer("/");
+  });
+};
 function updatepwd() {
     var old_p = document.getElementById('old_p');
     var new_p = document.getElementById('nw_p');
@@ -1042,8 +944,7 @@ function updatepwd() {
                                                     old_p.value = "";
                                                     new_p.value = "";
                                                     confnew_p.value = "";
-                                                    get_page('/profile')
-                                                    first_load();
+                                                    initializer('/profile')
                                                 }
                                             }
                                         });
@@ -1154,36 +1055,19 @@ async function s_up() {
             dataType: "JSON",
             success: function (data) {
                 if (data.status == 202) {
-                    Swal.fire(
-                        'Users Successfuly Registered',
-                    )
-                        (async () => {
-                            await $.ajax({
-                                url: "/auth/client-login",
-                                method: "POST",
-                                data: { um: u_name, pd: pwd },
-                                dataType: "JSON",
-                                success: function (data) {
-                                    if (data.status == 202) {
-                                        map_data.set('active_u', data.raw)
-                                        initializer();
-                                        get_page('/');
-                                        first_load();
-                                    } else if (data.status == 203) {
-                                        window.location.href = '/admin'
-                                    }
-                                    else {
-                                        map_data.set('active_u', '')
-                                        Swal.fire(
-                                            'No user founds',
-                                        )
-                                    }
-                                },
-                                error: function (request, error) {
-                                    location.reload();
-                                },
-                            });
-                        })();
+                  Swal.fire("Users Successfuly Registered");
+                  (async () => {
+                    var data = new FormData();
+                    data.append("um", u_name);
+                    data.append("pd", pwd);
+                    console.log(data);
+                    await fetch("/auth/client-login", {
+                      method: "POST",
+                      body: data,
+                    }).then(() => {
+                      initializer("/");
+                    });
+                  })();
                 }
             },
             error: function (request, error) {
@@ -1259,9 +1143,7 @@ function update_info_client() {
             dataType: "JSON",
             success: function (data) {
                 if (data.status == 202) {
-                    initializer();
-                    get_page('/profile');
-                    first_load();
+                    initializer("/profile");
                 }
             },
             error: function (request, error) {
@@ -1280,13 +1162,11 @@ function get_page(relocate) {
     var pos2 = res.indexOf('book');
     var result2 = res[pos2 + 1];
     var onlyContainsNumbers = (str) => /^\d+$/.test(str);
-
     function normal_mode() {
         document.title = entry.tittle;
         history.pushState(null, entry.tittle, relocate);
         document.querySelector('.layer').innerHTML = entry.layer;
         document.querySelector('.content').innerHTML = entry.content;
-        sidebar_format();
         page_data_loader(entry.tag);
     }
     function product_page() {
@@ -1295,7 +1175,6 @@ function get_page(relocate) {
         history.pushState(null, product_entry.tittle, `/product/${result}`);
         document.querySelector('.layer').innerHTML = product_entry.layer;
         document.querySelector('.content').innerHTML = product_entry.content;
-        sidebar_format();
         page_data_loader(product_entry.tag);
     }
     function book_page() {
@@ -1304,29 +1183,25 @@ function get_page(relocate) {
         history.pushState(null, product_entry.tittle, `/book/${result2}`);
         document.querySelector('.layer').innerHTML = product_entry.layer;
         document.querySelector('.content').innerHTML = product_entry.content;
-        sidebar_format();
         page_data_loader(product_entry.tag);
     }
 
     function book_mode() {
         var check_var = false;
-        request_all_b();
-        var all_bikes = map_data.get('all_bikes');
+        var all_bikes = map_data.get('all_bikes').raw;
         for (let loop = 0; loop < all_bikes.length; loop++) {
             console.log(all_bikes[loop].id)
             if (all_bikes[loop].id == result2) {
                 check_var = true;
             }
         }
-        console.log(check_var)
-        console.log("looping out")
         check_var ? book_page() : console.log("error this");
     }
 
     function product_mode() {
         var check_var = false;
         request_all_b();
-        var all_bikes = map_data.get('all_bikes');
+        var all_bikes = map_data.get('all_bikes').raw;
         for (let loop = 0; loop < all_bikes.length; loop++) {
             if (all_bikes[loop].id == result) {
                 check_var = true;
@@ -1356,88 +1231,28 @@ async function check_availble() {
     });
 }
 async function request_actor() {
-    await $.ajax({
-      url: "/client_query/u_active",
-      method: "POST",
-      dataType: "JSON",
-      success: function (data) {
-        if (data.status == 202) {
-          document.querySelector(".sub-layer").innerHTML = layout.get("msg");
-          setInterval(msgnotif, 1000);
-        } else {
-          document.querySelector(".sub-layer").innerHTML = "";
-        }
-        map_data.set("active_u", data);
-      },
-      error: function (request, error) {
-        location.reload();
-      },
-    });
+    var user = await fetch("/client_query/u_active", { method: "POST", })
+    return user.json();
 }
 async function request_my_bookings() {
-    await $.ajax({
-        url: '/client_query/my_bookings',
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map_data.set('my-bookings', data.raw);
-        },
-        error: function (request, error) {
-            location.reload();
-        },
-    });
+    var my_booking = await fetch("/client_query/my_bookings", { method: "POST" });
+    return my_booking.json();
 }
 async function request_all_b() {
-    await $.ajax({
-        url: '/client_query/all_bikes',
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map_data.set('all_bikes', data.raw);
-        },
-        error: function (request, error) {
-            alert(error);
-        },
-    });
+  var all_bikes = await fetch("/client_query/all_bikes", { method: "POST" });
+  return all_bikes.json();
 }
 async function request_all_brands() {
-    await $.ajax({
-        url: '/client_query/all_brands',
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map_data.set('all_brands', data.raw);
-        },
-        error: function (request, error) {
-            alert(error);
-        },
-    });
+    var all_brands = await fetch("/client_query/all_brands", { method: "POST" });
+    return all_brands.json();
 }
 async function request_all_categories() {
-    await $.ajax({
-        url: '/client_query/all_categories',
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map_data.set('all_categories', data.raw);
-        },
-        error: function (request, error) {
-            alert(error);
-        },
-    });
+    var all_categories = await fetch("/client_query/all_categories", { method: "POST" });
+    return all_categories.json();
 }
 async function request_galleries() {
-    await $.ajax({
-        url: '/client_query/galleries',
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            map_data.set('galleries', data.raw);
-        },
-        error: function (request, error) {
-            alert(error);
-        },
-    });
+    var galleries = await fetch("/client_query/galleries", { method: "POST" });
+    return galleries.json();
 }
 function msgnotif() {
     $.ajax({
@@ -1461,229 +1276,32 @@ function msgnotif() {
         },
     });
 }
-async function initializer() {
+
+async function initializer(url) {
     document.querySelector(".sub-layer").innerHTML = "";
-    await request_my_bookings();
-    await request_all_b();
-    await request_all_brands();
-    await request_all_categories();
-    await request_galleries();
-    await request_actor();
-
-}
-async function first_load() {
-    document.querySelector(".sub-layer").innerHTML = "";
-    document.querySelector('.layer').innerHTML = `
-    <style>
-    *,
-*:after,
-*:before {
-	box-sizing: border-box;
-	transform-style: preserve-3d;
-}
-
-body {
-	display: grid;
-	place-items: center;
-	min-height: 100vh;
-	font-family:  'Google Sans', sans-serif,system-ui;
-}
-
-:root {
-	--size: 120;
-	--coefficient: 1px;
-	--timeline: 2.6s;
-	--delay: 0.65s;
-  --rotation-y: -24;
-  --rotation-x: 28;
-  --color-one: #3a0ca3;
-  --color-two: #4361ee;
-  --color-three: #4cc9f0;
-}
-
-.scene {
-  position: relative;
-  transform: translate3d(0, 0, 100vmin) rotateX(calc(var(--rotation-y, 0) * 1deg)) rotateY(calc(var(--rotation-x, 0) * 1deg)) rotateX(0deg);
-}
-
-body {
-	transform-origin: 50% 50%;
-	animation: scale var(--timeline) var(--delay) infinite linear;
-}
-
-@keyframes scale {
-  0%, 10% {
-    transform: scaleX(1) scaleY(1);
-  }
-	35%, 100% {
-		transform: scaleX(0.5) scaleY(0.5);
-	}
-}
-
-.shadow {
-	width: calc(var(--size) * var(--coefficient));
-	position: absolute;
-	bottom: 0;
-	aspect-ratio: 1;
-	transform-origin: 50% 50%;
-	background: hsl(210 80% 50% / 0.2);
-	transform: rotateX(90deg) translate3d(0, 0, calc((var(--size) * (var(--coefficient) * -0.5)) - 1px)) scale(0.96);
-	animation: squish-squosh var(--timeline) var(--delay) infinite, fade var(--timeline) var(--delay) infinite;
-	background: black;
-}
-
-.loader {
-	--depth: var(--size);
-	--color: var(--color-one, #8338EC);
-	width: calc(var(--depth) * var(--coefficient));
-	aspect-ratio: 1;
-	transform-origin: 50% 50%;
-	animation: squish-squosh var(--timeline) var(--delay) infinite;
-}
-
-.spinner {
-	animation: spin var(--timeline) var(--delay) infinite;
-}
-
-.jumper {
-	animation: jump var(--timeline) var(--delay) infinite;
-}
-
-@keyframes squish-squosh {
-	0%, 50%, 60% {
-		scale:  1 1 1;
-	}
-	10%, 35% {
-		scale: 1.2 0.8 1.2;
-	}
-	25% {
-		scale: 0.8 1.2 0.8;
-	}
-	70% {
-		scale: 1 1 2;
-	}
-	80% {
-		scale: 2 1 2;
-	}
-	90%, 100% {
-		scale: 2 2 2;
-	}
-}
-
-
-@keyframes fade {
-	0%, 10%, 40%, 50%, 60%, 100% {
-		opacity: 1;
-	}
-	25% {
-		opacity: 0.5;
-	}
-}
-
-@keyframes spin {
-	0%, 10% { rotate: 0deg; }
-	30%, 100% { rotate: -360deg; }
-}
-@keyframes jump {
-	0%, 10%, 35%, 50% {
-		translate: 0 0;
-	}
-	25% {
-		translate: 0 -150%;
-	}
-}
-
-/* Cuboid boilerplate code */
-.cuboid {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.cuboid__side {
-  background: var(--color);
-  position: absolute;
-}
-.cuboid__side:nth-of-type(1) {
-  --b: 1.1;
-  height: calc(var(--depth, 20) * var(--coefficient));
-  width: 100%;
-  top: 0;
-  transform: translate(0, -50%) rotateX(90deg);
-}
-.cuboid__side:nth-of-type(2) {
-  --b: 0.9;
-  --color: var(--color-three, #FF006E);
-  height: 100%;
-  width: calc(var(--depth, 20) * var(--coefficient));
-  top: 50%;
-  right: 0;
-  transform: translate(50%, -50%) rotateY(90deg);
-}
-.cuboid__side:nth-of-type(3) {
-  --b: 1;
-  width: 100%;
-  height: calc(var(--depth, 20) * var(--coefficient));
-  bottom: 0;
-  transform: translate(0%, 50%) rotateX(90deg);
-}
-.cuboid__side:nth-of-type(4) {
-  --b: 1;
-  --color: var(--color-three, #FF006E);
-  height: 100%;
-  width: calc(var(--depth, 20) * var(--coefficient));
-  left: 0;
-  top: 50%;
-  transform: translate(-50%, -50%) rotateY(90deg);
-}
-.cuboid__side:nth-of-type(5) {
-  --b: 1;
-  --color: var(--color-two, #3A86EF);
-  height: 100%;
-  width: 100%;
-  transform: translate3d(0, 0, calc(var(--depth, 20) * (var(--coefficient) * 0.5)));
-  top: 0;
-  left: 0;
-}
-.cuboid__side:nth-of-type(6) {
-  --b: 1.2;
-  height: 100%;
-  width: 100%;
-  transform: translate3d(0, 0, calc(var(--depth, 20) * (var(--coefficient) * -0.5))) rotateY(180deg);
-  top: 0;
-  left: 0;
-}
-</style>
-<div class="scene">
-    <div class="shadow"></div>
-    <div class="jumper">
-        <div class="spinner">
-            <div class="scaler">
-                <div class="loader">
-                    <div class="cuboid">
-                        <div class="cuboid__side"></div>
-                        <div class="cuboid__side"></div>
-                        <div class="cuboid__side"></div>
-                        <div class="cuboid__side"></div>
-                        <div class="cuboid__side"></div>
-                        <div class="cuboid__side"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-    `
-    await start()
-    await initializer();
-    get_page(window.location.pathname)
+    document.querySelector(".side-layer").innerHTML = "";
+    loader_animation();
+    await start();
+    var my_bookings = await request_my_bookings();
+    var all_bikes = await request_all_b();
+    var all_brands = await request_all_brands();
+    var all_categories = await request_all_categories();
+    var all_galeries = await request_galleries();
+    var actor = await request_actor();
+    map_data.set(`my-bookings`, my_bookings)
+      .set(`all_bikes`, all_bikes)
+      .set(`all_brands`, all_brands)
+      .set(`all_categories`, all_categories)
+      .set(`galleries`, all_galeries)
+      .set(`actor`, actor);
+    actor.status == 202 ? format202(actor) : actor.status == 203 ? format203(actor) : format404();
+    get_page(url);
 }
 async function book() {
-    var valid_u = map_data.get('active_u');
+    var valid_u = map_data.get('actor');
     console.log(valid_u)
     if (valid_u.status != 202) {
-        initializer();
-        get_page('/sign-in');
-        first_load();
+        get_page("/sign-in");
     } else {
         var link = rep(window.location.pathname);
         var url = link.toLowerCase();
@@ -1722,9 +1340,7 @@ async function book() {
                             body: data
                         }).then(res => {
                             $('#loader').modal('hide');
-                            initializer();
-                            get_page('/my-bookings');
-                            first_load();
+                            initializer("/my-bookings");
                         }).catch(() => {
                             $('#loader').modal('hide');
                             window.location.reload()
@@ -1737,5 +1353,446 @@ async function book() {
         });
     }
 }
-window.addEventListener("load", first_load(), true);
+window.addEventListener("load", initializer(window.location.pathname), true);
 
+
+function loader_animation (){
+  document.querySelector(".layer").innerHTML = `
+        <style>
+        *,
+    *:after,
+    *:before {
+        box-sizing: border-box;
+        transform-style: preserve-3d;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        font-family:  'Google Sans', sans-serif,system-ui;
+    }
+
+    :root {
+        --size: 120;
+        --coefficient: 1px;
+        --timeline: 2.6s;
+        --delay: 0.65s;
+    --rotation-y: -24;
+    --rotation-x: 28;
+    --color-one: #3a0ca3;
+    --color-two: #4361ee;
+    --color-three: #4cc9f0;
+    }
+
+    .scene {
+    position: relative;
+    transform: translate3d(0, 0, 100vmin) rotateX(calc(var(--rotation-y, 0) * 1deg)) rotateY(calc(var(--rotation-x, 0) * 1deg)) rotateX(0deg);
+    }
+
+    body {
+        transform-origin: 50% 50%;
+        animation: scale var(--timeline) var(--delay) infinite linear;
+    }
+
+    @keyframes scale {
+    0%, 10% {
+        transform: scaleX(1) scaleY(1);
+    }
+        35%, 100% {
+            transform: scaleX(0.5) scaleY(0.5);
+        }
+    }
+
+    .shadow {
+        width: calc(var(--size) * var(--coefficient));
+        position: absolute;
+        bottom: 0;
+        aspect-ratio: 1;
+        transform-origin: 50% 50%;
+        background: hsl(210 80% 50% / 0.2);
+        transform: rotateX(90deg) translate3d(0, 0, calc((var(--size) * (var(--coefficient) * -0.5)) - 1px)) scale(0.96);
+        animation: squish-squosh var(--timeline) var(--delay) infinite, fade var(--timeline) var(--delay) infinite;
+        background: black;
+    }
+
+    .loader {
+        --depth: var(--size);
+        --color: var(--color-one, #8338EC);
+        width: calc(var(--depth) * var(--coefficient));
+        aspect-ratio: 1;
+        transform-origin: 50% 50%;
+        animation: squish-squosh var(--timeline) var(--delay) infinite;
+    }
+
+    .spinner {
+        animation: spin var(--timeline) var(--delay) infinite;
+    }
+
+    .jumper {
+        animation: jump var(--timeline) var(--delay) infinite;
+    }
+
+    @keyframes squish-squosh {
+        0%, 50%, 60% {
+            scale:  1 1 1;
+        }
+        10%, 35% {
+            scale: 1.2 0.8 1.2;
+        }
+        25% {
+            scale: 0.8 1.2 0.8;
+        }
+        70% {
+            scale: 1 1 2;
+        }
+        80% {
+            scale: 2 1 2;
+        }
+        90%, 100% {
+            scale: 2 2 2;
+        }
+    }
+
+
+    @keyframes fade {
+        0%, 10%, 40%, 50%, 60%, 100% {
+            opacity: 1;
+        }
+        25% {
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes spin {
+        0%, 10% { rotate: 0deg; }
+        30%, 100% { rotate: -360deg; }
+    }
+    @keyframes jump {
+        0%, 10%, 35%, 50% {
+            translate: 0 0;
+        }
+        25% {
+            translate: 0 -150%;
+        }
+    }
+
+    /* Cuboid boilerplate code */
+    .cuboid {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    }
+    .cuboid__side {
+    background: var(--color);
+    position: absolute;
+    }
+    .cuboid__side:nth-of-type(1) {
+    --b: 1.1;
+    height: calc(var(--depth, 20) * var(--coefficient));
+    width: 100%;
+    top: 0;
+    transform: translate(0, -50%) rotateX(90deg);
+    }
+    .cuboid__side:nth-of-type(2) {
+    --b: 0.9;
+    --color: var(--color-three, #FF006E);
+    height: 100%;
+    width: calc(var(--depth, 20) * var(--coefficient));
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%) rotateY(90deg);
+    }
+    .cuboid__side:nth-of-type(3) {
+    --b: 1;
+    width: 100%;
+    height: calc(var(--depth, 20) * var(--coefficient));
+    bottom: 0;
+    transform: translate(0%, 50%) rotateX(90deg);
+    }
+    .cuboid__side:nth-of-type(4) {
+    --b: 1;
+    --color: var(--color-three, #FF006E);
+    height: 100%;
+    width: calc(var(--depth, 20) * var(--coefficient));
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%) rotateY(90deg);
+    }
+    .cuboid__side:nth-of-type(5) {
+    --b: 1;
+    --color: var(--color-two, #3A86EF);
+    height: 100%;
+    width: 100%;
+    transform: translate3d(0, 0, calc(var(--depth, 20) * (var(--coefficient) * 0.5)));
+    top: 0;
+    left: 0;
+    }
+    .cuboid__side:nth-of-type(6) {
+    --b: 1.2;
+    height: 100%;
+    width: 100%;
+    transform: translate3d(0, 0, calc(var(--depth, 20) * (var(--coefficient) * -0.5))) rotateY(180deg);
+    top: 0;
+    left: 0;
+    }
+    </style>
+    <div class="scene">
+        <div class="shadow"></div>
+        <div class="jumper">
+            <div class="spinner">
+                <div class="scaler">
+                    <div class="loader">
+                        <div class="cuboid">
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                            <div class="cuboid__side"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        `;
+};
+function format404() {
+  document.querySelector(".side-layer").innerHTML = `
+    <div class="fixed-plugin" id="to_repeat">
+        <a class="fixed-plugin-button text-dark position-fixed px-3 py-2 conf_button" onclick="client_prof()">
+            <i class="material-icons py-2">person</i>
+        </a>
+        <div class="card shadow-lg">
+            <div class="card-header pb-0 pt-3">
+                <div class="float-start">
+                    <div class="d-flex align-items-center">
+                        <div class="ms-3">
+                            <h6 class="mb-0 d-block text-white">Guest</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-end mt-4">
+                    <button class="btn btn-link text-dark p-0 fixed-plugin-close-button" onclick="client_prof_close()">
+                        <i class="material-icons" id="clr">clear</i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body pt-sm-3 pt-0">
+                <div>
+                    <center>
+                        <div class="buttons">
+                            <p>Sign in or Sign up</p>
+                            <button type="button" onclick="get_page('/sign-in')" class="btn btn-rounded bg-gradient-primary mt-4">Sign in</button>
+                            <button type="button" onclick="get_page('/sign-up')" class="btn btn-rounded btn-outline-secondary mt-4 ms-2">Sign up</button>
+                        </div>
+                    </center>
+                </div>
+                <div class="mt-2 d-flex">
+                    <h6 class="mb-0">Light / Dark</h6>
+                    <div class="form-check form-switch ps-0 ms-auto my-auto">
+                        <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                            onclick="darkMode(this)" checked="true">
+                    </div>
+                </div>
+                <hr class="horizontal dark my-3">
+                <div class="mt-2 d-flex">
+                    <h6 class="mb-0">Navbar Fixed</h6>
+                    <div class="form-check form-switch ps-0 ms-auto my-auto">
+                        <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                            onclick="fixbar(this)" checked="true">
+                    </div>
+                </div>
+                <hr class="horizontal dark my-sm-2">
+                <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+                </a>
+                <hr class="horizontal dark my-sm-2">
+                <div class="container-fluid ">
+                    <div>
+                        <div class=" mb-lg-0 mb-4">
+                            <div class="text-sm text-center text-muted">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>
+                                TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                                for a better web.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+}
+function format203(data) {
+    document.querySelector(".side-layer").innerHTML = `
+        <div class="fixed-plugin" id="to_repeat">
+            <a class="fixed-plugin-button text-dark position-fixed px-3 py-2 conf_button" onclick="client_prof()">
+                <i class="material-icons py-2">person</i>
+            </a>
+            <div class="card shadow-lg">
+                <div class="card-header pb-0 pt-3">
+                    <div class="float-start">
+                        <div class="d-flex align-items-center prf">
+                            <img alt="Image"
+                            src="${data.raw[0].avatar}"
+                            class="avatar">
+                            <div class="ms-3">
+                                <h6 style="color: blue !important;" class="mb-0 d-block text-white">${data.raw[0].firstname.toUpperCase()} ${data.raw[0].lastname.toUpperCase()}</h6>
+                                <span class="text-sm text-white opacity-8">ACCOUNT TYPE : ADMIN</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-end mt-4">
+                        <button class="btn btn-link text-dark p-0 fixed-plugin-close-button" onclick="client_prof_close()">
+                            <i class="material-icons" id="clr">clear</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body pt-sm-3 pt-0">
+                    <div>
+                        <hr class="horizontal dark my-3">
+                            <center>
+                                <div class="buttons">
+                                    <button type="button" onclick="window.location.href='/admin'" class="btn btn-rounded bg-gradient-primary mt-4">Admin page</button>
+                                </div>
+                            </center>
+                        <hr class="horizontal dark my-3">
+                        <center>
+                                <div class="buttons">
+                                    <button type="button" onclick='sign_out_admin()' class="btn btn-rounded btn-outline-secondary mt-4 ms-2">Sign out</button>
+                                </div>
+                            </center>
+                        <hr class="horizontal dark my-3">
+                    </div>
+                    <div class="mt-2 d-flex">
+                        <h6 class="mb-0">Light / Dark</h6>
+                        <div class="form-check form-switch ps-0 ms-auto my-auto">
+                            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                                onclick="darkMode(this)" checked="true">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark my-3">
+                    <div class="mt-2 d-flex">
+                        <h6 class="mb-0">Navbar Fixed</h6>
+                        <div class="form-check form-switch ps-0 ms-auto my-auto">
+                            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                                onclick="fixbar(this)" checked="true">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark my-sm-2">
+                    <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+                    </a>
+                    <hr class="horizontal dark my-sm-2">
+                    <div class="container-fluid ">
+                        <div>
+                            <div class=" mb-lg-0 mb-4">
+                                <div class="text-sm text-center text-muted">
+                                    ©
+                                    <script>
+                                        document.write(new Date().getFullYear())
+                                    </script>
+                                    TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                    <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                                    for a better web.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+}
+function format202(data) {
+    document.querySelector(".side-layer").innerHTML = `
+        <div class="fixed-plugin" id="to_repeat">
+            <a class="fixed-plugin-button text-dark position-fixed px-3 py-2 conf_button" onclick="client_prof()">
+                <i class="material-icons py-2">person</i>
+            </a>
+            <div class="card shadow-lg">
+                <div class="card-header pb-0 pt-3">
+                    <div class="float-start">
+                        <div class="d-flex align-items-center">
+                            <img alt="Image"
+                                src="${data.raw[0].avatar}"
+                                class="avatar">
+                            <div class="ms-3">
+                                <h6 class="mb-0 d-block text-md text-white" style="color: blue !important;">${data.raw[0].firstname.toUpperCase()} ${data.raw[0].lastname.toUpperCase()}</h6>
+                                <span class="text-sm text-white opacity-8">ACCOUNT TYPE : CLIENT</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="float-end mt-4">
+                        <button class="btn btn-link text-dark p-0 fixed-plugin-close-button" onclick="client_prof_close()">
+                            <i class="material-icons" id="clr">clear</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body pt-sm-3 pt-0">
+                    <div>
+                        <hr class="horizontal dark my-3">
+                            <center>
+                                <div class="buttons mb-0">
+                                    <button type="button" onclick="get_page('/profile')" class="btn btn-rounded btn-outline-secondary">Manage Account</button>
+                                </div>
+                            </center>
+                            <hr class="horizontal dark my-3" style="margin-top: 0 !important;">
+                            <center>
+                                <div class="buttons">
+                                    <button type="button" onclick="get_page('/my-bookings')" class="btn btn-rounded btn-outline-secondary">My Booking</button>
+                                </div>
+                            </center>
+                            <hr class="horizontal dark my-3" style="margin-top: 0 !important;">
+                            <center>
+                                <div class="buttons">
+                                    <button type="button" onclick='sign_out_admin()' class="btn btn-rounded btn-outline-secondary">Sign out</button>
+                                </div>
+                            </center>
+                        <hr class="horizontal dark my-3"  style="margin-top: 0 !important;">
+                    </div>
+                    <div class="mt-2 d-flex">
+                        <h6 class="mb-0">Light / Dark</h6>
+                        <div class="form-check form-switch ps-0 ms-auto my-auto">
+                            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                                onclick="darkMode(this)" checked="true">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark my-3">
+                    <div class="mt-2 d-flex">
+                        <h6 class="mb-0">Navbar Fixed</h6>
+                        <div class="form-check form-switch ps-0 ms-auto my-auto">
+                            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version"
+                                onclick="fixbar(this)" checked="true">
+                        </div>
+                    </div>
+                    <hr class="horizontal dark my-sm-2">
+                    <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+                    </a>
+                    <hr class="horizontal dark my-sm-2">
+                    <div class="container-fluid ">
+                        <div>
+                            <div class=" mb-lg-0 mb-4">
+                                <div class="text-sm text-center text-muted">
+                                    ©
+                                    <script>
+                                        document.write(new Date().getFullYear())
+                                    </script>
+                                    TE MOTOBIKES made <i class="fa fa-heart" aria-hidden="true"></i> by
+                                    <a href="#" class="font-weight-bold" target="_blank">TEAM REAM</a>
+                                    for a better web.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    var sub_layer = document.querySelector(".sub-layer");
+    sub_layer.innerHTML = layout.get("msg");
+}
