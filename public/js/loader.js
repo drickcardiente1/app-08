@@ -856,14 +856,44 @@ const page_handler = async (url) => {
   activetag_remove();
   var curent_url = rep(sub_url);
   const entry = admin_template_data.get(curent_url);
-  document.title = entry.tittle;
-  history.pushState(
-    null,
-    entry.tittle,
-    location.protocol + "//" + location.host + curent_url + location.hash
-  );
-  document.querySelector(".bdy").innerHTML = entry.content;
-  get_page(entry.tag);
+  var res = url.split("/");
+  var pos = res.indexOf("clients");
+  var result = res[pos + 1];
+  var onlyContainsNumbers = (str) => /^\d+$/.test(str);
+
+  const pagnination_mode = () => {
+    var clients = map1.get('clients')
+    var id
+    for (let client of clients) {
+      if (client.id == result) {
+        id = client.id
+      }
+    }
+    const pagnination_start = () => {
+        var tittle = `${page_tittle_main} | ADMIN | CLIENT | ${id}`;
+        document.title = tittle;
+        history.pushState(
+          null,
+          tittle,
+          location.protocol + "//" + location.host + curent_url + location.hash
+        );
+        document.querySelector(".bdy").innerHTML = layout.get('client_profile');
+        get_page("clients");
+    };
+    onlyContainsNumbers(id)? pagnination_start(): document.querySelector(".bdy").innerHTML = `<h1>CLIENT NOT FOUND</h1>`;
+  }
+  const norm_mode = () => {
+    try {
+      document.title = entry.tittle;
+      history.pushState(null,entry.tittle,location.protocol + "//" + location.host + curent_url + location.hash);
+      document.querySelector(".bdy").innerHTML = entry.content;
+      get_page(entry.tag);
+    } catch {
+      document.querySelector(".bdy").innerHTML = `<h1>PAGE NOT FOUND</h1>`;
+    }
+  };
+
+  onlyContainsNumbers(result) ? pagnination_mode() : norm_mode();
 };
 const activetag_remove = () => {
   var a = document.getElementsByClassName("a");
@@ -880,7 +910,6 @@ const analizer = async (url) => {
         dataType: "JSON",
         success: function (data) {
           if (data.status == 202) {
-            console.log('202');
             (async () => {
               await data_initializer().then(() => {
                 var layer = document.querySelector(".layer");
@@ -890,9 +919,9 @@ const analizer = async (url) => {
               });
             })();
           } else {
-            console.log("else");
-            var locate = window.location.pathname.toLowerCase();
+            var locate = `/${root_name}/sign-in`;
             var layer = document.querySelector(".layer");
+            layer.innerHTML = ""
             const entry = admin_template_data.get(rep(locate));
             document.title = entry.tittle;
             history.pushState(null, entry.tittle, rep(locate));
@@ -2387,4 +2416,507 @@ function sign_out() {
     },
   });
 }
+
+function change_prof() {
+  can();
+  var c_user = map1.get("user");
+  document.querySelector(".curent_img").innerHTML = `
+    <img style="height: 50% !important; width: 100% !important;" src="${c_user[0].avatar}">
+    `;
+
+  var input_prof = document.querySelector(".input-prof");
+  input_prof.addEventListener("change", function () {
+    var img = input_prof.files;
+    if (img) {
+      const fileReader = new FileReader();
+      fileReader.onload = (event) => {
+        document.querySelector(".curent_img").innerHTML = `
+                    <img style="height: 50% !important; width: 100% !important;" src="${event.target.result}">
+                `;
+      };
+      fileReader.readAsDataURL(img[0]);
+    }
+  });
+}
+function change_cl_prof(e) {
+  can();
+  var id = e.getAttribute("d_id");
+  document.querySelector(".cl-id").setAttribute("d_id", id);
+  console.log(id);
+  var c_user = map1.get("clients");
+  console.log(c_user);
+  var the_user = [];
+  for (let loop = 0; loop < c_user.length; loop++) {
+    console.log(c_user[loop]);
+    if (id == c_user[loop].id) {
+      the_user.push(c_user[loop]);
+    }
+  }
+  document.querySelector(".curent_img").innerHTML = `
+    <img style="height: 50% !important; width: 100% !important;" src="${the_user[0].avatar}">
+    `;
+
+  var input_prof = document.querySelector(".input-prof");
+  input_prof.addEventListener("change", function () {
+    var img = input_prof.files;
+    if (img) {
+      const fileReader = new FileReader();
+      fileReader.onload = (event) => {
+        document.querySelector(".curent_img").innerHTML = `
+                    <img style="height: 50% !important; width: 100% !important;" src="${event.target.result}">
+                `;
+      };
+      fileReader.readAsDataURL(img[0]);
+    }
+  });
+}
+
+function update_cl_img(e) {
+  var id = document.querySelector(".cl-id").getAttribute("d_id");
+  var input_prof = document.querySelector(".input-prof");
+  var img = input_prof.files;
+  if (img.length != 0) {
+    // add loader here
+    $("#loader").modal("show");
+    var data = new FormData();
+    data.append("imageProfile", input_prof.files[0]);
+    data.append("id", id);
+    fetch("/query/cl-profile_update", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => {
+        $("#loader").modal("hide");
+        analizer(`/admin/clients/${id}`);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "PROFILE UPDATED SUCCESSFULLY",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // close here
+      })
+      .catch((rs) => {
+        $("#loader").modal("hide");
+        Swal.fire("Failed to upload profile");
+        // and here
+        input_prof.value = "";
+      });
+  } else {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "No Image Deticted",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    recan();
+  }
+}
+
+function update_my_img() {
+  var input_prof = document.querySelector(".input-prof");
+  var img = input_prof.files;
+  if (img.length != 0) {
+    // add loader here
+    $("#loader").modal("show");
+
+    var data = new FormData();
+    data.append("imageProfile", input_prof.files[0]);
+    data.append("name", input_prof.files[0].name);
+
+    fetch("/query/my-profile_update", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => {
+        $("#loader").modal("hide");
+        analizer("/admin/profile/");
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "PROFILE UPDATED SUCCESSFULLY",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // close here
+      })
+      .catch((rs) => {
+        $("#loader").modal("hide");
+        Swal.fire("Failed to upload profile");
+        // and here
+        input_prof.value = "";
+      });
+  } else {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "No Image Deticted",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    recan();
+  }
+}
+function onlyNumberKey(evt) {
+  // Only ASCII character in that range allowed
+  var ASCIICode = evt.which ? evt.which : evt.keyCode;
+  if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) return false;
+  return true;
+}
+
+function keyDown(e) {
+  var e = window.event || e;
+  var key = e.keyCode;
+  //space pressed
+  if (key == 32) {
+    //space
+    e.preventDefault();
+  }
+}
+
+function checkWhitespace(event) {
+  var data = event.clipboardData.getData("text/plain");
+  var isNullOrContainsWhitespace =
+    !data || data.length === 0 || /\s/g.test(data);
+
+  if (isNullOrContainsWhitespace) {
+    event.preventDefault();
+  }
+}
+
+function update_info() {
+  var f_name = document.getElementById("f_name");
+  var l_name = document.getElementById("l_name");
+  var u_name = document.getElementById("u_name");
+  var x = map1.get("user");
+  var first_name = "";
+  var last_name = "";
+  var username = "";
+  if (f_name.value == "") {
+    first_name = x[0].firstname;
+  } else {
+    first_name = f_name.value;
+  }
+  if (l_name.value == "") {
+    last_name = x[0].lastname;
+  } else {
+    last_name = l_name.value;
+  }
+  if (u_name.value == "") {
+    username = x[0].username;
+  } else {
+    username = u_name.value;
+  }
+  console.log(first_name, last_name, username);
+
+  $.ajax({
+    url: "/query/updateusr",
+    method: "POST",
+    data: { f_name: first_name, l_name: last_name, u_name: username },
+    dataType: "JSON",
+    success: function (data) {
+      if (data.status == 202) {
+        if (data.status == 202) {
+          Swal.fire("User info Updated");
+          analizer("/admin/profile");
+        }
+      }
+    },
+    error: function (request, error) {
+      alert(error);
+    },
+  });
+}
+
+function update_info_client(ths) {
+  var x = map1.get("clients");
+  var l_id = ths.getAttribute("data_id");
+  var contact = document.getElementById("contact");
+  var f_name = document.getElementById("f_name");
+  var l_name = document.getElementById("l_name");
+  var u_name = document.getElementById("u_name");
+  var address = document.getElementById("address");
+  var bct7 = document.querySelector(".bct7");
+  var gender = bct7.getAttribute("data");
+  var first_name = "";
+  var last_name = "";
+  var username = "";
+  var addr;
+  var cont;
+  var info = [];
+  var flag = true;
+  for (let cl = 0; cl < x.length; cl++) {
+    if (x[cl].id == l_id) {
+      info.push(x[cl]);
+    }
+    if (contact.value == x[cl].contact) {
+      flag = false;
+    }
+  }
+  if (f_name.value == "") {
+    first_name = info[0].firstname;
+  } else {
+    first_name = f_name.value;
+  }
+
+  if (address.value == "") {
+    addr = info[0].address;
+  } else {
+    addr = address.value;
+  }
+  if (contact.value == "") {
+    cont = info[0].contact;
+  } else {
+    cont = contact.value;
+  }
+
+  if (l_name.value == "") {
+    last_name = info[0].lastname;
+  } else {
+    last_name = l_name.value;
+  }
+  if (u_name.value == "") {
+    username = info[0].email;
+  } else {
+    username = u_name.value;
+  }
+
+  if (flag) {
+    $.ajax({
+      url: "/query/update_clnt",
+      method: "POST",
+      data: {
+        id: l_id,
+        f_name: first_name,
+        l_name: last_name,
+        u_name: username,
+        address: addr,
+        gender: gender,
+        number: cont,
+      },
+      dataType: "JSON",
+      success: function (data) {
+        if (data.status == 202) {
+          if (data.status == 202) {
+            Swal.fire("User info Updated");
+            analizer(`/admin/clients`);
+          }
+        }
+      },
+      error: function (request, error) {
+        alert(error);
+      },
+    });
+  } else {
+    Swal.fire("Contact Number is already taken");
+  }
+}
+
+function updatepwd() {
+  var old_p = document.getElementById("old_p");
+  var new_p = document.getElementById("nw_p");
+  var confnew_p = document.getElementById("confnw_p");
+
+  if (old_p.value == "") {
+    Swal.fire("Please input Current password");
+  } else {
+    $.ajax({
+      url: "/query/compare/",
+      method: "POST",
+      data: { old_p: old_p.value },
+      dataType: "JSON",
+      success: function (data) {
+        if (data.status == 202) {
+          var p = String(new_p.value);
+          if (p == "") {
+            Swal.fire("New password must not be null");
+          } else if (p.length < 7) {
+            document.getElementById("min").style.color = "red";
+          } else if (p.search(/[a-z]/i) < 0) {
+            document.getElementById("st").style.color = "red";
+          } else if (p.search(/[0-9]/i) < 0) {
+            document.getElementById("num").style.color = "red";
+          } else {
+            if (confnew_p.value == new_p.value) {
+              $.ajax({
+                url: "/query/comparetrue",
+                method: "POST",
+                data: { new_p: new_p.value },
+                dataType: "JSON",
+                success: function (data) {
+                  if (data.status == 202) {
+                    $.ajax({
+                      url: "/query/updatepd",
+                      method: "POST",
+                      data: { new_p: new_p.value },
+                      dataType: "JSON",
+                      success: function (data) {
+                        if (data.status == 202) {
+                          Swal.fire("password Updated");
+                          old_p.value = "";
+                          new_p.value = "";
+                          confnew_p.value = "";
+                        }
+                      },
+                    });
+                  } else {
+                    Swal.fire("Now password must not same with old password");
+                  }
+                },
+              });
+            } else {
+              document.getElementById("conf").style.color = "red";
+            }
+          }
+        } else {
+          Swal.fire("Current password did not match");
+        }
+      },
+      error: function (request, error) {
+        alert(error);
+      },
+    });
+  }
+}
+
+function updateclpwd() {
+  var ol_p = document.querySelector(".updid").getAttribute("data_id");
+  var old_p = document.getElementById("old_p");
+  var new_p = document.getElementById("nw_p");
+  var confnew_p = document.getElementById("confnw_p");
+  console.log();
+
+  if (old_p.value == "") {
+    Swal.fire("Please input Current password");
+  } else {
+    $.ajax({
+      url: "/query/clcompare/",
+      method: "POST",
+      data: { old_p: old_p.value, ol_p: ol_p },
+      dataType: "JSON",
+      success: function (data) {
+        if (data.status == 202) {
+          var p = String(new_p.value);
+          if (p == "") {
+            Swal.fire("New password must not be null");
+          } else if (p.length < 7) {
+            document.getElementById("min").style.color = "red";
+          } else if (p.search(/[a-z]/i) < 0) {
+            document.getElementById("st").style.color = "red";
+          } else if (p.search(/[0-9]/i) < 0) {
+            document.getElementById("num").style.color = "red";
+          } else {
+            if (confnew_p.value == new_p.value) {
+              $.ajax({
+                url: "/query/clcomparetrue",
+                method: "POST",
+                data: { new_p: new_p.value, ol_p: ol_p },
+                dataType: "JSON",
+                success: function (data) {
+                  if (data.status == 202) {
+                    $.ajax({
+                      url: "/query/clupdatepd",
+                      method: "POST",
+                      data: { new_p: new_p.value, ol_p: ol_p },
+                      dataType: "JSON",
+                      success: function (data) {
+                        if (data.status == 202) {
+                          Swal.fire("password Updated");
+                          old_p.value = "";
+                          new_p.value = "";
+                          confnew_p.value = "";
+                        }
+                      },
+                    });
+                  } else {
+                    Swal.fire("Now password must not same with old password");
+                  }
+                },
+              });
+            } else {
+              document.getElementById("conf").style.color = "red";
+            }
+          }
+        } else {
+          Swal.fire("Current password did not match");
+        }
+      },
+      error: function (request, error) {
+        alert(error);
+      },
+    });
+  }
+}
+
+function sign_out() {
+  $.ajax({
+    url: "/auth/logout",
+    method: "POST",
+    dataType: "JSON",
+    success: function (data) {
+      analizer('/')
+    },
+  });
+}
+
+function set_actor() {
+  var tab = document.querySelector("#cl-msg");
+  var actress = map1.get("user");
+  var clients = map1.get("clients");
+  tab.classList.add("show");
+  var usrw = document.querySelector(".msg-usrs-row");
+  usrw.innerHTML = "";
+  tab.setAttribute("actor_id", actress[0].id);
+  for (let loop = 0; loop < clients.length; loop++) {
+    var name = clients[loop].firstname,
+      nametrimmed;
+    if (name.length >= 5) {
+      nametrimmed = name.substring(0, 5);
+    }
+    if (clients.status == "ONLINE") {
+      usrw.innerHTML += `
+            <a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-success">${nametrimmed}<span class="badge disabled badge-info" style="margin-left: 1vh !important;">0</span></a>
+            <br>
+            `;
+    } else {
+      usrw.innerHTML += `
+            <a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-danger">${nametrimmed}<span class="badge disabled badge-info" style="margin-left: 1vh !important;">0</span></a>
+            <br>
+            `;
+    }
+  }
+}
+function selected_usr(ths) {
+  var id = ths.getAttribute("r_id");
+  var name = ths.getAttribute("nm");
+  document.querySelector(".msg_sender").innerHTML = `
+    <div class="col-1" style="margin-right: 2vh !important;">
+        <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
+            <i class="material-icons" title="upload image">add</i>
+        </a>
+    </div>
+    <div class="col-8">
+        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg()">
+            <div class="input-group input-group-outline d-flex">
+                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-1">
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg()">
+            <i class="material-icons">send</i>
+        </button>
+    </div>
+
+    `;
+  document.querySelector(".disp_name").innerHTML = name;
+}
+function cl_msg_close() {
+  var tab = document.querySelector("#cl-msg");
+  tab.classList.remove("show");
+}
+
+
 window.addEventListener("load", analizer(window.location.pathname), false);
