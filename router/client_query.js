@@ -674,24 +674,9 @@ client_queries.post('/book',upload.single('license'), (req, res) => {
                 qry = `INSERT INTO rent_list(id, client_id, bike_id, date_start, date_end, rent_days, amount_received, amount_topay, balance, status, date_created, date_updated) VALUES ('', '${req.session.user_id}', '${req.body.bike_id}', '${req.body.start}', '${req.body.end}', '${Difference_In_Days}', '0', '${price}', '${price}', '0', '${today}', '')`;
                 await promise_query(qry)
             })().then(() => {
-                qry = `INSERT INTO messages(id, sender, messages, status) VALUES ('', '${req.session.user_id}', 'PLEASE PROCEED TO PAYMENT', '1' )`;
-                (async () => {
-                    await new Promise((resolve, reject) => {
-                        db.query(qry, (err, data) => {
-                            if (err) {
-                                reject(res.send({ code: 404 }))
-                            } else {
-                                resolve(data)
-                            };
-                        })
-                    }).then(data => {
-                        console.log("job done")
-                        res.sendStatus(202)
-                        res.end();
-                    }).catch(rs => {
-                        console.log("Error such table found ", rs);
-                    })
-                })();
+                console.log("job done")
+                res.sendStatus(202)
+                res.end();
             }).catch(() => {
                 console.log("error 2")
                 res.sendStatus(404)
