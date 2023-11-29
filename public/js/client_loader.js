@@ -568,6 +568,17 @@ function looper1() {
       }
     }
 }
+function swalload() {
+    Swal.fire({
+    title: 'Please Wait',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    background: '#19191a',
+    showConfirmButton: false,
+    onOpen: ()=>{
+        Swal.showLoading();
+    }
+});
 async function check_unit() {
   var link = window.location.pathname;
   var url = link.toLowerCase();
@@ -575,10 +586,8 @@ async function check_unit() {
   var pos = res.indexOf("product");
   var result = res[pos + 1];
   var id = result;
-
   var starts = document.querySelector(".date_start").value;
   var ends = document.querySelector(".date_end").value;
-
   var form = new FormData();
   form.append("start", starts);
   form.append("ends", ends);
@@ -588,7 +597,6 @@ async function check_unit() {
   })
     .then((data) => data.json())
     .then((val) => {
-        $('#loader2').modal('hide');
       var to_check_exist = val.data;
       var exist = false;
       for (let loop = 0; loop < to_check_exist.length; loop++) {
