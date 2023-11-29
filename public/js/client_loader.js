@@ -1337,8 +1337,7 @@ async function book() {
         }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                $('#loader').modal('show');
-                console.log(result.value)
+                console.log(result)
                 if (result.value != "null") {
                     var data = new FormData();
                     data.append('license', result.value);
@@ -1351,10 +1350,8 @@ async function book() {
                             method: 'POST',
                             body: data
                         }).then(res => {
-                            $('#loader').modal('hide');
                             initializer("/my-bookings");
                         }).catch(() => {
-                            $('#loader').modal('hide');
                             window.location.reload()
                         })
                     })()
