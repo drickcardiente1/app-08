@@ -1353,19 +1353,6 @@ async function book() {
                             body: data
                         }).then(res => {
                             initializer("/my-bookings");
-                        }).then(()=>{
-                            await $.ajax({
-                                url: "/client_query/send-msg",
-                                data: { "message": "PLEASE PROCEED TO PAYMENT" },
-                                method: "POST",
-                                dataType: "JSON",
-                                success: function (data) {
-                                    console.log("proceed")
-                                },
-                                error: function (request, error) {
-                                    msg_box.innerHTML = "OFFLINE"
-                                },
-                            });
                         }).catch(() => {
                             window.location.reload()
                         })
