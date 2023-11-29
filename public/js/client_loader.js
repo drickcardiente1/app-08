@@ -1347,7 +1347,6 @@ async function book() {
                     data.append('end', end);
                     data.append('price', price);
                     data.append('bike_id', rs1 ? rs1 : rs2);
-
                     (async () => {
                         await fetch('/client_query/book', {
                             method: 'POST',
@@ -1355,21 +1354,18 @@ async function book() {
                         }).then(res => {
                             initializer("/my-bookings");
                         }).then(()=>{
-                            
-                    (async () => {
-                        await $.ajax({
-                            url: "/client_query/send-msg",
-                            data: { "message": "PLEASE PROCEED TO PAYMENT" },
-                            method: "POST",
-                            dataType: "JSON",
-                            success: function (data) {
-                                console.log("proceed")
-                            },
-                            error: function (request, error) {
-                                msg_box.innerHTML = "OFFLINE"
-                            },
-                        });
-                    })()
+                            await $.ajax({
+                                url: "/client_query/send-msg",
+                                data: { "message": "PLEASE PROCEED TO PAYMENT" },
+                                method: "POST",
+                                dataType: "JSON",
+                                success: function (data) {
+                                    console.log("proceed")
+                                },
+                                error: function (request, error) {
+                                    msg_box.innerHTML = "OFFLINE"
+                                },
+                            });
                         }).catch(() => {
                             window.location.reload()
                         })
