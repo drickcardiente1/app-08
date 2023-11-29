@@ -582,12 +582,14 @@ async function check_unit() {
   var form = new FormData();
   form.append("start", starts);
   form.append("ends", ends);
+    $('#loader2').modal('show');
   await fetch("/client_query/available_bikes", {
     method: "POST",
     body: form,
   })
     .then((data) => data.json())
     .then((val) => {
+        $('#loader2').modal('hide');
       var to_check_exist = val.data;
       var exist = false;
       for (let loop = 0; loop < to_check_exist.length; loop++) {
