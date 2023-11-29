@@ -1339,7 +1339,7 @@ async function book() {
             if (result.isConfirmed) {
                 $('#loader').modal('show');
                 console.log(result.value)
-                if (result.value) {
+                if (result.value != "null") {
                     var data = new FormData();
                     data.append('license', result.value);
                     data.append('start', start);
