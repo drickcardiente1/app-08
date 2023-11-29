@@ -582,15 +582,6 @@ async function check_unit() {
   var form = new FormData();
   form.append("start", starts);
   form.append("ends", ends);
-                Swal.fire({
-            title: 'Please Wait',
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            background: '#19191a',
-            showConfirmButton: false,
-            onOpen: ()=>{
-                Swal.showLoading();
-            }
   await fetch("/client_query/available_bikes", {
     method: "POST",
     body: form,
