@@ -568,17 +568,6 @@ function looper1() {
       }
     }
 }
-function swalload() {
-    Swal.fire({
-    title: 'Please Wait',
-    allowEscapeKey: false,
-    allowOutsideClick: false,
-    background: '#19191a',
-    showConfirmButton: false,
-    onOpen: ()=>{
-        Swal.showLoading();
-    }
-});
 async function check_unit() {
   var link = window.location.pathname;
   var url = link.toLowerCase();
