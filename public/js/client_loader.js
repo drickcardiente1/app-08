@@ -1338,7 +1338,7 @@ async function book() {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 console.log(result)
-                if (result.value != "null") {
+                if (result.value != null) {
                     var data = new FormData();
                     data.append('license', result.value);
                     data.append('start', start);
