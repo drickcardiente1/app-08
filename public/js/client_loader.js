@@ -569,22 +569,22 @@ function looper1() {
     }
 }
 
-// function loading(){
-//     Swal.fire({
-//         title: "<i>Title</i>",
-//         html: `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`,
-//         allowOutsideClick: false,
-//         allowEscapeKey: false,
-//         showCancelButton: false,
-//         showConfirmButton: false,
-//     });
-// }
+function loading(){
+    Swal.fire({
+        title: "<i>Title</i>",
+        html: `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: false,
+        showConfirmButton: false,
+    });
+}
 
 
 
 
 async function check_unit() {
-    // loading()
+    loading()
   var link = window.location.pathname;
   var url = link.toLowerCase();
   var res = url.split("/");
@@ -602,6 +602,7 @@ async function check_unit() {
   })
     .then((data) => data.json())
     .then((val) => {
+        swal.close()
       var to_check_exist = val.data;
       var exist = false;
       for (let loop = 0; loop < to_check_exist.length; loop++) {
