@@ -573,6 +573,10 @@ function loading(){
     Swal.fire({
         title: "<i>Title</i>",
         html: `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: false,
+        showConfirmButton: false,
     });
 }
 
