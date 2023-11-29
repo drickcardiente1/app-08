@@ -1353,6 +1353,8 @@ async function book() {
                             body: data
                         }).then(res => {
                             initializer("/my-bookings");
+                        }).then(()=>{
+                            msgnotif()
                         }).catch(() => {
                             window.location.reload()
                         })
