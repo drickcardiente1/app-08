@@ -568,7 +568,19 @@ function looper1() {
       }
     }
 }
+
+function loading(){
+    Swal.fire({
+        title: "<i>Title</i>",
+        html: `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`,
+    });
+}
+
+
+
+
 async function check_unit() {
+    loading()
   var link = window.location.pathname;
   var url = link.toLowerCase();
   var res = url.split("/");
