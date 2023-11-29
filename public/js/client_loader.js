@@ -1310,8 +1310,6 @@ async function book() {
         var rs1 = res[pos + 1];
         var pos2 = res.indexOf('book');
         var rs2 = res[pos2 + 1];
-
-
         var start = document.querySelector('.date_start').value
         var end = document.querySelector('.date_end').value
         var price = document.querySelector('.price').getAttribute('data')
@@ -1347,7 +1345,7 @@ async function book() {
                         })
                     })()
                 } else {
-                    book()
+                    console.log("something");
                 }
             }
         });
