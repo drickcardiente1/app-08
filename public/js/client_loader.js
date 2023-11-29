@@ -571,7 +571,7 @@ function looper1() {
 
 function loading(){
     Swal.fire({
-        title: "<i>Title</i>",
+        title: "<i>PLEASE WAIT</i>",
         html: `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`,
         allowOutsideClick: false,
         allowEscapeKey: false,
@@ -1338,6 +1338,7 @@ async function book() {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 $('#loader').modal('show');
+                console.log(result.value)
                 if (result.value) {
                     var data = new FormData();
                     data.append('license', result.value);
