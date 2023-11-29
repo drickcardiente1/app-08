@@ -1229,6 +1229,7 @@ function get_page(relocate) {
 async function check_availble() {
     var starts = document.querySelector('.date_start').value;
     var ends = document.querySelector('.date_end').value;
+    loading();
     await $.ajax({
         url: "/client_query/available_bikes",
         data: { start: starts, ends: ends },
@@ -1236,6 +1237,7 @@ async function check_availble() {
         dataType: "JSON",
         success: function (data) {
             map_data.set('available_bikes', data.data);
+            swal.close()
             looper1();
         },
         error: function (request, error) {
