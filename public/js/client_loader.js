@@ -987,7 +987,6 @@ function updatepwd() {
     }
 }
 async function s_up() {
-    loading()
     var f_name = document.querySelector('.name').value;
     var l_name = document.querySelector('.last_name').value;
     var addr = document.querySelector('.address').value;
@@ -1062,14 +1061,15 @@ async function s_up() {
         pwd_error.innerHTML = "Atleast 1 number";
     }
     if (flag == true) {
+        loading()
         await $.ajax({
             url: "/client_query/reg_client",
             method: "POST",
             data: { firstname: f_name, lastname: l_name, username: u_name, address: addr, contact: cont_num, gender: gend, password: pwd },
             dataType: "JSON",
             success: function (data) {
-                swal.close()
                 if (data.status == 202) {
+                    swal.close();
                   (async () => {
                     var data = new FormData();
                     data.append("um", u_name);
@@ -1085,12 +1085,23 @@ async function s_up() {
                 }
             },
             error: function (request, error) {
-                swal.close()
-                console.log(error)
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "Network Error",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             },
         });
     }else{
-        swal.close()
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "invalid input",
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 }
 function update_info_client() {
