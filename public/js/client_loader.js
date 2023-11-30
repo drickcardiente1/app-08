@@ -765,12 +765,12 @@ async function msg() {
     tab.classList.add('show');
     document.querySelector(".indicate").innerHTML = ""
     await showmsg()
-    // intervalID = setInterval(check, 1000);
+    intervalID = setInterval(check, 1000);
 }
 function cl_msg_close() {
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
-    // clearInterval(intervalID);
+    clearInterval(intervalID);
 }
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
