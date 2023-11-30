@@ -1001,6 +1001,7 @@ async function s_up() {
     var user_name_error = document.querySelector('.user_name_error')
     var pwd_error = document.querySelector('.pwd_error')
     var cond = document.querySelector('.condition')
+    cond.innerHTML = ""
     name_error.innerHTML = "";
     last_name_error.innerHTML = "";
     address_error.innerHTML = "";
@@ -1008,7 +1009,6 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
-    console.log(document.querySelector('.conditions').checked)
     if (!document.querySelector('.conditions').checked) {
         flag = false;
         cond.innerHTML = "Please accept Terms and Conditions"
@@ -1103,7 +1103,7 @@ async function s_up() {
         Swal.fire({
             position: "top-end",
             icon: "error",
-            title: "invalid input",
+            title: "Form error",
             showConfirmButton: false,
             timer: 1500
         });
