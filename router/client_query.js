@@ -632,31 +632,46 @@ client_queries.post('/send-msg', (req, res) => {
 });
 
 
-// client_queries.post('/send-img',upload.array('img-message'), (req, res) => {
-//     var example = ['hello world', 'hi', 'hello']
-//     if (req.session.logged_in) {
-//         qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(example)}' , '1' )`;
-//         (async () => {
-//             await new Promise((resolve, reject) => {
-//                 db.query(qry, (err, data) => {
-//                     if (err) {
-//                         reject(res.send({ code: 404 }))
-//                     } else {
-//                         resolve(data)
-//                     };
-//                 })
-//             }).then(data => {
-//                 res.json({ status: 202 });
-//                 res.end();
-//             }).catch(rs => {
-//                 console.log("Error such table found ", rs);
-//             })
-//         })();
-//     } else {
-//         res.json({ status: 404 });
-//         res.end();
-//     }
-// });
+client_queries.post('/send-img', upload.array('img-message', 10), (req, res) => {
+    if (req.session.logged_in) {
+        (async () => {
+            var imgs = []
+            for (var image of req.files.img-message) {
+                var result = await cloudinary.uploader.upload(image.path);
+                imgs.push(result.secure_url)
+            }
+            return { "galeries": galeries }
+        })().then((images) => {
+            urls = []
+            for (var url of images.galeries) {
+                urls.push(url)
+            }
+            qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(urls)}' , '1' )`;
+            (async () => {
+                await new Promise((resolve, reject) => {
+                    db.query(qry, (err, data) => {
+                        if (err) {
+                            reject(res.send({ code: 404 }))
+                        } else {
+                            resolve(data)
+                        };
+                    })
+                }).then(data => {
+                    res.json({ status: 202 });
+                    res.end();
+                }).catch(rs => {
+                    console.log("Error such table found ", rs);
+                })
+            })();
+        }).catch(() => {
+            res.sendStatus(404)
+            res.end();
+        })
+    } else {
+        res.json({ status: 404 });
+        res.end();
+    }
+});
 
 client_queries.post('/book',upload.single('license'), (req, res) => {
     console.log(req.body.start)

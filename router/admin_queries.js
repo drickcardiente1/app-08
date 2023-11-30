@@ -515,7 +515,6 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
         // adding img removing data
         function insert_remove() {
             (async () => {
-                console.log("inserting")
                 var galeries = []
                 for (var image of req.files) {
                     var result = await cloudinary.uploader.upload(image.path);

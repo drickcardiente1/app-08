@@ -666,9 +666,24 @@ function onlyNumberKey(evt) {
         return false;
     return true;
 }
-function send_img(e){
-    if(e.files.length >= 1){
-        console.log("ready to submit")
+function send_img(e) {
+    if (e.files.length >= 1) {
+        var data = new FormData();
+        for (let loop = 0; loop < e.files.length; loop++) {
+            data.append("img-message", mult_img.files[loop]);
+        }
+        fetch("/client_query/send-img", {
+            method: "POST",
+            body: data,
+        }).then((res) => {
+            if(res.status == 202){
+                console.log("done")
+            }else{
+                Swal.fire("Failed to upload files");
+            }
+        }).catch((rs) => {
+            Swal.fire("Failed to upload files");
+        });
     }
 }
 async function send() {

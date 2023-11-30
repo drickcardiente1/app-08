@@ -977,7 +977,6 @@ function val_nb() {
     for (let loop = 0; loop < mult_img.files.length; loop++) {
       data.append("Galeries", mult_img.files[loop]);
     }
-
     data.append("Default", singel.files[0]);
     data.append("bike_category", bike_category);
     data.append("brand_category", brand_category);
@@ -992,13 +991,6 @@ function val_nb() {
       .then((res) => {
         analizer("/admin/motorbikes/add");
         Swal.close();
-        // Swal.fire({
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: "Motorbike Added",
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
       })
       .catch((rs) => {
         recan();
