@@ -668,31 +668,33 @@ function onlyNumberKey(evt) {
 async function send() {
     var msg = document.querySelector('.msg');
     var msg_box = document.querySelector('.msg-box');
-    await $.ajax({
-        url: "/client_query/send-msg",
-        data: { "message": msg.value },
-        method: "POST",
-        dataType: "JSON",
-        success: function (data) {
-            console.log(data)
-            if (data.status == 202) {
-                showmsg();
-            } else {
-                msg_box.innerHTML =
-                    `
-                <div class="row justify-content-end mb-4 text-center">
-                    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 25px; background-color: #344767 !important;">
-                    <h5>Please Refresh Page</h5>
+    if(msg.value != ""){
+        await $.ajax({
+            url: "/client_query/send-msg",
+            data: { "message": msg.value },
+            method: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                console.log(data)
+                if (data.status == 202) {
+                    showmsg();
+                } else {
+                    msg_box.innerHTML =
+                        `
+                    <div class="row justify-content-end mb-4 text-center">
+                        <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 25px; background-color: #344767 !important;">
+                        <h5>Please Refresh Page</h5>
+                        </div>
                     </div>
-                </div>
-                `
-            }
-            msg.value = "";
-        },
-        error: function (request, error) {
-            msg_box.innerHTML = "OFFLINE"
-        },
-    });
+                    `
+                }
+                msg.value = "";
+            },
+            error: function (request, error) {
+                msg_box.innerHTML = "OFFLINE"
+            },
+        });
+    }
 }
 function adminmsg(user) {
     var date = new Date(user.date_send)
@@ -763,11 +765,12 @@ async function msg() {
     tab.classList.add('show');
     document.querySelector(".indicate").innerHTML = ""
     await showmsg()
+    // intervalID = setInterval(check, 1000);
 }
 function cl_msg_close() {
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
-    clearInterval(intervalID);
+    // clearInterval(intervalID);
 }
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
@@ -1328,7 +1331,7 @@ async function initializer(url) {
       .set(`all_categories`, all_categories)
       .set(`galleries`, all_galeries)
       .set(`actor`, actor);
-    actor.status == 202 ? format202(actor) : actor.status == 203 ? (format203(actor), intervalID = setInterval(check, 1000))  : format404();
+    actor.status == 202 ? format202(actor) : actor.status == 203 ? format203(actor) : format404();
     get_page(url);
 }
 async function book() {
