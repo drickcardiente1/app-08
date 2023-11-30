@@ -634,16 +634,18 @@ client_queries.post('/send-msg', (req, res) => {
 
 client_queries.post('/send-img', upload.array('img_message', 10), (req, res) => {
     if (req.session.logged_in) {
-        (async () => {
-            var imgs = []
-            for (var image of req.files.img_message) {
-                var result = await cloudinary.uploader.upload(image.path);
-                imgs.push(result.secure_url)
-            }
-            return { "galeries": galeries }
-        })().then((images) => {
-            res.json({ status: 202, reply: images });
-            res.end();
+        res.json({ status: 202, reply: req.files });
+        res.end();
+        // (async () => {
+        //     var imgs = []
+        //     for (var image of req.files.img_message) {
+        //         var result = await cloudinary.uploader.upload(image.path);
+        //         imgs.push(result.secure_url)
+        //     }
+        //     return { "galeries": galeries }
+        // })().then((images) => {
+        //     res.json({ status: 202, reply: images });
+        //     res.end();
             // qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(images.galeries)}' , '1' )`;
             // (async () => {
             //     await new Promise((resolve, reject) => {
@@ -661,10 +663,10 @@ client_queries.post('/send-img', upload.array('img_message', 10), (req, res) => 
             //         console.log("Error such table found ", rs);
             //     })
             // })();
-        }).catch(() => {
-            res.sendStatus(404)
-            res.end();
-        })
+        // }).catch(() => {
+        //     res.sendStatus(404)
+        //     res.end();
+        // })
     } else {
         res.json({ status: 404 });
         res.end();
