@@ -1334,7 +1334,7 @@ async function initializer(url) {
         format202(actor)
         intervalID = setInterval(check, 1000);
     }
-    actor.status == 202 ? format202(actor) : actor.status == 203 ? format203(actor) : format404();
+    actor.status == 202 ? form202() : actor.status == 203 ? format203(actor) : format404();
     get_page(url);
 }
 async function book() {
