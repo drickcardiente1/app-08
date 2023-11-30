@@ -1000,6 +1000,7 @@ async function s_up() {
     var contact_number_error = document.querySelector('.contact_number_error')
     var user_name_error = document.querySelector('.user_name_error')
     var pwd_error = document.querySelector('.pwd_error')
+    var condition = document.querySelector('.conditions')
     name_error.innerHTML = "";
     last_name_error.innerHTML = "";
     address_error.innerHTML = "";
@@ -1007,6 +1008,7 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
+    console.log(condition)
     if (f_name == "") {
         flag = false;
         name_error.innerHTML = "Please fill out this field";
