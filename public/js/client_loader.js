@@ -1062,6 +1062,7 @@ async function s_up() {
         flag = false;
         pwd_error.innerHTML = "Atleast 1 number";
     }
+    loading()
     if (flag == true) {
         await $.ajax({
             url: "/client_query/reg_client",
@@ -1070,7 +1071,7 @@ async function s_up() {
             dataType: "JSON",
             success: function (data) {
                 if (data.status == 202) {
-                  Swal.fire("Users Successfuly Registered");
+                    swal.close()
                   (async () => {
                     var data = new FormData();
                     data.append("um", u_name);
@@ -1086,6 +1087,7 @@ async function s_up() {
                 }
             },
             error: function (request, error) {
+                swal.close()
                 console.log(error)
             },
         });
