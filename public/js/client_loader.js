@@ -189,6 +189,7 @@ function page_data_loader(tag) {
         document.querySelector('.contact').placeholder = valid_u[0].contact;
         document.querySelector('.bct').innerHTML = valid_u[0].gender;
         document.querySelector('.bct').setAttribute('data', valid_u[0].gender)
+        document.querySelector('.avt').src = valid_u[0].avatar;
     } else if (tag == 'my-bookings') {
         var b_list = map_data.get('my-bookings').raw;
         console.log(b_list)
