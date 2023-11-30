@@ -1008,7 +1008,7 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
-    console.log(document.querySelector('.conditions'))
+    console.log(document.querySelector('.conditions').checked)
     if (document.querySelector('.conditions').checked == null) {
         flag = false;
         cond.innerHTML = "Please accept Terms and Conditions"
