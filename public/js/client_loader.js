@@ -987,6 +987,7 @@ function updatepwd() {
     }
 }
 async function s_up() {
+    loading()
     var f_name = document.querySelector('.name').value;
     var l_name = document.querySelector('.last_name').value;
     var addr = document.querySelector('.address').value;
@@ -994,7 +995,6 @@ async function s_up() {
     var u_name = document.querySelector('.user_name').value;
     var pwd = document.querySelector('.pwd').value;
     var gend = document.querySelector('.bct_reg').getAttribute('data');
-
     var name_error = document.querySelector('.name_error');
     var last_name_error = document.querySelector('.last_name_error')
     var address_error = document.querySelector('.address_error')
@@ -1061,7 +1061,6 @@ async function s_up() {
         flag = false;
         pwd_error.innerHTML = "Atleast 1 number";
     }
-    loading()
     if (flag == true) {
         await $.ajax({
             url: "/client_query/reg_client",
