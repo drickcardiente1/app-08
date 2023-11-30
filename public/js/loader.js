@@ -2463,7 +2463,6 @@ function change_cl_prof(e) {
     }
   });
 }
-
 function update_cl_img(e) {
   var id = document.querySelector(".cl-id").getAttribute("d_id");
   var input_prof = document.querySelector(".input-prof");
@@ -2481,14 +2480,6 @@ function update_cl_img(e) {
       .then((res) => {
         $("#loader").modal("hide");
         analizer(`/admin/clients/${id}`);
-        // Swal.fire({
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: "PROFILE UPDATED SUCCESSFULLY",
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
-        // close here
       })
       .catch((rs) => {
         $("#loader").modal("hide");

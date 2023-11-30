@@ -15,6 +15,7 @@ const rep = ne => {
         return ne;
     }
 }
+
 function today(d_now) {
     var dc = new Date(d_now)
     var day = String(dc.getDate()).padStart(2, '0');
@@ -1364,6 +1365,13 @@ async function book() {
         });
     }
 }
+
+
+function change_cl_prof(e) {
+    console.log("here")
+}
+
+
 window.addEventListener("load", initializer(window.location.pathname), true);
 
 
