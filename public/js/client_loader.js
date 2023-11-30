@@ -1008,7 +1008,7 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
-    console.log(condition)
+    console.log(condition.getAttribute(checked))
     if (f_name == "") {
         flag = false;
         name_error.innerHTML = "Please fill out this field";
