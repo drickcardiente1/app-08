@@ -741,10 +741,7 @@ async function showmsg() {
         },
     });
 }
-async function indicate(data) {
-    document.querySelector('.indicate').innerHTML = data
-}
-function check() {
+function read_msg() {
     console.log("check")
     $.ajax({
         url: "/client_query/check-msg",
@@ -752,7 +749,7 @@ function check() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                indicate(data.unread);
+                console.log("read")
             }
         },
         error: function (request, error) {
@@ -765,6 +762,7 @@ async function msg() {
     tab.classList.add('show');
     document.querySelector(".indicate").innerHTML = ""
     await showmsg()
+    read_msg();
 }
 function cl_msg_close() {
     var tab = document.querySelector('#cl-msg');
@@ -1332,7 +1330,7 @@ async function initializer(url) {
       .set(`actor`, actor);
     function form202(){
         format202(actor)
-        intervalID = setInterval(check, 1000);
+        intervalID = setInterval(msgnotif, 1000);
     }
     actor.status == 202 ? form202() : actor.status == 203 ? format203(actor) : format404();
     get_page(url);
