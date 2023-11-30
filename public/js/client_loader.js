@@ -676,7 +676,7 @@ async function send() {
         success: function (data) {
             console.log(data)
             if (data.status == 202) {
-                await showmsg();
+                showmsg();
             } else {
                 msg_box.innerHTML =
                     `
