@@ -765,12 +765,10 @@ async function msg() {
     tab.classList.add('show');
     document.querySelector(".indicate").innerHTML = ""
     await showmsg()
-    intervalID = setInterval(check, 1000);
 }
 function cl_msg_close() {
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
-    clearInterval(intervalID);
 }
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
@@ -908,7 +906,8 @@ async function sign_out_admin() {
   await fetch("/auth/logout", {
     method: "POST",
   }).then(() => {
-      initializer("/");
+        clearInterval(intervalID);
+        initializer("/");
   });
 };
 function updatepwd() {
@@ -1331,7 +1330,11 @@ async function initializer(url) {
       .set(`all_categories`, all_categories)
       .set(`galleries`, all_galeries)
       .set(`actor`, actor);
-    actor.status == 202 ? format202(actor) : actor.status == 203 ? format203(actor) : format404();
+    function form203(){
+        format203(actor)
+        intervalID = setInterval(check, 1000);
+    }
+    actor.status == 202 ? format202(actor) : actor.status == 203 ? form203() : format404();
     get_page(url);
 }
 async function book() {
