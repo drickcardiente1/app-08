@@ -739,8 +739,8 @@ async function showmsg() {
         },
     });
 }
-async function remsg() {
-    console.log(data.unread)
+async function remsg(data) {
+    console.log(data)
     document.querySelector('.indicate').innerHTML = "1"
 }
 function check() {
