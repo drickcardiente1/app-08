@@ -740,17 +740,16 @@ async function showmsg() {
     });
 }
 async function remsg(data) {
-    console.log(data)
     document.querySelector('.indicate').innerHTML = "1"
 }
 function check() {
+    console.log("check")
     $.ajax({
         url: "/client_query/check-msg",
         method: "POST",
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                console.log(data)
                 remsg(data.unread)
             }
         },
