@@ -35,14 +35,12 @@
 
 
         <div class="row">
-            <div class="col-1" >
-                <form action="javascript:void(0);" onsubmit="send_img()">
-                    <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
-                        <i class="fa fa-cloud-upload"></i>
-                    </label>
-                    <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img"
-                        onchange="javascript:this.form.submit()" multiple />
-                </form>
+            <div class="col-1">
+                <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
+                    <i class="fa fa-cloud-upload"></i>
+                </label>
+                <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img()"
+                    multiple />
             </div>
             <div class="col-8">
                 <form class="align-items-center" action="javascript:void(0);" onsubmit="send()">
