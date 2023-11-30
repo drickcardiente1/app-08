@@ -26,7 +26,6 @@ function get_today(d_now) {
 }
 
 client_queries.post('/available_bikes',upload.single(), (req, res) => {
-    console.log(req.body)
     var starts = req.body.start;
     var ends = req.body.ends;
     qry = "SELECT * FROM `rent_list`";
@@ -641,7 +640,6 @@ client_queries.post('/send-img',upload.array('img_message', 10), (req, res) => {
             }
             return { "imgs": imgs }
         })().then((images) => {
-            console.log(images)
             qry = `INSERT INTO messages(id, sender, images, status) VALUES ('', '${req.session.user_id}','${JSON.stringify(images.imgs)}' , '1' )`;
             (async () => {
                 await new Promise((resolve, reject) => {

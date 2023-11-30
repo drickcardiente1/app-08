@@ -1,13 +1,13 @@
+require("dotenv").config();
 const mysql = require("mysql2");
 
 var db = mysql.createPool({
-    host: "sql.freedb.tech",
-    user: "freedb_example-user",
-    password: "%?bnY!9GNMDAem?",
-    database:"freedb_4357461_mbrdb",
-    port:"3306"
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  database: process.env.database,
+  port: process.env.port,
 });
-
 
 // var db = mysql.createPool({
 //   host: "localhost",
@@ -17,12 +17,12 @@ var db = mysql.createPool({
 //   port: "3306",
 // });
 
-db.getConnection((error)=>{
-    if(error){
-        console.log(error);
-    }else{
-        console.log("Database Connected")
-    }
-})
+db.getConnection((error) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log("Database Connected");
+  }
+});
 
 module.exports = db;
