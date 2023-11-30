@@ -483,6 +483,7 @@ async function sbmt_in() {
         )
     }
     if (nm && pd) {
+        loading();
       var data = new FormData();
       console.log(nm, pd);
       data.append("um", nm);
@@ -494,6 +495,7 @@ async function sbmt_in() {
       })
         .then((response) => response.json())
           .then((data) => {
+                swal.close();
               if (data.status == 202) {
                     initializer("/");
               }else if (data.status == 203) {
