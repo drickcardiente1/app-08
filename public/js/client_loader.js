@@ -1779,8 +1779,8 @@ function format203(data) {
                         </div>
                     </div>
                     <hr class="horizontal dark my-sm-2">
-                    <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
-                    </a>
+                    // <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+                    // </a>
                     <hr class="horizontal dark my-sm-2">
                     <div class="container-fluid ">
                         <div>
@@ -1865,8 +1865,8 @@ function format202(data) {
                         </div>
                     </div>
                     <hr class="horizontal dark my-sm-2">
-                    <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
-                    </a>
+                    // <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+                    // </a>
                     <hr class="horizontal dark my-sm-2">
                     <div class="container-fluid ">
                         <div>
