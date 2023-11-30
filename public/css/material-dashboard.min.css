@@ -34920,37 +34920,3 @@ input[type="date"]::-ms-clear {
 
 
 
-
-
-li { list-style: none; text-align: center; color: #ff0;}
-
-.upload {
-    position:relative;
-    width:150px;
-    overflow:hidden;
-}
-
-.realupload {
-    font-size:28px;
-    position:absolute;
-    top:0;
-    right:0;
-    opacity:0.4;
-    -moz-opacity:0.4;
-    z-index:2;
-    height:100%;
-}
-
-form .fakeupload {
-    background: #f00;
-    cursor: pointer;
-    padding: 4px 0;
-    font: 12px Verdana, Arial, Helvetica, sans-serif;
-    height: 125px;
-}
-
-form .fakeupload input {
-    width:125px;
-    height: 125px;
-}
-
