@@ -667,7 +667,7 @@ function onlyNumberKey(evt) {
     return true;
 }
 function send_img(e){
-    console.log(e.value.length)
+    console.log(e.value.files.length)
     console.log("auto submit")
 }
 async function send() {
