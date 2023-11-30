@@ -734,6 +734,7 @@ async function send() {
     }
 }
 function adminmsg(user) {
+    console.log(user)
     var date = new Date(user.date_send)
     var box_msg = document.querySelector('.msg-box');
     box_msg.innerHTML +=
@@ -748,6 +749,7 @@ function adminmsg(user) {
     `
 }
 function clientmsg(user) {
+    console.log(user)
     var date = new Date(user.date_send)
     var box_msg = document.querySelector('.msg-box');
     box_msg.innerHTML +=
