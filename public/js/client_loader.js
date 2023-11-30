@@ -749,6 +749,7 @@ function check() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
+                console.log("202")
                 remsg()
             }
         },
@@ -758,7 +759,6 @@ function check() {
     });
 }
 async function msg() {
-    // var valid_u = map_data.get('active_u');
     var tab = document.querySelector('#cl-msg');
     tab.classList.add('show');
     document.querySelector(".indicate").innerHTML = ""
