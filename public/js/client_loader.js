@@ -1000,6 +1000,7 @@ async function s_up() {
     var contact_number_error = document.querySelector('.contact_number_error')
     var user_name_error = document.querySelector('.user_name_error')
     var pwd_error = document.querySelector('.pwd_error')
+    var cond = document.querySelector('.condition')
     name_error.innerHTML = "";
     last_name_error.innerHTML = "";
     address_error.innerHTML = "";
@@ -1007,7 +1008,10 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
-    console.log(condition.getAttribute(checked))
+    if (!document.getElementById('remember').checked) {
+        flag = false;
+        cond.innerHTML = "Please accept Terms and Conditions"
+    }
     if (f_name == "") {
         flag = false;
         name_error.innerHTML = "Please fill out this field";
