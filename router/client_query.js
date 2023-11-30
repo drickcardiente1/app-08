@@ -634,7 +634,7 @@ client_queries.post('/send-msg', (req, res) => {
 
 client_queries.post('/send-img',upload.array('img_message'), (req, res) => {
     if (req.session.logged_in) {
-        res.json({ status: 202 });
+        res.send({ status: 202 , reply : "hello world"})
         res.end();
         // (async () => {
         //     var imgs = []
