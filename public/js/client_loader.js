@@ -797,7 +797,7 @@ function clientmsg(user) {
                 <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
                         <div class="container">
                             <div class="row row-cols-1">
-                                <div class="col"><img src="${imgs[0]}" class="img-fluid"></div>
+                                <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: 400,imageHeight: 200})" src="${imgs[0]}" class="img-fluid"></div>
                             </div>
                         </div>
                     <p class="text-sm">${user.messages}</p>
