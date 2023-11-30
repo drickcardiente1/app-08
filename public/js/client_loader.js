@@ -669,6 +669,8 @@ function onlyNumberKey(evt) {
 async function send() {
     var msg = document.querySelector('.msg');
     var msg_box = document.querySelector('.msg-box');
+    var msg_img = document.querySelector('.msg-img');
+    console.log(msg_img.value)
     if(msg.value != ""){
         await $.ajax({
             url: "/client_query/send-msg",
