@@ -732,7 +732,7 @@ async function showmsg() {
             for (var user of data) {
                 user.sender == "" ? adminmsg(user) : clientmsg(user);
             }
-            document.location = '#messages'
+            document.location = '#pointToScrollTo'
         },
         error: function (request, error) {
             location.reload();
