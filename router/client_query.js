@@ -642,11 +642,7 @@ client_queries.post('/send-img', upload.array('img-message', 10), (req, res) => 
             }
             return { "galeries": galeries }
         })().then((images) => {
-            urls = []
-            for (var url of images.galeries) {
-                urls.push(url)
-            }
-            qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(urls)}' , '1' )`;
+            qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(images.galeries)}' , '1' )`;
             (async () => {
                 await new Promise((resolve, reject) => {
                     db.query(qry, (err, data) => {
