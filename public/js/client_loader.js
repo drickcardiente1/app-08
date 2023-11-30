@@ -193,7 +193,6 @@ function page_data_loader(tag) {
         document.querySelector('.avt').src = valid_u[0].avatar;
     } else if (tag == 'my-bookings') {
         var b_list = map_data.get('my-bookings').raw;
-        console.log(b_list)
         var my_booking_list = document.querySelector('.my_booking_list');
         for (let loop = 0; loop < b_list.length; loop++) {
             var d_booked = new Date(b_list[loop].date_created), d_start = new Date(b_list[loop].date_start), d_end = new Date(b_list[loop].date_end), stats
@@ -486,10 +485,8 @@ async function sbmt_in() {
     if (nm && pd) {
         loading();
       var data = new FormData();
-      console.log(nm, pd);
       data.append("um", nm);
       data.append("pd", pd);
-      console.log(data);
       await fetch("/auth/client-login", {
         method: "POST",
         body: data,
