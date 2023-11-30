@@ -692,6 +692,7 @@ function send_img(e) {
                 <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this)"
                     multiple />
             `;
+            showmsg();
             } else {
               Swal.fire("Failed to upload files");
             }
