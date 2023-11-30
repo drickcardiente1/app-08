@@ -1399,6 +1399,7 @@ function change_prof() {
 function update_my_prof() {
     var input_prof = document.querySelector(".input-prof");
     var img = input_prof.files;
+    loading()
     if (img.length != 0) {
         // add loader here
         var data = new FormData();
@@ -1408,6 +1409,7 @@ function update_my_prof() {
             body: data,
         })
             .then((res) => {
+                swal.close()
                 initializer("/profile/");
             })
             .catch((rs) => {
