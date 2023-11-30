@@ -668,24 +668,36 @@ function onlyNumberKey(evt) {
 }
 function send_img(e) {
     if (e.files.length >= 1) {
-        var data = new FormData();
-        for (let loop = 0; loop < e.files.length; loop++) {
-            data.append("img_message", e.files[loop]);
-        }
-        fetch("/client_query/send-img", {
-          method: "POST",
-          body: data,
-        }).then((res) => res.json())
-            .then((res) => {
+      document.querySelector(".ms-loader").innerHTML = `
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        `;
+      var data = new FormData();
+      for (let loop = 0; loop < e.files.length; loop++) {
+        data.append("img_message", e.files[loop]);
+      }
+      fetch("/client_query/send-img", {
+        method: "POST",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((res) => {
             if (res.status == 202) {
-                  console.log('done')
+              document.querySelector(".ms-loader").innerHTML = `
+                <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
+                    <i class="fa fa-cloud-upload"></i>
+                </label>
+                <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this)"
+                    multiple />
+            `;
             } else {
-                Swal.fire("Failed to upload files");
+              Swal.fire("Failed to upload files");
             }
-          })
-          .catch((rs) => {
-            Swal.fire("Failed to upload files");
-          });
+        })
+        .catch((rs) => {
+          Swal.fire("Failed to upload files");
+        });
     }
 }
 async function send() {
