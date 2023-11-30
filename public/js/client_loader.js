@@ -1009,7 +1009,7 @@ async function s_up() {
     pwd_error.innerHTML = "";
     var flag = true;
     console.log(document.querySelector('.conditions').checked)
-    if (document.querySelector('.conditions').checked == null) {
+    if (!document.querySelector('.conditions').checked) {
         flag = false;
         cond.innerHTML = "Please accept Terms and Conditions"
     }
