@@ -734,34 +734,91 @@ async function send() {
     }
 }
 function adminmsg(user) {
-    console.log(user)
-    var date = new Date(user.date_send)
-    var box_msg = document.querySelector('.msg-box');
-    box_msg.innerHTML +=
-        `
-    <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
-        <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
-            <p class="text-sm">${user.messages}</</p>
-            <p>ADMIN</p>
+    var date = new Date(user.date_send);
+    var box_msg = document.querySelector(".msg-box");
+    if (user.images != null) {
+        var imgs = JSON.parse(user.images);
+        if (imgs.length == 1) {
+            box_msg.innerHTML += `
+                <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
+                    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                        <div class="container">
+                            <div class="row row-cols-1">
+                                <div class="col"><img src="${imgs[0]}" class="img-fluid"></div>
+                            </div>
+                        </div>
+                        <p class="text-sm">${user.messages}</</p>
+                        <p>ADMIN</p>
+                    </div>
+                    <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+                </div>
+            `;
+
+        } else {
+            box_msg.innerHTML += `
+                <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
+                    <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                        <div class="container">
+                            <div class="row row-cols-3 ms-id-${user.id}">
+                            </div>
+                        </div>
+                        <p class="text-sm">${user.messages}</</p>
+                        <p>ADMIN</p>
+                    </div>
+                    <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+                </div>
+            `;
+            for (let url of imgs) {
+              document.querySelector(`.ms-id-${user.id}`).innerHTML += `
+              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: 400,imageHeight: 200})" src="${url}" class="img-fluid"></div>
+              `;
+            }
+        }
+    } else {
+        box_msg.innerHTML += `
+        <div class="row justify-content-end mb-4" style="width: 100% !important; margin-left: 2vh !important;">
+            <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                <p class="text-sm">${user.messages}</</p>
+                <p>ADMIN</p>
+            </div>
+            <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
         </div>
-        <p style="color: black !important;">${date.toUTCString().replace(' GMT', '')}</p>
-    </div>
-    `
+    `;
+    }
 }
 function clientmsg(user) {
-    console.log(user)
     var date = new Date(user.date_send)
     var box_msg = document.querySelector('.msg-box');
-    box_msg.innerHTML +=
-        `
-    <div class="row justify-content-start mb-4" style="width: 100% !important;">
-        <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
-            <p class="text-sm">${user.messages}</p>
-            <p>ME</p>
+    if (user.images != null) {
+        var imgs = JSON.parse(user.images);
+        if (imgs.length == 1) { 
+            box_msg.innerHTML += `
+            <div class="row justify-content-start mb-4" style="width: 100% !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                        <div class="container">
+                            <div class="row row-cols-1">
+                                <div class="col"><img src="${imgs[0]}" class="img-fluid"></div>
+                            </div>
+                        </div>
+                    <p class="text-sm">${user.messages}</p>
+                    <p>ME</p>
+                </div>
+                <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+            </div>
+            `;
+        } else {
+        }
+    } else {
+        box_msg.innerHTML += `
+        <div class="row justify-content-start mb-4" style="width: 100% !important;">
+            <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                <p class="text-sm">${user.messages}</p>
+                <p>ME</p>
+            </div>
+            <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
         </div>
-        <p style="color: black !important;">${date.toUTCString().replace(' GMT', '')}</p>
-    </div>
-    `
+        `;
+    }
 }
 async function showmsg() {
     document.querySelector('.msg-box').innerHTML = "";
