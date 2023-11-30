@@ -1699,8 +1699,8 @@ function format404() {
                     </div>
                 </div>
                 <hr class="horizontal dark my-sm-2">
-                <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
-                </a>
+                // <a class="btn btn-outline-dark w-100" style="margin-bottom: 0 !important;" href="#">documentation
+                // </a>
                 <hr class="horizontal dark my-sm-2">
                 <div class="container-fluid ">
                     <div>
