@@ -632,41 +632,38 @@ client_queries.post('/send-msg', (req, res) => {
 });
 
 
-client_queries.post('/send-img',upload.array('img_message'), (req, res) => {
+client_queries.post('/send-img',upload.array('img_message', 10), (req, res) => {
     if (req.session.logged_in) {
-        res.send({ status: 202 , reply : "hello world"})
-        res.end();
-        // (async () => {
-        //     var imgs = []
-        //     for (var image of req.files.img_message) {
-        //         var result = await cloudinary.uploader.upload(image.path);
-        //         imgs.push(result.secure_url)
-        //     }
-        //     return { "galeries": galeries }
-        // })().then((images) => {
-        //     res.json({ status: 202, reply: images });
-        //     res.end();
-            // qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(images.galeries)}' , '1' )`;
-            // (async () => {
-            //     await new Promise((resolve, reject) => {
-            //         db.query(qry, (err, data) => {
-            //             if (err) {
-            //                 reject(res.send({ code: 404 }))
-            //             } else {
-            //                 resolve(data)
-            //             };
-            //         })
-            //     }).then(data => {
-            //         res.json({ status: 202 });
-            //         res.end();
-            //     }).catch(rs => {
-            //         console.log("Error such table found ", rs);
-            //     })
-            // })();
-        // }).catch(() => {
-        //     res.sendStatus(404)
-        //     res.end();
-        // })
+        (async () => {
+            var imgs = []
+            for (var image of req.files) {
+                var result = await cloudinary.uploader.upload(image.path);
+                imgs.push(result.secure_url)
+            }
+            return { "imgs": imgs }
+        })().then((images) => {
+            console.log(images)
+            qry = `INSERT INTO messages(id, sender, images, status) VALUES ('', '${req.session.user_id}','${JSON.stringify(images.imgs)}' , '1' )`;
+            (async () => {
+                await new Promise((resolve, reject) => {
+                    db.query(qry, (err, data) => {
+                        if (err) {
+                            reject(res.send({ code: 404 }))
+                        } else {
+                            resolve(data)
+                        };
+                    })
+                }).then(data => {
+                    res.json({ status: 202 });
+                    res.end();
+                }).catch(rs => {
+                    console.log("Error such table found ", rs);
+                })
+            })();
+        }).catch(() => {
+            res.sendStatus(404)
+            res.end();
+        })
     } else {
         res.json({ status: 404 });
         res.end();

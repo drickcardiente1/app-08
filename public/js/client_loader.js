@@ -673,18 +673,19 @@ function send_img(e) {
             data.append("img_message", e.files[loop]);
         }
         fetch("/client_query/send-img", {
-            method: "POST",
-            body: data,
-        }).then((res) => {
-            console.log(res)
-            // if(res.status == 202){
-            //     console.log(res.reply)
-            // }else{
-            //     Swal.fire("Failed to upload files 1");
-            // }
-        }).catch((rs) => {
-            Swal.fire("Failed to upload files 2");
-        });
+          method: "POST",
+          body: data,
+        }).then((res) => res.json())
+            .then((res) => {
+            if (res.status == 202) {
+                  console.log('done')
+            } else {
+                Swal.fire("Failed to upload files");
+            }
+          })
+          .catch((rs) => {
+            Swal.fire("Failed to upload files");
+          });
     }
 }
 async function send() {
