@@ -1373,7 +1373,9 @@ function change_cl_prof(e) {
 
 
 window.addEventListener("load", initializer(window.location.pathname), true);
-
+function cancupx() {
+    document.querySelector(".input-prof").value = "";
+}
 
 function loader_animation (){
   document.querySelector(".layer").innerHTML = `
