@@ -608,7 +608,7 @@ client_queries.post('/show-msg', (req, res) => {
 client_queries.post('/send-msg', (req, res) => {
     var example = ['hello world', 'hi', 'hello']
     if (req.session.logged_in) {
-        qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${example}' , '1' )`;
+        qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(example)}' , '1' )`;
         (async () => {
             await new Promise((resolve, reject) => {
                 db.query(qry, (err, data) => {
