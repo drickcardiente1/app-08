@@ -676,7 +676,7 @@ async function send() {
         success: function (data) {
             console.log(data)
             if (data.status == 202) {
-                console.log("success")
+                await showmsg();
             } else {
                 msg_box.innerHTML =
                     `
@@ -740,6 +740,7 @@ async function showmsg() {
     });
 }
 async function remsg() {
+    console.log(data.unread)
     document.querySelector('.indicate').innerHTML = "1"
 }
 function check() {
@@ -750,7 +751,7 @@ function check() {
         success: function (data) {
             if (data.status == 202) {
                 console.log(data)
-                remsg()
+                remsg(data.unread)
             }
         },
         error: function (request, error) {
