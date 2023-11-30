@@ -666,7 +666,8 @@ function onlyNumberKey(evt) {
         return false;
     return true;
 }
-function send_img(){
+function send_img(e){
+    console.log(e.value)
     console.log("auto submit")
 }
 async function send() {
