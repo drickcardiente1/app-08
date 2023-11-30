@@ -679,7 +679,6 @@ async function send() {
                 console.log(data)
                 if (data.status == 202) {
                     showmsg();
-                    read_msg();
                 } else {
                     msg_box.innerHTML =
                         `
@@ -737,6 +736,7 @@ async function showmsg() {
                 user.sender == "" ? adminmsg(user) : clientmsg(user);
             }
             document.location = '#messages'
+            read_msg();
         },
         error: function (request, error) {
             location.reload();
