@@ -1090,6 +1090,8 @@ async function s_up() {
                 console.log(error)
             },
         });
+    }else{
+        swal.close()
     }
 }
 function update_info_client() {
