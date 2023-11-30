@@ -1045,7 +1045,6 @@ async function s_up() {
             user_name_error.innerHTML = "Username is already taken";
         }
     }
-    console.log("hello world")
     if (pwd == "") {
         console.log(pwd.length)
         flag = false;
@@ -1070,8 +1069,8 @@ async function s_up() {
             data: { firstname: f_name, lastname: l_name, username: u_name, address: addr, contact: cont_num, gender: gend, password: pwd },
             dataType: "JSON",
             success: function (data) {
+                swal.close()
                 if (data.status == 202) {
-                    swal.close()
                   (async () => {
                     var data = new FormData();
                     data.append("um", u_name);
