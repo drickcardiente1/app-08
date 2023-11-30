@@ -630,32 +630,6 @@ client_queries.post('/send-msg', (req, res) => {
     }
 });
 
-// client_queries.post('/book', (req, res) => {
-//     if (req.session.logged_in) {
-//         qry = `INSERT INTO messages(id, sender, messages, status) VALUES ('', '${req.session.user_id}', '${req.body.message}', '1' )`;
-//         (async () => {
-//             await new Promise((resolve, reject) => {
-//                 db.query(qry, (err, data) => {
-//                     if (err) {
-//                         reject(res.send({ code: 404 }))
-//                     } else {
-//                         resolve(data)
-//                     };
-//                 })
-//             }).then(data => {
-//                 res.json({ status: 202 });
-//                 res.end();
-//             }).catch(rs => {
-//                 console.log("Error such table found ", rs);
-//             })
-//         })();
-//     } else {
-//         res.json({ status: 404 });
-//         res.end();
-//     }
-// });
-
-
 client_queries.post('/book',upload.single('license'), (req, res) => {
     console.log(req.body.start)
     var date1 = new Date(req.body.start);

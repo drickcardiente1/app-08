@@ -222,7 +222,6 @@ function page_data_loader(tag) {
                 <span class="text-secondary">RETURNED</span>
                 `;
             }
-            console.log(my_booking_list);
             my_booking_list.innerHTML += `
             <center>
             <tr class="text-center">
@@ -1295,7 +1294,6 @@ function msgnotif() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                console.log(data.unread)
                 document.querySelector(".indicate").innerHTML =
                     `
                 <span
@@ -1360,7 +1358,6 @@ async function book() {
             },
             showCancelButton: true,
         }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 console.log(result)
                 if (result.value != null) {
