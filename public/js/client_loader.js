@@ -616,12 +616,14 @@ async function check_unit() {
         document.querySelector(".date_start").setAttribute("disabled", "");
         document.querySelector(".date_end").setAttribute("disabled", "");
         var s_badge = "badge badge-success";
+        var x_badge = "badge badge-danger";
         var chicker = document.querySelector(".chicker");
         chicker.innerHTML = `
         <button type="button" class="btn bg-gradient-success" style="margin-left: 7vh !important; bottom: -2.6vh !important;"
         onclick="book()">BOOK NOW</button>
         `;
         var sts = document.querySelector("#sts");
+        sts.classList.remove(...x_badge.split(" "));
         sts.classList.add(...s_badge.split(" "));
         sts.innerHTML = "AVAILABLE";
       } else {
