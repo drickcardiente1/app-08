@@ -667,8 +667,9 @@ function onlyNumberKey(evt) {
     return true;
 }
 function send_img(e){
-    console.log(e.files.length)
-    console.log("auto submit")
+    if(e.files.length >= 1){
+        console.log("ready to submit")
+    }
 }
 async function send() {
     var msg = document.querySelector('.msg');
