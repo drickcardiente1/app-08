@@ -1047,7 +1047,6 @@ async function s_up() {
         }
     }
     if (pwd == "") {
-        console.log(pwd.length)
         flag = false;
         pwd_error.innerHTML = "Please fill out this field";
     } else if (pwd.length < 6) {
