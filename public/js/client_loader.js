@@ -1008,8 +1008,8 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
-    console.log(document.getElementById('conditions').checked)
-    if (!document.getElementById('conditions').checked) {
+    console.log(document.getElementById('conditions'))
+    if (document.getElementById('conditions').checked == null) {
         flag = false;
         cond.innerHTML = "Please accept Terms and Conditions"
     }
