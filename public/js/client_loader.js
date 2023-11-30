@@ -676,11 +676,12 @@ function send_img(e) {
             method: "POST",
             body: data,
         }).then((res) => {
-            if(res.status == 202){
-                console.log(res.reply)
-            }else{
-                Swal.fire("Failed to upload files 1");
-            }
+            console.log(res)
+            // if(res.status == 202){
+            //     console.log(res.reply)
+            // }else{
+            //     Swal.fire("Failed to upload files 1");
+            // }
         }).catch((rs) => {
             Swal.fire("Failed to upload files 2");
         });
