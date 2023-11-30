@@ -19,9 +19,8 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
-                    <button class="btn btn-sm btn-light cp" type="button" onclick="change_cl_prof(this)" title="change profile"
-                    data-bs-toggle="modal" data-bs-target="#change-prof">Change Profile</button>
+                <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex change-prof">
+                    <button class="btn btn-sm btn-light" type="button" onclick="change_prof()" title="change profile" data-bs-toggle="modal" data-bs-target="#change-prof">Change Profile</button>
                 </div>
             </div>
         </div>
@@ -175,7 +174,7 @@ password</button>
         <div class="modal-content" style="border-radius: 25px !important;">
             <div class="modal-body p-0">
                 <div class="card card-header">
-                    <form action="javascript:;" onsubmit="update_cl_img()" method="POST" autocomplete="off"
+                    <form action="javascript:;" method="POST" autocomplete="off"
                         enctype="multipart/form-data">
                         <div class="input-group input-group-static mt-3 curent_img" style="margin-bottom: 2vh;">
                         </div>
@@ -188,8 +187,8 @@ password</button>
                         <div class="justify-content-end mt-3">
                             <button onclick="cancupx()" style="color: black !important;" type="button" name="button"
                                 class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
-                            <button onclick="update_cl_img()" type="submit" name="button"
-                                class="btn bg-gradient-dark m-0 ms-2 cl-id" data-bs-dismiss="modal">UPDATE</button>
+                            <button onclick="update_my_prof()" type="submit" name="button"
+                                class="btn bg-gradient-dark m-0 ms-2" data-bs-dismiss="modal">UPDATE</button>
                         </div>
                 </div>
             </div>

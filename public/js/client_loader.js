@@ -1367,15 +1367,67 @@ async function book() {
 }
 
 
-function change_cl_prof(e) {
-    console.log("here")
+function cancupx() {
+    document.querySelector(".input-prof").value = "";
+}
+
+function change_prof() {
+    var c_user = map_data.get("actor").raw;
+    document.querySelector(".curent_img").innerHTML = `
+      <img style="height: 50% !important; width: 100% !important;" src="${c_user[0].avatar}">
+      `;
+
+    var input_prof = document.querySelector(".input-prof");
+    input_prof.addEventListener("change", function () {
+        var img = input_prof.files;
+        if (img.length >= 1) {
+            const fileReader = new FileReader();
+            fileReader.onload = (event) => {
+                document.querySelector(".curent_img").innerHTML = `
+                      <img style="height: 50% !important; width: 100% !important;" src="${event.target.result}">
+                  `;
+            };
+            fileReader.readAsDataURL(img[0]);
+        } else {
+            document.querySelector(".curent_img").innerHTML = `
+                      <img style="height: 50% !important; width: 100% !important;" src="${c_user[0].avatar}">
+                  `;
+        }
+    });
+}
+
+function update_my_prof() {
+    var input_prof = document.querySelector(".input-prof");
+    var img = input_prof.files;
+    if (img.length != 0) {
+        // add loader here
+        var data = new FormData();
+        data.append("myprofile", input_prof.files[0]);
+        fetch("/client_query/my-prof_update", {
+            method: "POST",
+            body: data,
+        })
+            .then((res) => {
+                initializer("/profile/");
+            })
+            .catch((rs) => {
+                Swal.fire("Failed to upload profile");
+                // and here
+                input_prof.value = "";
+            });
+    } else {
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "No Image Deticted",
+            showConfirmButton: false,
+            timer: 1500,
+        });
+    }
 }
 
 
 window.addEventListener("load", initializer(window.location.pathname), true);
-function cancupx() {
-    document.querySelector(".input-prof").value = "";
-}
 
 function loader_animation (){
   document.querySelector(".layer").innerHTML = `

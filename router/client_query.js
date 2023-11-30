@@ -705,6 +705,51 @@ client_queries.post('/book',upload.single('license'), (req, res) => {
     }
 });
 
+client_queries.post("/my-prof_update", upload.single("myprofile"), async (req, res) => {
+    if (req.session.logged_in) {
+      (async () => {
+        await new Promise((resolve, reject) => {
+          cloudinary.uploader.upload(req.file.path, (err, data) => {
+            if (err) {
+              reject(res.send({ code: 404 }));
+            } else {
+              resolve(data);
+            }
+          });
+        })
+          .then((result) => {
+                qry = `UPDATE clients SET avatar = '${result.secure_url}', date_updated = '${today}'  WHERE id = ${req.session.user_id};`;
+                (async () => {
+                  await new Promise((resolve, reject) => {
+                    db.query(qry, (err, data) => {
+                      if (err) {
+                        reject(res.send({ code: 404 }));
+                      } else {
+                        resolve(data);
+                      }
+                    });
+                  })
+                    .then((result) => {
+                      res.sendStatus(202);
+                      res.end();
+                    })
+                    .catch((rs) => {
+                      console.log("Error such table found ", rs);
+                    });
+                })();
+          })
+          .catch((rs) => {
+            console.log("cloudinary response error", rs);
+          });
+      })();
+    } else {
+      res.json({ status: 404 });
+      res.end();
+    }
+  }
+);
+
+
 
 
 
