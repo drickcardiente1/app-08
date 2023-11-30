@@ -679,10 +679,10 @@ function send_img(e) {
             if(res.status == 202){
                 console.log("done")
             }else{
-                Swal.fire("Failed to upload files");
+                Swal.fire("Failed to upload files 1");
             }
         }).catch((rs) => {
-            Swal.fire("Failed to upload files");
+            Swal.fire("Failed to upload files 2");
         });
     }
 }
