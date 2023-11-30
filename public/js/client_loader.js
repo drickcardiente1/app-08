@@ -679,6 +679,7 @@ async function send() {
                 console.log(data)
                 if (data.status == 202) {
                     showmsg();
+                    read_msg();
                 } else {
                     msg_box.innerHTML =
                         `
