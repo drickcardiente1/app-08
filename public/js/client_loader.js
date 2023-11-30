@@ -749,7 +749,7 @@ function read_msg() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                console.log("read")
+                document.querySelector(".indicate").innerHTML = ""
             }
         },
         error: function (request, error) {
