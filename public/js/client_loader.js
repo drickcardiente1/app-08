@@ -4,6 +4,7 @@ const map_data = new Map([]);
 const c_plate = new Map([]);
 var from = [], to = []
 var intervalID;
+var intervalread;
 const rep = ne => {
     var l_slice = ne.slice(-1);
     if (l_slice === "/") {
@@ -798,11 +799,12 @@ async function msg() {
     tab.classList.add('show');
     document.querySelector(".indicate").innerHTML = ""
     await showmsg()
-    read_msg();
+    intervalread = setInterval(read_msg, 1000);
 }
 function cl_msg_close() {
     var tab = document.querySelector('#cl-msg');
     tab.classList.remove('show');
+    clearInterval(intervalread);
 }
 function bcat(ths) {
     var target = document.getElementsByClassName('bct')[0];
