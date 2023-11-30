@@ -632,11 +632,11 @@ client_queries.post('/send-msg', (req, res) => {
 });
 
 
-client_queries.post('/send-img', upload.array('img-message', 10), (req, res) => {
+client_queries.post('/send-img', upload.array('img_message', 10), (req, res) => {
     if (req.session.logged_in) {
         (async () => {
             var imgs = []
-            for (var image of req.files.img-message) {
+            for (var image of req.files.img_message) {
                 var result = await cloudinary.uploader.upload(image.path);
                 imgs.push(result.secure_url)
             }
