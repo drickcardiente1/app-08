@@ -530,10 +530,10 @@ client_queries.post('/check-msg', (req, res) => {
             }
             if(tag == true){
                 (async () => {
-                    for (let ids of id) {
-                        qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`
-                        await promise_query(qry)
-                    }
+                    // for (let ids of id) {
+                    //     qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`
+                    //     await promise_query(qry)
+                    // }
                     res.json({ status: 202, "unread": id.length });
                     res.end();
                 })();

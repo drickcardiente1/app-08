@@ -741,7 +741,7 @@ async function showmsg() {
         },
     });
 }
-async function remsg(data) {
+async function indicate(data) {
     document.querySelector('.indicate').innerHTML = "1"
 }
 function check() {
@@ -752,7 +752,7 @@ function check() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                remsg(data.unread)
+                indicate(data.unread);
             }
         },
         error: function (request, error) {
