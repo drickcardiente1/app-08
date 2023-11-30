@@ -671,6 +671,7 @@ function send_img(e) {
         var data = new FormData();
         for (let loop = 0; loop < e.files.length; loop++) {
             data.append("img_message", e.files[loop]);
+            console.log(e.files[loop])
         }
         fetch("/client_query/send-img", {
             method: "POST",
