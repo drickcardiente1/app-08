@@ -427,7 +427,7 @@ client_queries.post('/validate_newpass', async (req, res) => {
 
 client_queries.post('/reg_client', async (req, res) => {
     var pwd = md5(req.body.password)
-    qry = `INSERT INTO clients(id, firstname, lastname, gender, contact, email, password, address, date_created) VALUES ('', '${req.body.firstname}', '${req.body.lastname}', '${req.body.gender}', '${req.body.contact}', '${req.body.username}', '${pwd}', '${req.body.address}', '${today}')`;
+    qry = `INSERT INTO clients(id, firstname, lastname, gender, contact, email, password, address, avatar, date_created) VALUES ('', '${req.body.firstname}', '${req.body.lastname}', '${req.body.gender}', '${req.body.contact}', '${req.body.username}', '${pwd}', '${req.body.address}', '${process.env.default_logo}', '${today}')`;
     (async () => {
         await new Promise((resolve, reject) => {
             db.query(qry, (err, data) => {
