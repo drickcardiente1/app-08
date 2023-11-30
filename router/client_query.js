@@ -642,23 +642,25 @@ client_queries.post('/send-img', upload.array('img_message', 10), (req, res) => 
             }
             return { "galeries": galeries }
         })().then((images) => {
-            qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(images.galeries)}' , '1' )`;
-            (async () => {
-                await new Promise((resolve, reject) => {
-                    db.query(qry, (err, data) => {
-                        if (err) {
-                            reject(res.send({ code: 404 }))
-                        } else {
-                            resolve(data)
-                        };
-                    })
-                }).then(data => {
-                    res.json({ status: 202 });
-                    res.end();
-                }).catch(rs => {
-                    console.log("Error such table found ", rs);
-                })
-            })();
+            res.json({ status: 202, reply: images });
+            res.end();
+            // qry = `INSERT INTO messages(id, sender, messages, images, status) VALUES ('', '${req.session.user_id}', '${req.body.message}','${JSON.stringify(images.galeries)}' , '1' )`;
+            // (async () => {
+            //     await new Promise((resolve, reject) => {
+            //         db.query(qry, (err, data) => {
+            //             if (err) {
+            //                 reject(res.send({ code: 404 }))
+            //             } else {
+            //                 resolve(data)
+            //             };
+            //         })
+            //     }).then(data => {
+            //         res.json({ status: 202 });
+            //         res.end();
+            //     }).catch(rs => {
+            //         console.log("Error such table found ", rs);
+            //     })
+            // })();
         }).catch(() => {
             res.sendStatus(404)
             res.end();

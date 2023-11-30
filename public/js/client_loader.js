@@ -677,7 +677,7 @@ function send_img(e) {
             body: data,
         }).then((res) => {
             if(res.status == 202){
-                console.log("done")
+                console.log(res.reply)
             }else{
                 Swal.fire("Failed to upload files 1");
             }
