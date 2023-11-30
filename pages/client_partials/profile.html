@@ -167,3 +167,32 @@ password</button>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="change-prof" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalSignTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content" style="border-radius: 25px !important;">
+            <div class="modal-body p-0">
+                <div class="card card-header">
+                    <form action="javascript:;" onsubmit="update_cl_img()" method="POST" autocomplete="off"
+                        enctype="multipart/form-data">
+                        <div class="input-group input-group-static mt-3 curent_img" style="margin-bottom: 2vh;">
+                        </div>
+                        <div class="input-group input-group-static">
+                            <div class="input-group input-group-dynamic mt-4">
+                                <input class="input-prof" type="file" id="img" name="img"
+                                    accept="image/jpeg, image/png, image/jpg">
+                            </div>
+                        </div>
+                        <div class="justify-content-end mt-3">
+                            <button onclick="cancupx()" style="color: black !important;" type="button" name="button"
+                                class="btn bg-light m-0 ms-2" data-bs-dismiss="modal">Cancel</button>
+                            <button onclick="update_cl_img()" type="submit" name="button"
+                                class="btn bg-gradient-dark m-0 ms-2 cl-id" data-bs-dismiss="modal">UPDATE</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
