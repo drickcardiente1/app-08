@@ -1008,7 +1008,7 @@ async function s_up() {
     user_name_error.innerHTML = "";
     pwd_error.innerHTML = "";
     var flag = true;
-    if (!document.getElementById('remember').checked) {
+    if (document.getElementById('remember').checked == null) {
         flag = false;
         cond.innerHTML = "Please accept Terms and Conditions"
     }
