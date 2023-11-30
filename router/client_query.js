@@ -634,7 +634,7 @@ client_queries.post('/send-msg', (req, res) => {
 
 client_queries.post('/send-img', upload.array('img_message', 10), (req, res) => {
     if (req.session.logged_in) {
-        res.json({ status: 202, reply: "hellow world" });
+        res.json({ status: 202 });
         res.end();
         // (async () => {
         //     var imgs = []

@@ -676,7 +676,6 @@ function send_img(e) {
             method: "POST",
             body: data,
         }).then((res) => {
-            console.log(res)
             if(res.status == 202){
                 console.log(res.reply)
             }else{
