@@ -742,7 +742,7 @@ async function showmsg() {
     });
 }
 async function indicate(data) {
-    document.querySelector('.indicate').innerHTML = "1"
+    document.querySelector('.indicate').innerHTML = data
 }
 function check() {
     console.log("check")
