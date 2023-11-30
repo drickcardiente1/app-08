@@ -1330,11 +1330,11 @@ async function initializer(url) {
       .set(`all_categories`, all_categories)
       .set(`galleries`, all_galeries)
       .set(`actor`, actor);
-    function form203(){
-        format203(actor)
+    function form202(){
+        format202(actor)
         intervalID = setInterval(check, 1000);
     }
-    actor.status == 202 ? format202(actor) : actor.status == 203 ? form203() : format404();
+    actor.status == 202 ? format202(actor) : actor.status == 203 ? format203(actor) : format404();
     get_page(url);
 }
 async function book() {
