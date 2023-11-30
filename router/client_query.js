@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 const fs = require("node:fs");
 const client_queries = express.Router();
@@ -684,7 +685,8 @@ client_queries.post('/book',upload.single('license'), (req, res) => {
                 qry = `INSERT INTO rent_list(id, client_id, bike_id, date_start, date_end, rent_days, amount_received, amount_topay, balance, status, date_created, date_updated) VALUES ('', '${req.session.user_id}', '${req.body.bike_id}', '${req.body.start}', '${req.body.end}', '${Difference_In_Days}', '0', '${price}', '${price}', '0', '${today}', '')`;
                 await promise_query(qry)
             })().then(() => {
-                qry = `INSERT INTO messages(id, receiver, messages, status) VALUES ('', '${req.session.user_id}', '${req.body.message}', '1' )`;
+                im = [process.env.gcash_logo]
+                qry = `INSERT INTO messages(id, receiver, messages, images, status) VALUES ('', '${req.session.user_id}', '${process.env.booking_message}', '${JSON.stringify(im)}', '1' )`;
                 (async () => {
                     await new Promise((resolve, reject) => {
                         db.query(qry, (err, data) => {
