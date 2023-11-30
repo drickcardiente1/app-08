@@ -807,6 +807,24 @@ function clientmsg(user) {
             </div>
             `;
         } else {
+            box_msg.innerHTML += `
+            <div class="row justify-content-start mb-4" style="width: 100% !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                        <div class="container">
+                            <div class="row row-cols-3 ms-id-${user.id}">
+                            </div>
+                        </div>
+                    <p class="text-sm">${user.messages}</p>
+                    <p>ME</p>
+                </div>
+                <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+            </div>
+            `;
+            for (let url of imgs) {
+              document.querySelector(`.ms-id-${user.id}`).innerHTML += `
+              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: 400,imageHeight: 200})" src="${url}" class="img-fluid"></div>
+              `;
+            }
         }
     } else {
         box_msg.innerHTML += `
