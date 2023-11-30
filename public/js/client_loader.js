@@ -740,7 +740,7 @@ async function showmsg() {
     });
 }
 async function remsg() {
-    await msg();
+    document.querySelector('.indicate').innerHTML = "1"
 }
 function check() {
     $.ajax({
@@ -749,7 +749,7 @@ function check() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                console.log("202")
+                console.log(data)
                 remsg()
             }
         },
