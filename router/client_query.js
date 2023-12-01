@@ -546,6 +546,8 @@ client_queries.post('/check-msg', (req, res) => {
         })
     })();
 });
+
+
 client_queries.post('/notif-msg', (req, res) => {
     qry = `SELECT * FROM messages WHERE sender = '${req.session.user_id}' OR receiver = '${req.session.user_id}'`;
     (async () => {

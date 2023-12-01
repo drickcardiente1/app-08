@@ -2939,7 +2939,31 @@ async function selected_usr(e) {
   document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
   disp_name.innerHTML = name;
   disp_name.setAttribute("r_id", id);
+  msg_box(id, name);
   await showmsg(id, name);
+}
+
+function msg_box(id, name) {
+      document.querySelector(".msg_sender").innerHTML = `
+    <div class="col-1 ms-loader">
+        <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
+          <i class="fa fa-cloud-upload"></i>
+        </label>
+      <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this, ${id})" multiple />
+    </div>
+    <div class="col-8 ms-form">
+        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
+            <div class="input-group input-group-outline d-flex">
+                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-1 ms-sbmt">
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg(${id}, '${name}')">
+            <i class="material-icons">send</i>
+        </button>
+    </div>
+    `;
 }
 
 
@@ -3055,11 +3079,12 @@ async function showmsg(id, name) {
     <span class="sr-only">Loading...</span>
   </div>
   `;
-  document.querySelector(".msg_sender").innerHTML = `
+  document.querySelector(".ms-form").innerHTML = `
   <div class="spinner-border text-warning" role="status">
     <span class="sr-only">Loading...</span>
   </div>
   `;
+  document.querySelector(".ms-sbmt").innerHTML = ''
   await $.ajax({
     url: "/query/show-msg",
     method: "POST",
@@ -3067,6 +3092,18 @@ async function showmsg(id, name) {
     data : { "id": id },
     success: function (data) {
       document.querySelector(".msg-box").innerHTML = ''
+      document.querySelector(".ms-form").innerHTML = `
+       <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
+            <div class="input-group input-group-outline d-flex">
+                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+            </div>
+        </form>
+      `;
+      document.querySelector(".ms-sbmt").innerHTML = `
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg(${id}, '${name}')">
+          <i class="material-icons">send</i>
+        </button>
+        `
       if (data.length >= 1) {
         for (var user of data) {
           user.sender == "" ? adminmsg(user) : clientmsg(user, name);
@@ -3080,25 +3117,43 @@ async function showmsg(id, name) {
       location.reload();
     },
   });
-    document.querySelector(".msg_sender").innerHTML = `
-    <div class="col-1" style="margin-right: 2vh !important;">
-        <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
-            <i class="material-icons" title="upload image">add</i>
-        </a>
-    </div>
-    <div class="col-8">
-        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
-            <div class="input-group input-group-outline d-flex">
-                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+}
+
+function send_img(e, id) {
+    if (e.files.length >= 1) {
+      document.querySelector(".ms-loader").innerHTML = `
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
-        </form>
-    </div>
-    <div class="col-1">
-        <button class="btn bg-gradient-primary mb-0" onclick="send_msg(${id}, '${name}')">
-            <i class="material-icons">send</i>
-        </button>
-    </div>
-    `;
+        `;
+      var data = new FormData();
+      for (let loop = 0; loop < e.files.length; loop++) {
+        data.append("img_message", e.files[loop]);
+      }
+      data.append("id", id);
+      fetch("/query/send-img", {
+        method: "POST",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.status == 202) {
+              document.querySelector(".ms-loader").innerHTML = `
+                <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
+                    <i class="fa fa-cloud-upload"></i>
+                </label>
+                <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this)"
+                    multiple />
+            `;
+            showmsg();
+            } else {
+              Swal.fire("Failed to upload files");
+            }
+        })
+        .catch((rs) => {
+          Swal.fire("Failed to upload files");
+        });
+    }
 }
 async function send_msg(id, name) {
     var msg = document.querySelector('.msg_val');

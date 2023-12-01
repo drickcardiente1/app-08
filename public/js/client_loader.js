@@ -857,7 +857,6 @@ async function showmsg() {
     });
 }
 function read_msg() {
-    console.log("check")
     $.ajax({
         url: "/client_query/check-msg",
         method: "POST",

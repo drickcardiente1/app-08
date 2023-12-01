@@ -974,6 +974,51 @@ queries.post("/send-msg", (req, res) => {
 });
 
 
+queries.post("/send-img", upload.array("img_message", 10), (req, res) => {
+  if (req.session.logged_in) {
+    (async () => {
+      var imgs = [];
+      for (var image of req.files) {
+        var result = await cloudinary.uploader.upload(image.path);
+        imgs.push(result.secure_url);
+      }
+      return { imgs: imgs };
+    })()
+      .then((images) => {
+        qry = `INSERT INTO messages(id, receiver, images, status) VALUES ('', '${
+          req.body.id
+        }','${JSON.stringify(images.imgs)}' , '1' )`;
+        (async () => {
+          await new Promise((resolve, reject) => {
+            db.query(qry, (err, data) => {
+              if (err) {
+                reject(res.send({ code: 404 }));
+              } else {
+                resolve(data);
+              }
+            });
+          })
+            .then((data) => {
+              res.json({ status: 202 });
+              res.end();
+            })
+            .catch((rs) => {
+              console.log("Error such table found ", rs);
+            });
+        })();
+      })
+      .catch(() => {
+        res.sendStatus(404);
+        res.end();
+      });
+  } else {
+    res.json({ status: 404 });
+    res.end();
+  }
+});
+
+
+
 
 
 module.exports = queries;
