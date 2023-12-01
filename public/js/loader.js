@@ -1579,6 +1579,7 @@ function upd_bl() {
       balance: balance.value,
       r_d: r_d.value,
     },
+    
     dataType: "JSON",
     success: function (data) {
       if (data.status == 202) {

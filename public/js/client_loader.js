@@ -988,7 +988,7 @@ function detail(e) {
                 <p><b>Bike Model<br></b> ${bike.length >= 1 ? bike[0].bike_model : ""}</p>
                 <p><b>Bike Daily Rate<br></b> ${bike.length >= 1 ? bike[0].daily_rate : ""}</p>
                 <p><b>Day/s to Rent<br></b> ${b_list[id].rent_days}</p>
-                <p><b>Client Payable Amount<br></b> ${b_list[id].amount_topay}</p>
+                <p><b>Client Payable Amount<br></b> ${b_list[id].balance}</p>
             </div>
         </div>
     </div>
