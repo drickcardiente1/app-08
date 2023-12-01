@@ -3067,7 +3067,16 @@ function clientmsg(user, name) {
 
 
 async function showmsg(id, name) {
-  document.querySelector(".msg-box").innerHTML = "";
+  document.querySelector(".msg-box").innerHTML = `
+  <div class="spinner-border text-dark" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  `;
+  document.querySelector(".msg_sender").innerHTML = `
+  <div class="spinner-border text-warning" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  `;
   await $.ajax({
     url: "/query/show-msg",
     method: "POST",
