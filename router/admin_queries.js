@@ -948,7 +948,7 @@ queries.post("/show-msg", (req, res) => {
 
 queries.post("/send-msg", (req, res) => {
   if (req.session.logged_in) {
-    qry = `INSERT INTO messages(id, sender, receiver, messages, status) VALUES ('', '', '${req.body.id}', '${req.body.message}' , '1' )`;
+    qry = `INSERT INTO messages(id, sender, receiver, messages, client_stats, admin_stats) VALUES ('', '', '${req.body.id}', '${req.body.message}' , '1', '1' )`;
     (async () => {
       await new Promise((resolve, reject) => {
         db.query(qry, (err, data) => {
@@ -985,9 +985,7 @@ queries.post("/send-img", upload.array("img_message", 10), (req, res) => {
       return { imgs: imgs };
     })()
       .then((images) => {
-        qry = `INSERT INTO messages(id, receiver, images, status) VALUES ('', '${
-          req.body.id
-        }','${JSON.stringify(images.imgs)}' , '1' )`;
+        qry = `INSERT INTO messages(id, receiver, images, client_stats, admin_stats) VALUES ('', '${req.body.id}','${JSON.stringify(images.imgs)}' , '1', '1' )`;
         (async () => {
           await new Promise((resolve, reject) => {
             db.query(qry, (err, data) => {
@@ -1032,15 +1030,15 @@ queries.post("/updater", (req, res) => {
       .then((data) => {
         var tag = false,id = [];
         for (var x of data) {
-          if (x.status.includes(1)) {
+          if (x.admin_stats.includes(1)) {
             tag = true;
             id.push(x.id);
           }
-        }
+          }
         if (tag == true) {
           (async () => {
             for (let ids of id) {
-              qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`;
+              qry = `UPDATE messages SET admin_stats='0' WHERE id = '${ids}';`;
               await promise_query(qry);
             }
             res.json({ status: 202, unread: id.length });

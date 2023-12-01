@@ -711,7 +711,6 @@ async function send() {
             method: "POST",
             dataType: "JSON",
             success: function (data) {
-                console.log(data)
                 if (data.status == 202) {
                     showmsg();
                 } else {
@@ -849,7 +848,6 @@ async function showmsg() {
                 user.sender == "" ? adminmsg(user) : clientmsg(user);
             }
             document.location = '#messages'
-            read_msg();
         },
         error: function (request, error) {
             location.reload();
@@ -863,7 +861,9 @@ function read_msg() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                document.querySelector(".indicate").innerHTML = ""
+                console.log(data)
+                document.querySelector(".indicate").innerHTML = "";
+                showmsg();
             }
         },
         error: function (request, error) {
@@ -1193,7 +1193,6 @@ async function s_up() {
                     var data = new FormData();
                     data.append("um", u_name);
                     data.append("pd", pwd);
-                    console.log(data);
                     await fetch("/auth/client-login", {
                       method: "POST",
                       body: data,

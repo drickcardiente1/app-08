@@ -2432,7 +2432,6 @@ function change_cl_prof(e) {
   can();
   var id = e.getAttribute("d_id");
   document.querySelector(".cl-id").setAttribute("d_id", id);
-  console.log(id);
   var c_user = map1.get("clients");
   console.log(c_user);
   var the_user = [];
@@ -2922,12 +2921,6 @@ function set_actor() {
   var u_id = document.querySelector(".disp_name").getAttribute('r_id');
   if (u_id !== null) {
     document.querySelector(`.usr-${u_id}`).click();
-    // document.querySelector(`.usr-${u_id}`).classList.remove('btn-outline-danger');
-    // document.querySelector(`.usr-${u_id}`).classList.add('btn-outline-success');
-    // document.querySelector(`.usr-${u_id}`).style.pointerEvents = 'none';
-    // clearInterval(updater_interval);
-    // var u_uname = document.querySelector(".disp_name").innerHTML
-    // updater_interval = setInterval(() => updater(u_id, u_uname), 1000);
   }
 }
 async function selected_usr(e) {
@@ -3135,7 +3128,9 @@ async function showmsg(id, name) {
     },
   });
 }
-async function showmsg(id, name) {
+
+
+async function showmsg2(id, name) {
   await $.ajax({
     url: "/query/show-msg",
     method: "POST",
@@ -3147,19 +3142,12 @@ async function showmsg(id, name) {
         xm[l].style.pointerEvents = 'auto';
       }
       document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
-      document.querySelector(".msg-box").innerHTML = ''
-      document.querySelector(".ms-form").innerHTML = `
-       <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
-            <div class="input-group input-group-outline d-flex">
-                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
-            </div>
-        </form>
+      document.querySelector(".ms-loader").innerHTML = `
+        <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
+          <i class="fa fa-cloud-upload"></i>
+        </label>
+      <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this, ${id}, '${name}')" multiple />
       `;
-      document.querySelector(".ms-sbmt").innerHTML = `
-        <button class="btn bg-gradient-primary mb-0" onclick="send_msg(${id}, '${name}')">
-          <i class="material-icons">send</i>
-        </button>
-        `
       if (data.length >= 1) {
         for (var user of data) {
           user.sender == "" ? adminmsg(user) : clientmsg(user, name);

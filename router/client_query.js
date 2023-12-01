@@ -520,30 +520,31 @@ client_queries.post('/check-msg', (req, res) => {
                     resolve(data)
                 };
             })
-        }).then(data => {
-            var tag = false, id = [];
-            for (var x of data){
-                if(x.status.includes(1)){
-                    tag = true
-                    id.push(x.id)
-                }
+        })      .then((data) => {
+        var tag = false,id = [];
+        for (var x of data) {
+          if (x.client_stats.includes(1)) {
+            tag = true;
+            id.push(x.id);
+          }
+        }
+        if (tag == true) {
+          (async () => {
+            for (let ids of id) {
+              qry = `UPDATE messages SET client_stats='0' WHERE id = '${ids}';`;
+              await promise_query(qry);
             }
-            if(tag == true){
-                (async () => {
-                    for (let ids of id) {
-                        qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`
-                        await promise_query(qry)
-                    }
-                    res.json({ status: 202, "unread": id.length });
-                    res.end();
-                })();
-            }else{
-                res.json({ status: 404 });
-                res.end();
-            }
-        }).catch(rs => {
-            console.log("Error such table found ", rs);
-        })
+            res.json({ status: 202, unread: id.length });
+            res.end();
+          })();
+        } else {
+          res.json({ status: 404 });
+          res.end();
+        }
+      })
+      .catch((rs) => {
+        console.log("Error such table found ", rs);
+      });
     })();
 });
 
@@ -562,9 +563,9 @@ client_queries.post('/notif-msg', (req, res) => {
         }).then(data => {
             var tag = false, id = [];
             for (var x of data){
-                if(x.status.includes(1)){
-                    tag = true
-                    id.push(x.id)
+                if (x.client_stats.includes(1)) {
+                  tag = true;
+                  id.push(x.id);
                 }
             }
             if(tag == true){
@@ -609,7 +610,7 @@ client_queries.post('/show-msg', (req, res) => {
 
 client_queries.post('/send-msg', (req, res) => {
     if (req.session.logged_in) {
-        qry = `INSERT INTO messages(id, sender, messages, status) VALUES ('', '${req.session.user_id}', '${req.body.message}' , '1' )`;
+        qry = `INSERT INTO messages(id, sender, messages, client_stats, admin_stats) VALUES ('', '${req.session.user_id}', '${req.body.message}' , '1', '1' )`;
         (async () => {
             await new Promise((resolve, reject) => {
                 db.query(qry, (err, data) => {
@@ -643,7 +644,7 @@ client_queries.post('/send-img',upload.array('img_message', 10), (req, res) => {
             }
             return { "imgs": imgs }
         })().then((images) => {
-            qry = `INSERT INTO messages(id, sender, images, status) VALUES ('', '${req.session.user_id}','${JSON.stringify(images.imgs)}' , '1' )`;
+            qry = `INSERT INTO messages(id, sender, images, client_stats, admin_stats) VALUES ('', '${req.session.user_id}','${JSON.stringify(images.imgs)}' , '1', '1' )`;
             (async () => {
                 await new Promise((resolve, reject) => {
                     db.query(qry, (err, data) => {
