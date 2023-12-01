@@ -2949,7 +2949,7 @@ function msg_box(id, name) {
         <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
           <i class="fa fa-cloud-upload"></i>
         </label>
-      <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this, ${id}, '${name})" multiple />
+      <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this, ${id}, '${name}')" multiple />
     </div>
     <div class="col-8 ms-form">
         <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
