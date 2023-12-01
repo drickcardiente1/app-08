@@ -3084,6 +3084,10 @@ async function showmsg(id, name) {
     <span class="sr-only">Loading...</span>
   </div>
   `;
+  var xm = document.querySelectorAll('.xm')
+  for (let l = 0; l < xm.length; l++){
+    xm[l].style.pointerEvents = 'none';
+  }
   document.querySelector(".ms-sbmt").innerHTML = ''
   await $.ajax({
     url: "/query/show-msg",
@@ -3091,6 +3095,10 @@ async function showmsg(id, name) {
     dataType: "JSON",
     data : { "id": id },
     success: function (data) {
+      for (let l = 0; l < xm.length; l++){
+        xm[l].style.pointerEvents = 'auto';
+      }
+      document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
       document.querySelector(".msg-box").innerHTML = ''
       document.querySelector(".ms-form").innerHTML = `
        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
@@ -3126,6 +3134,10 @@ function send_img(e, id, name) {
                 <span class="sr-only">Loading...</span>
             </div>
         `;
+      var xm = document.querySelectorAll('.xm')
+      for (let l = 0; l < xm.length; l++){
+        xm[l].style.pointerEvents = 'none';
+      }
       var data = new FormData();
       for (let loop = 0; loop < e.files.length; loop++) {
         data.append("img_message", e.files[loop]);
@@ -3137,7 +3149,11 @@ function send_img(e, id, name) {
       })
         .then((res) => res.json())
         .then((res) => {
-            if (res.status == 202) {
+          if (res.status == 202) {
+              for (let l = 0; l < xm.length; l++){
+                xm[l].style.pointerEvents = 'auto';
+              }
+              document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
               document.querySelector(".ms-loader").innerHTML = `
                 <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
                     <i class="fa fa-cloud-upload"></i>
