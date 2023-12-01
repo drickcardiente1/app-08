@@ -2892,6 +2892,62 @@ function cl_msg_close() {
   tab.classList.remove("show");
 }
 
+function del_cl(ths) {
+  // dito2
+  var id = ths.getAttribute("d_id");
+  var cl = map1.get('clients').raw;
+  var name;
+
+  for (let c = 0; c < cl.length; c++) {
+      if (cl[c].id == id) {
+          name = `${cl[c].firstname} ${cl[c].lastname}`
+      }
+  }
+
+  can();
+  Swal.fire({
+      title: 'warning',
+      text: `Warning the Records in users :${name} will automaticaly delated`,
+      icon: 'warning',
+      showCancelButton: true,
+      allowOutsideClick: false,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          $.ajax({
+              url: "/query/users_info",
+              method: "POST",
+              data: { id: id },
+              dataType: "JSON",
+              success: function (data) {
+                  if (data.status == 202) {
+                      $.ajax({
+                          url: "/query/del_user",
+                          method: "POST",
+                          data: { id: id },
+                          dataType: "JSON",
+                          success: function (data) {
+                              if (data.status == 202) {
+                                  analizer('/admin/clients/')
+                              }
+                          },
+                          error: function (request, error) {
+                              alert(error);
+                          },
+                      });
+                  }
+              },
+              error: function (request, error) {
+                  alert(error);
+              },
+          });
+      } else if (result.isDismissed) {
+          recan();
+      }
+  })
+}
+
 
 window.addEventListener("load", analizer(window.location.pathname), false);
 
