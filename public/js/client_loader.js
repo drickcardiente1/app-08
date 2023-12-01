@@ -1475,8 +1475,8 @@ async function book() {
             showCancelButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(result)
                 if (result.value != null) {
+                    loading()
                     var data = new FormData();
                     data.append('license', result.value);
                     data.append('start', start);
@@ -1488,6 +1488,7 @@ async function book() {
                             method: 'POST',
                             body: data
                         }).then(res => {
+                            swal.close();
                             initializer("/my-bookings");
                         }).catch(() => {
                             window.location.reload()
