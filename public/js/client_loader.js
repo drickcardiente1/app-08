@@ -861,7 +861,6 @@ function read_msg() {
         dataType: "JSON",
         success: function (data) {
             if (data.status == 202) {
-                console.log(data)
                 document.querySelector(".indicate").innerHTML = "";
                 showmsg();
             }
