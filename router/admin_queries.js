@@ -920,9 +920,8 @@ queries.post('/bike_gallery', upload.single('imageProfile'), async (req, res) =>
 
 
 queries.post("/show-msg", (req, res) => {
-    var id = req.body.id
   if (req.session.logged_in) {
-    qry = `SELECT * FROM messages WHERE sender = '${id}' OR receiver = '${id}'`;
+    qry = `SELECT * FROM messages WHERE sender = '${req.body.id}' OR receiver = '${req.body.id}'`;
     (async () => {
       await new Promise((resolve, reject) => {
         db.query(qry, (err, data) => {
@@ -935,6 +934,33 @@ queries.post("/show-msg", (req, res) => {
       })
         .then((client) => {
           res.json(client);
+          res.end();
+        })
+        .catch((rs) => {
+          console.log("Error such table found ", rs);
+        });
+    })();
+  } else {
+    res.json({ status: 404 });
+    res.end();
+  }
+});
+
+queries.post("/send-msg", (req, res) => {
+  if (req.session.logged_in) {
+    qry = `INSERT INTO messages(id, sender, receiver, messages, status) VALUES ('', '', '${req.body.id}', '${req.body.message}' , '1' )`;
+    (async () => {
+      await new Promise((resolve, reject) => {
+        db.query(qry, (err, data) => {
+          if (err) {
+            reject(res.send({ code: 404 }));
+          } else {
+            resolve(data);
+          }
+        });
+      })
+        .then((data) => {
+          res.json({ status: 202 });
           res.end();
         })
         .catch((rs) => {

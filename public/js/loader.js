@@ -2917,6 +2917,12 @@ function set_actor() {
             <br>
             `;
   }
+  var disp_name = document.querySelector(".disp_name").getAttribute('r_id');
+  if (disp_name !== null) {
+    document.querySelector(`.usr-${disp_name}`).classList.remove('btn-outline-danger');
+    document.querySelector(`.usr-${disp_name}`).classList.add('btn-outline-success');
+    document.querySelector(`.usr-${disp_name}`).style.pointerEvents = 'none'
+  }
 }
 
 async function selected_usr(e) {
@@ -2931,7 +2937,6 @@ async function selected_usr(e) {
   document.querySelector(`.usr-${id}`).classList.remove('btn-outline-danger');
   document.querySelector(`.usr-${id}`).classList.add('btn-outline-success');
   document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
-  // ubtn.style.pointerEvents = 'none';
   disp_name.innerHTML = name;
   disp_name.setAttribute("r_id", id);
   await showmsg(id, name);
@@ -3044,9 +3049,6 @@ function clientmsg(user, name) {
     }
 }
 
-
-
-
 async function showmsg(id, name) {
   document.querySelector(".msg-box").innerHTML = `
   <div class="spinner-border text-dark" role="status">
@@ -3064,16 +3066,15 @@ async function showmsg(id, name) {
     dataType: "JSON",
     data : { "id": id },
     success: function (data) {
-      console.log(data.length)
+      document.querySelector(".msg-box").innerHTML = ''
       if (data.length >= 1) {
-          for (var user of data) {
+        for (var user of data) {
           user.sender == "" ? adminmsg(user) : clientmsg(user, name);
         }
       } else {
         document.querySelector('.msg-box').innerHTML = `<h4 style="color: black !important;" >NO MESSAGES</h4>`
       }
       document.location = "#messages";
-      // read_msg();
     },
     error: function (request, error) {
       location.reload();
@@ -3086,20 +3087,49 @@ async function showmsg(id, name) {
         </a>
     </div>
     <div class="col-8">
-        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg()">
+        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
             <div class="input-group input-group-outline d-flex">
                 <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
             </div>
         </form>
     </div>
     <div class="col-1">
-        <button class="btn bg-gradient-primary mb-0" onclick="send_msg()">
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg(${id}, '${name}')">
             <i class="material-icons">send</i>
         </button>
     </div>
     `;
 }
-
+async function send_msg(id, name) {
+    var msg = document.querySelector('.msg_val');
+    var msg_box = document.querySelector('.msg-box');
+    if(msg.value != ""){
+        await $.ajax({
+            url: "/query/send-msg",
+            data: { "message": msg.value, "id": id },
+            method: "POST",
+            dataType: "JSON",
+            success: function (data) {
+                if (data.status == 202) {
+                    showmsg(id, name);
+                } else {
+                    msg_box.innerHTML =
+                        `
+                    <div class="row justify-content-end mb-4 text-center">
+                        <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 25px; background-color: #344767 !important;">
+                        <h5>Please Refresh Page</h5>
+                        </div>
+                    </div>
+                    `
+                }
+                msg.value = "";
+            },
+            error: function (request, error) {
+                msg_box.innerHTML = "OFFLINE"
+            },
+        });
+    }
+}
 
 window.addEventListener("load", analizer(window.location.pathname), false);
 
