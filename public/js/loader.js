@@ -5,6 +5,7 @@ const sub_name = "";
 const admin_template_data = new Map([]);
 const layout = new Map([]);
 const map1 = new Map([]);
+var updater_interval
 var removd = [];
 var filtered;
 var v2;
@@ -2842,6 +2843,7 @@ function sign_out() {
 function cl_msg_close() {
   var tab = document.querySelector("#cl-msg");
   tab.classList.remove("show");
+  clearInterval(updater_interval);
 }
 
 function del_cl(ths) {
@@ -2917,14 +2919,17 @@ function set_actor() {
             <br>
             `;
   }
-  var disp_name = document.querySelector(".disp_name").getAttribute('r_id');
-  if (disp_name !== null) {
-    document.querySelector(`.usr-${disp_name}`).classList.remove('btn-outline-danger');
-    document.querySelector(`.usr-${disp_name}`).classList.add('btn-outline-success');
-    document.querySelector(`.usr-${disp_name}`).style.pointerEvents = 'none'
+  var u_id = document.querySelector(".disp_name").getAttribute('r_id');
+  if (u_id !== null) {
+    document.querySelector(`.usr-${u_id}`).click();
+    // document.querySelector(`.usr-${u_id}`).classList.remove('btn-outline-danger');
+    // document.querySelector(`.usr-${u_id}`).classList.add('btn-outline-success');
+    // document.querySelector(`.usr-${u_id}`).style.pointerEvents = 'none';
+    // clearInterval(updater_interval);
+    // var u_uname = document.querySelector(".disp_name").innerHTML
+    // updater_interval = setInterval(() => updater(u_id, u_uname), 1000);
   }
 }
-
 async function selected_usr(e) {
   var xm = document.querySelectorAll('.xm')
   for (let l = 0; l < xm.length; l++){
@@ -2939,8 +2944,27 @@ async function selected_usr(e) {
   document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
   disp_name.innerHTML = name;
   disp_name.setAttribute("r_id", id);
+  clearInterval(updater_interval);
+  updater_interval = setInterval(() => updater(id, name), 1000);
   msg_box(id, name);
-  await showmsg(id, name);
+  showmsg(id, name);
+}
+function updater(id, name) {
+  console.log(id)
+      $.ajax({
+        url: "/query/updater",
+        method: "POST",
+        dataType: "JSON",
+        data: {"id": id},
+        success: function (data) {
+          if (data.status == 202) {
+            showmsg3(id, name)
+          }
+        },
+        error: function (request, error) {
+            location.reload();
+        },
+    });
 }
 
 function msg_box(id, name) {
@@ -2965,7 +2989,6 @@ function msg_box(id, name) {
     </div>
     `;
 }
-
 
 function adminmsg(user) {
     var date = new Date(user.date_send);
@@ -3112,19 +3135,31 @@ async function showmsg(id, name) {
     },
   });
 }
-
-async function showmsg2(id, name) {
+async function showmsg(id, name) {
   await $.ajax({
     url: "/query/show-msg",
     method: "POST",
     dataType: "JSON",
     data : { "id": id },
     success: function (data) {
-      var xm = document.querySelectorAll('.xm');
+      var xm = document.querySelectorAll('.xm')
       for (let l = 0; l < xm.length; l++){
         xm[l].style.pointerEvents = 'auto';
       }
       document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
+      document.querySelector(".msg-box").innerHTML = ''
+      document.querySelector(".ms-form").innerHTML = `
+       <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
+            <div class="input-group input-group-outline d-flex">
+                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+            </div>
+        </form>
+      `;
+      document.querySelector(".ms-sbmt").innerHTML = `
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg(${id}, '${name}')">
+          <i class="material-icons">send</i>
+        </button>
+        `
       if (data.length >= 1) {
         for (var user of data) {
           user.sender == "" ? adminmsg(user) : clientmsg(user, name);
@@ -3133,6 +3168,31 @@ async function showmsg2(id, name) {
         document.querySelector('.msg-box').innerHTML = `<h4 style="color: black !important;" >NO MESSAGES</h4>`
       }
       document.location = "#messages";
+    },
+    error: function (request, error) {
+      location.reload();
+    },
+  });
+}
+
+async function showmsg3(id, name) {
+  await $.ajax({
+    url: "/query/show-msg",
+    method: "POST",
+    dataType: "JSON",
+    data : { "id": id },
+    success: function (data) {
+      var u_id = document.querySelector(".disp_name").getAttribute('r_id');
+      if (u_id == id) {
+        if (data.length >= 1) {
+          for (var user of data) {
+            user.sender == "" ? adminmsg(user) : clientmsg(user, name);
+          }
+        } else {
+          document.querySelector('.msg-box').innerHTML = `<h4 style="color: black !important;" >NO MESSAGES</h4>`
+        }
+        document.location = "#messages";
+      }
     },
     error: function (request, error) {
       location.reload();

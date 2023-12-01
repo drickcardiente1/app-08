@@ -1017,6 +1017,46 @@ queries.post("/send-img", upload.array("img_message", 10), (req, res) => {
   }
 });
 
+queries.post("/updater", (req, res) => {
+  qry = `SELECT * FROM messages WHERE sender = '${req.body.id}' OR receiver = '${req.body.id}'`;
+  (async () => {
+    await new Promise((resolve, reject) => {
+      db.query(qry, (err, data) => {
+        if (err) {
+          reject(res.send({ code: 404 }));
+        } else {
+          resolve(data);
+        }
+      });
+    })
+      .then((data) => {
+        var tag = false,id = [];
+        for (var x of data) {
+          if (x.status.includes(1)) {
+            tag = true;
+            id.push(x.id);
+          }
+        }
+        if (tag == true) {
+          (async () => {
+            for (let ids of id) {
+              qry = `UPDATE messages SET status='0' WHERE id = '${ids}';`;
+              await promise_query(qry);
+            }
+            res.json({ status: 202, unread: id.length });
+            res.end();
+          })();
+        } else {
+          res.json({ status: 404 });
+          res.end();
+        }
+      })
+      .catch((rs) => {
+        console.log("Error such table found ", rs);
+      });
+  })();
+});
+
 
 
 
