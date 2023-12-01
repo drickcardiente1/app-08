@@ -2934,25 +2934,6 @@ async function selected_usr(e) {
   // ubtn.style.pointerEvents = 'none';
   disp_name.innerHTML = name;
   disp_name.setAttribute("r_id", id);
-  document.querySelector(".msg_sender").innerHTML = `
-    <div class="col-1" style="margin-right: 2vh !important;">
-        <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
-            <i class="material-icons" title="upload image">add</i>
-        </a>
-    </div>
-    <div class="col-8">
-        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg()">
-            <div class="input-group input-group-outline d-flex">
-                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
-            </div>
-        </form>
-    </div>
-    <div class="col-1">
-        <button class="btn bg-gradient-primary mb-0" onclick="send_msg()">
-            <i class="material-icons">send</i>
-        </button>
-    </div>
-    `;
   await showmsg(id, name);
 }
 
@@ -3098,6 +3079,25 @@ async function showmsg(id, name) {
       location.reload();
     },
   });
+    document.querySelector(".msg_sender").innerHTML = `
+    <div class="col-1" style="margin-right: 2vh !important;">
+        <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
+            <i class="material-icons" title="upload image">add</i>
+        </a>
+    </div>
+    <div class="col-8">
+        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg()">
+            <div class="input-group input-group-outline d-flex">
+                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-1">
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg()">
+            <i class="material-icons">send</i>
+        </button>
+    </div>
+    `;
 }
 
 
