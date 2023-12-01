@@ -2895,7 +2895,7 @@ function cl_msg_close() {
 function del_cl(ths) {
   // dito2
   var id = ths.getAttribute("d_id");
-  var cl = map1.get('clients').raw;
+  var cl = map1.get('clients');
   var name;
 
   for (let c = 0; c < cl.length; c++) {
