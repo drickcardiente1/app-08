@@ -2944,7 +2944,7 @@ async function selected_usr(e) {
 }
 
 function msg_box(id, name) {
-      document.querySelector(".msg_sender").innerHTML = `
+    document.querySelector(".msg_sender").innerHTML = `
     <div class="col-1 ms-loader">
         <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
           <i class="fa fa-cloud-upload"></i>
@@ -3074,27 +3074,13 @@ function clientmsg(user, name) {
 }
 
 async function showmsg(id, name) {
-  document.querySelector(".msg-box").innerHTML = `
-  <div class="spinner-border text-dark" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-  `;
-  document.querySelector(".ms-form").innerHTML = `
-  <div class="spinner-border text-warning" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-  `;
-  var xm = document.querySelectorAll('.xm')
-  for (let l = 0; l < xm.length; l++){
-    xm[l].style.pointerEvents = 'none';
-  }
-  document.querySelector(".ms-sbmt").innerHTML = ''
   await $.ajax({
     url: "/query/show-msg",
     method: "POST",
     dataType: "JSON",
     data : { "id": id },
     success: function (data) {
+      var xm = document.querySelectorAll('.xm')
       for (let l = 0; l < xm.length; l++){
         xm[l].style.pointerEvents = 'auto';
       }
@@ -3112,6 +3098,33 @@ async function showmsg(id, name) {
           <i class="material-icons">send</i>
         </button>
         `
+      if (data.length >= 1) {
+        for (var user of data) {
+          user.sender == "" ? adminmsg(user) : clientmsg(user, name);
+        }
+      } else {
+        document.querySelector('.msg-box').innerHTML = `<h4 style="color: black !important;" >NO MESSAGES</h4>`
+      }
+      document.location = "#messages";
+    },
+    error: function (request, error) {
+      location.reload();
+    },
+  });
+}
+
+async function showmsg2(id, name) {
+  await $.ajax({
+    url: "/query/show-msg",
+    method: "POST",
+    dataType: "JSON",
+    data : { "id": id },
+    success: function (data) {
+      var xm = document.querySelectorAll('.xm');
+      for (let l = 0; l < xm.length; l++){
+        xm[l].style.pointerEvents = 'auto';
+      }
+      document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
       if (data.length >= 1) {
         for (var user of data) {
           user.sender == "" ? adminmsg(user) : clientmsg(user, name);
@@ -3150,18 +3163,7 @@ function send_img(e, id, name) {
         .then((res) => res.json())
         .then((res) => {
           if (res.status == 202) {
-              for (let l = 0; l < xm.length; l++){
-                xm[l].style.pointerEvents = 'auto';
-              }
-              document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
-              document.querySelector(".ms-loader").innerHTML = `
-                <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
-                    <i class="fa fa-cloud-upload"></i>
-                </label>
-                <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this)"
-                    multiple />
-            `;
-            showmsg(id, name);
+            showmsg2(id, name);
             } else {
               Swal.fire("Failed to upload files");
             }
@@ -3172,8 +3174,23 @@ function send_img(e, id, name) {
     }
 }
 async function send_msg(id, name) {
-    var msg = document.querySelector('.msg_val');
-    var msg_box = document.querySelector('.msg-box');
+  var msg = document.querySelector('.msg_val');
+  var msg_box = document.querySelector('.msg-box');
+  document.querySelector(".msg-box").innerHTML = `
+  <div class="spinner-border text-dark" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  `;
+  document.querySelector(".ms-form").innerHTML = `
+  <div class="spinner-border text-warning" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  `;
+  var xm = document.querySelectorAll('.xm')
+  for (let l = 0; l < xm.length; l++){
+    xm[l].style.pointerEvents = 'none';
+  }
+  document.querySelector(".ms-sbmt").innerHTML = ''
     if(msg.value != ""){
         await $.ajax({
             url: "/query/send-msg",
