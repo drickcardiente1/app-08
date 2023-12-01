@@ -127,6 +127,7 @@ const data_initializer = async () => {
   }
 };
 const sign_in = () => {
+  loading();
   var nm = document.getElementById("uname").value;
   var pd = document.getElementById("pwd").value;
   if (!nm && pd) {
@@ -146,10 +147,12 @@ const sign_in = () => {
       dataType: "JSON",
       success: function (data) {
         if (data.status == 202) {
+          swal.close();
           (async () => {
             await analizer("/admin/");
           })();
         } else {
+          swal.close();
           Swal.fire("No user founds");
         }
       },
@@ -2836,69 +2839,15 @@ function sign_out() {
   });
 }
 
-function set_actor() {
-  var tab = document.querySelector("#cl-msg");
-  var actress = map1.get("user");
-  var clients = map1.get("clients");
-  tab.classList.add("show");
-  var usrw = document.querySelector(".msg-usrs-row");
-  usrw.innerHTML = "";
-  tab.setAttribute("actor_id", actress[0].id);
-  for (let loop = 0; loop < clients.length; loop++) {
-    var name = clients[loop].firstname,
-      nametrimmed;
-    if (name.length >= 5) {
-      nametrimmed = name.substring(0, 5);
-    }
-    if (clients.status == "ONLINE") {
-      usrw.innerHTML += `
-            <a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-success">${nametrimmed}<span class="badge disabled badge-info" style="margin-left: 1vh !important;">0</span></a>
-            <br>
-            `;
-    } else {
-      usrw.innerHTML += `
-            <a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-danger">${nametrimmed}<span class="badge disabled badge-info" style="margin-left: 1vh !important;">0</span></a>
-            <br>
-            `;
-    }
-  }
-}
-function selected_usr(ths) {
-  var id = ths.getAttribute("r_id");
-  var name = ths.getAttribute("nm");
-  document.querySelector(".msg_sender").innerHTML = `
-    <div class="col-1" style="margin-right: 2vh !important;">
-        <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
-            <i class="material-icons" title="upload image">add</i>
-        </a>
-    </div>
-    <div class="col-8">
-        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg()">
-            <div class="input-group input-group-outline d-flex">
-                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
-            </div>
-        </form>
-    </div>
-    <div class="col-1">
-        <button class="btn bg-gradient-primary mb-0" onclick="send_msg()">
-            <i class="material-icons">send</i>
-        </button>
-    </div>
-
-    `;
-  document.querySelector(".disp_name").innerHTML = name;
-}
 function cl_msg_close() {
   var tab = document.querySelector("#cl-msg");
   tab.classList.remove("show");
 }
 
 function del_cl(ths) {
-  // dito2
   var id = ths.getAttribute("d_id");
   var cl = map1.get('clients');
   var name;
-
   for (let c = 0; c < cl.length; c++) {
       if (cl[c].id == id) {
           name = `${cl[c].firstname} ${cl[c].lastname}`
@@ -2949,8 +2898,212 @@ function del_cl(ths) {
   })
 }
 
+function set_actor() {
+  var tab = document.querySelector("#cl-msg");
+  var actress = map1.get("user");
+  var clients = map1.get("clients");
+  tab.classList.add("show");
+  var usrw = document.querySelector(".msg-usrs-row");
+  usrw.innerHTML = "";
+  tab.setAttribute("actor_id", actress[0].id);
+  for (let loop = 0; loop < clients.length; loop++) {
+    var name = clients[loop].firstname,
+      nametrimmed;
+    if (name.length >= 5) {
+      nametrimmed = name.substring(0, 5);
+    }
+      usrw.innerHTML += `
+            <a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-danger usr-${clients[loop].id} xm">${nametrimmed}<span class="badge disabled badge-info" style="margin-left: 1vh !important;">0</span></a>
+            <br>
+            `;
+  }
+}
+
+async function selected_usr(e) {
+  var xm = document.querySelectorAll('.xm')
+  for (let l = 0; l < xm.length; l++){
+    xm[l].style.pointerEvents = 'auto';
+    xm[l].classList.add('btn-outline-danger');
+  }
+  var id = e.getAttribute("r_id");
+  var name = e.getAttribute("nm");
+  var disp_name = document.querySelector(".disp_name");
+  document.querySelector(`.usr-${id}`).classList.remove('btn-outline-danger');
+  document.querySelector(`.usr-${id}`).classList.add('btn-outline-success');
+  document.querySelector(`.usr-${id}`).style.pointerEvents = 'none'
+  // ubtn.style.pointerEvents = 'none';
+  disp_name.innerHTML = name;
+  disp_name.setAttribute("r_id", id);
+  document.querySelector(".msg_sender").innerHTML = `
+    <div class="col-1" style="margin-right: 2vh !important;">
+        <a class="btn bg-gradient-info btn-sm mb-0 mt-1">
+            <i class="material-icons" title="upload image">add</i>
+        </a>
+    </div>
+    <div class="col-8">
+        <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg()">
+            <div class="input-group input-group-outline d-flex">
+                <input type="text" placeholder="Type your message" class="form-control form-control-lg msg_val" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-1">
+        <button class="btn bg-gradient-primary mb-0" onclick="send_msg()">
+            <i class="material-icons">send</i>
+        </button>
+    </div>
+    `;
+  await showmsg(id, name);
+}
+
+
+function adminmsg(user) {
+    var date = new Date(user.date_send);
+    var box_msg = document.querySelector(".msg-box");
+    if (user.images != null) {
+        var imgs = JSON.parse(user.images);
+        if (imgs.length == 1) {
+            box_msg.innerHTML += `
+              <div class="row justify-content-start mb-4" style="width: 115% !important;">
+                <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                  <div class="container">
+                    <div class="row row-cols-1">
+                        <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: 400,imageHeight: 200})" src="${imgs[0]}" class="img-fluid"></div>
+                    </div>
+                  </div>
+                  <p class="text-sm">${user.messages}</</p>
+                  <p>ADMIN</p>
+                </div>
+                <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+              </div>
+            `;
+
+        } else {
+            box_msg.innerHTML += `
+                <div class="row justify-content-start mb-4" style="width: 115% !important;">
+                  <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+                    <div class="container">
+                      <div class="row row-cols-3 ms-id-${user.id}">
+                      </div>
+                    </div>
+                    <p class="text-sm">${user.messages}</</p>
+                    <p>ADMIN</p>
+                  </div>
+                  <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+                </div>
+            `;
+            for (let url of imgs) {
+              document.querySelector(`.ms-id-${user.id}`).innerHTML += `
+              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: 400,imageHeight: 200})" src="${url}" class="img-fluid"></div>
+              `;
+            }
+        }
+    } else {
+        box_msg.innerHTML += `
+        <div class="row justify-content-start mb-4" style="width: 115% !important;">
+            <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
+              <p class="text-sm">${user.messages}</</p>
+              <p>ADMIN</p>
+            </div>
+          <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+        </div>
+    `;
+    }
+}
+function clientmsg(user, name) {
+    var date = new Date(user.date_send)
+    var box_msg = document.querySelector('.msg-box');
+    if (user.images != null) {
+        var imgs = JSON.parse(user.images);
+        if (imgs.length == 1) { 
+            box_msg.innerHTML += `
+            <div class="row justify-content-end mb-4" style="width: 115% !important;">
+              <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                <div class="container">
+                  <div class="row row-cols-1">
+                    <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: 400,imageHeight: 200})" src="${imgs[0]}" class="img-fluid"></div>
+                  </div>
+                </div>
+                <p class="text-sm">${user.messages}</p>
+                <p>${name}</p>
+              </div>
+              <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+            </div>
+            `;
+        } else {
+            box_msg.innerHTML += `
+            <div class="row justify-content-end mb-4" style="width: 115% !important;">
+              <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+                <div class="container">
+                  <div class="row row-cols-3 ms-id-${user.id}">
+                  </div>
+                </div>
+                <p class="text-sm">${user.messages}</p>
+                <p>${name}</p>
+              </div>
+              <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+            </div>
+            `;
+            for (let url of imgs) {
+              document.querySelector(`.ms-id-${user.id}`).innerHTML += `
+              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: 400,imageHeight: 200})" src="${url}" class="img-fluid"></div>
+              `;
+            }
+        }
+    } else {
+        box_msg.innerHTML += `
+        <div class="row justify-content-end mb-4" style="width: 115% !important;">
+          <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
+            <p class="text-sm">${user.messages}</p>
+            <p>${name}</p>
+          </div>
+          <p style="color: black !important;">${date.toUTCString().replace(" GMT", "")}</p>
+        </div>
+        `;
+    }
+}
+
+
+
+
+async function showmsg(id, name) {
+  document.querySelector(".msg-box").innerHTML = "";
+  await $.ajax({
+    url: "/query/show-msg",
+    method: "POST",
+    dataType: "JSON",
+    data : { "id": id },
+    success: function (data) {
+      console.log(data.length)
+      if (data.length >= 1) {
+          for (var user of data) {
+          user.sender == "" ? adminmsg(user) : clientmsg(user, name);
+        }
+      } else {
+        document.querySelector('.msg-box').innerHTML = `<h4 style="color: black !important;" >NO MESSAGES</h4>`
+      }
+      document.location = "#messages";
+      // read_msg();
+    },
+    error: function (request, error) {
+      location.reload();
+    },
+  });
+}
+
 
 window.addEventListener("load", analizer(window.location.pathname), false);
+
+function loading() {
+  Swal.fire({
+    title: "<i>PLEASE WAIT</i>",
+    html: `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`,
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    showCancelButton: false,
+    showConfirmButton: false,
+  });
+}
 
 
 function loader_animation (){

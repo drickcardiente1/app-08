@@ -837,6 +837,7 @@ function clientmsg(user) {
         `;
     }
 }
+
 async function showmsg() {
     document.querySelector('.msg-box').innerHTML = "";
     await $.ajax({

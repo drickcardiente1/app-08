@@ -42,19 +42,6 @@ queries.get('/logout', function (req, res) {
     req.session.uname = '';
     res.json({ status: 202 });
     res.end();
-    // if (!req.session.is_admin) {
-    //     res.redirect('/admin/sign-in/');
-    //     res.end();
-    // }
-    // else {
-    //     req.session.is_admin = false;
-    //     req.session.is_client= false;
-    //     req.session.logged_in = false;
-    //     req.session.user_id = '';
-    //     req.session.uname = '';
-    //     res.json({status:202});
-    //     res.end();
-    // }
 });
 
 queries.post('/bike_list', (req, res) => {
@@ -932,7 +919,33 @@ queries.post('/bike_gallery', upload.single('imageProfile'), async (req, res) =>
 
 
 
-
+queries.post("/show-msg", (req, res) => {
+    var id = req.body.id
+  if (req.session.logged_in) {
+    qry = `SELECT * FROM messages WHERE sender = '${id}' OR receiver = '${id}'`;
+    (async () => {
+      await new Promise((resolve, reject) => {
+        db.query(qry, (err, data) => {
+          if (err) {
+            reject(res.send({ code: 404 }));
+          } else {
+            resolve(data);
+          }
+        });
+      })
+        .then((client) => {
+          res.json(client);
+          res.end();
+        })
+        .catch((rs) => {
+          console.log("Error such table found ", rs);
+        });
+    })();
+  } else {
+    res.json({ status: 404 });
+    res.end();
+  }
+});
 
 
 
