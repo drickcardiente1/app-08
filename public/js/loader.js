@@ -2949,7 +2949,7 @@ function msg_box(id, name) {
         <label for="file-upload" class="custom-file-upload" style="margin-top: 1vh !important;">
           <i class="fa fa-cloud-upload"></i>
         </label>
-      <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this, ${id})" multiple />
+      <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this, ${id}, '${name})" multiple />
     </div>
     <div class="col-8 ms-form">
         <form class="align-items-center" action="javascript:void(0);" onsubmit="send_msg(${id}, '${name}')">
@@ -3119,7 +3119,7 @@ async function showmsg(id, name) {
   });
 }
 
-function send_img(e, id) {
+function send_img(e, id, name) {
     if (e.files.length >= 1) {
       document.querySelector(".ms-loader").innerHTML = `
             <div class="spinner-border" role="status">
@@ -3145,7 +3145,7 @@ function send_img(e, id) {
                 <input id="file-upload" type="file" accept="image/jpeg, image/png, image/jpg" class="msg-img" onchange="send_img(this)"
                     multiple />
             `;
-            showmsg();
+            showmsg(id, name);
             } else {
               Swal.fire("Failed to upload files");
             }
