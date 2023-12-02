@@ -1381,6 +1381,7 @@ function fire(ths) {
     return `${year}-${month}-${day}`;
   }
 
+  document.querySelector('.res_img').src = i_info[0].license_url;
   document.querySelector("#id_tab").value = i_info[0].id;
   var s_name = document.getElementById("link3");
   var b_name = document.querySelector("#link2");
@@ -2942,7 +2943,6 @@ async function ms_clients() {
       Swal.fire('connection error')
     },
   });
-  await badge_detector();
 }
 
 async function badge_detector() {
@@ -2982,14 +2982,7 @@ async function selected_usr(e) {
   clearInterval(updater_interval);
   updater_interval = setInterval(() => updater(id, name), 1000);
   msg_box(id, name);
-  showmsg(id, name);
-  await updater(id, name).then(() => {
-    (async () => {
-      await badge_detector().then(() => {
-        document.querySelector(`.badge-cl-${id}`).innerHTML = '0';
-      });
-    })();
-  })
+  showmsg(id, name);    
 }
 
 async function updater(id, name) {

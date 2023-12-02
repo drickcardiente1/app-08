@@ -974,14 +974,16 @@ function detail(e) {
     <div class="conitaner-fluid px-3 py-2">
         <div class="row">
             <div class="col-md-6" style="color: black !important;">
+                <p><b>Drivers license<br></b> <img src="${b_list[0].license_url}" class="img-thumbnail"></p>
                 <p><b>Client Name<br></b> ${valid_u.raw[0].firstname} ${valid_u.raw[0].lastname}</p>
                 <p><b>Client Contact<br></b> ${valid_u.raw[0].contact}</p>
                 <p><b>Client Address<br></b> ${valid_u.raw[0].address}</p>
                 <p><b>Rent Pick up Date<br></b>${d_start.toLocaleDateString()}</p>
                 <p><b>Rent Return Date<br></b> ${d_end.toLocaleDateString()}</p>
-                ${stats}
             </div>
             <div class="col-md-6" style="color: black !important;">
+                <br>
+                ${stats}
                 <p><b>Bike Category<br></b> ${category[0].category}</p>
                 <p><b>Bike Brand<br></b> ${brand[0].name}</p>
                 <p><b>Bike Model<br></b> ${bike.length >= 1 ? bike[0].bike_model : ""}</p>
@@ -1487,6 +1489,7 @@ async function book() {
                             body: data
                         }).then(res => {
                             swal.close();
+                            document.querySelector(".home_result").innerHTML = ``
                             initializer("/my-bookings");
                         }).catch(() => {
                             window.location.reload()

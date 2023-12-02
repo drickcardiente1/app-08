@@ -685,11 +685,11 @@ client_queries.post('/book',upload.single('license'), (req, res) => {
         })().then((images) => {
             var qry
             (async () => {
-                qry = `INSERT INTO rent_list(id, client_id, bike_id, date_start, date_end, rent_days, amount_received, amount_topay, balance, status, date_created, date_updated) VALUES ('', '${req.session.user_id}', '${req.body.bike_id}', '${req.body.start}', '${req.body.end}', '${Difference_In_Days}', '0', '${price}', '${price}', '0', '${today}', '')`;
+                qry = `INSERT INTO rent_list(id, client_id, bike_id, date_start, date_end, rent_days, amount_received, amount_topay, balance, status, license_url, date_created, date_updated) VALUES ('', '${req.session.user_id}', '${req.body.bike_id}', '${req.body.start}', '${req.body.end}', '${Difference_In_Days}', '0', '${price}', '${price}', '0', '${images.secure_url}', '${today}', '')`;
                 await promise_query(qry)
             })().then(() => {
                 im = [process.env.gcash_logo]
-                qry = `INSERT INTO messages(id, receiver, messages, images, status) VALUES ('', '${req.session.user_id}', '${process.env.booking_message}', '${JSON.stringify(im)}', '1' )`;
+                qry = `INSERT INTO messages(id, receiver, messages, images, client_stats, admin_stats) VALUES ('', '${req.session.user_id}', '${process.env.booking_message}', '${JSON.stringify(im)}', '1', '1' )`;
                 (async () => {
                     await new Promise((resolve, reject) => {
                         db.query(qry, (err, data) => {
