@@ -5,7 +5,8 @@ const sub_name = "";
 const admin_template_data = new Map([]);
 const layout = new Map([]);
 const map1 = new Map([]);
-var updater_interval
+var updater_interval;
+var stocks_interval;
 var removd = [];
 var filtered;
 var v2;
@@ -2842,6 +2843,7 @@ function sign_out() {
 function cl_msg_close() {
   var tab = document.querySelector("#cl-msg");
   tab.classList.remove("show");
+  clearInterval(stocks_interval);
   clearInterval(updater_interval);
 }
 
@@ -2899,30 +2901,70 @@ function del_cl(ths) {
   })
 }
 
-function set_actor() {
+async function set_actor() {
   var tab = document.querySelector("#cl-msg");
   var actress = map1.get("user");
-  var clients = map1.get("clients");
   tab.classList.add("show");
-  var usrw = document.querySelector(".msg-usrs-row");
-  usrw.innerHTML = "";
   tab.setAttribute("actor_id", actress[0].id);
-  for (let loop = 0; loop < clients.length; loop++) {
-    var name = clients[loop].firstname,
-      nametrimmed;
-    if (name.length >= 5) {
-      nametrimmed = name.substring(0, 5);
-    }
-      usrw.innerHTML += `
-            <a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-danger usr-${clients[loop].id} xm">${nametrimmed}<span class="badge disabled badge-info" style="margin-left: 1vh !important;">0</span></a>
-            <br>
-            `;
-  }
+  ms_buttons()
   var u_id = document.querySelector(".disp_name").getAttribute('r_id');
   if (u_id !== null) {
     document.querySelector(`.usr-${u_id}`).click();
   }
+  clearInterval(stocks_interval);
+  stocks_interval = setInterval(ms_clients, 1000);
 }
+
+function ms_buttons() {
+  var clients = map1.get("clients");
+  var usrw = document.querySelector(".msg-usrs-row");
+  usrw.innerHTML = "";
+  for (let loop = 0; loop < clients.length; loop++) {
+    var name = clients[loop].firstname;
+    usrw.innerHTML += `<a r_id="${clients[loop].id}" nm="${name} ${clients[loop].lastname}" onclick="selected_usr(this)" title="${name} ${clients[loop].lastname}" class="btn btn-sm btn-outline-danger usr-${clients[loop].id} xm">${name.substring(0, 5)}<span class="badge disabled badge-info badge-cl-${clients[loop].id}" style="margin-left: 1vh !important;">0</span></a><br>`;
+  }
+}
+
+async function ms_clients() {
+  var clients = map1.get("clients");
+  await $.ajax({
+    url: "/query/clients_list",
+    method: "POST",
+    dataType: "JSON",
+    success: function (data) {
+      var lates_l = data.raw
+      if (lates_l.length != clients.length) {
+        map1.set("clients", data.raw);
+        ms_buttons();
+      }
+    },
+    error: function (request, error) {
+      Swal.fire('connection error')
+    },
+  });
+  await badge_detector();
+}
+
+async function badge_detector() {
+  var clients = map1.get("clients");
+    for (let loop = 0; loop < clients.length; loop++) {
+        await $.ajax({
+        url: "/query/msg-indicator",
+        method: "POST",
+        dataType: "JSON",
+        data:{"id": clients[loop].id},
+        success: function (data) {
+          if (data.status == 202) {
+            document.querySelector(`.badge-cl-${clients[loop].id}`).innerHTML = data.unread
+          }
+        },
+        error: function (request, error) {
+          Swal.fire('connection error')
+        },
+    });
+  }
+}
+
 async function selected_usr(e) {
   var xm = document.querySelectorAll('.xm')
   for (let l = 0; l < xm.length; l++){
@@ -2941,10 +2983,17 @@ async function selected_usr(e) {
   updater_interval = setInterval(() => updater(id, name), 1000);
   msg_box(id, name);
   showmsg(id, name);
+  await updater(id, name).then(() => {
+    (async () => {
+      await badge_detector().then(() => {
+        document.querySelector(`.badge-cl-${id}`).innerHTML = '0';
+      });
+    })();
+  })
 }
-function updater(id, name) {
-  console.log(id)
-      $.ajax({
+
+async function updater(id, name) {
+      await $.ajax({
         url: "/query/updater",
         method: "POST",
         dataType: "JSON",
