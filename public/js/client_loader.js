@@ -969,12 +969,13 @@ function detail(e) {
         `;
         footing = style_1;
     }
+    console.log(b_list[id]);
     document.querySelector('.booked-info').innerHTML =
         `
     <div class="conitaner-fluid px-3 py-2">
         <div class="row">
             <div class="col-md-6" style="color: black !important;">
-                <p><b>Drivers license<br></b> <img src="${b_list[0].license_url}" class="img-thumbnail"></p>
+                <p><b>Drivers license<br></b> <img src='${b_list[id].license_url}' class="img-thumbnail"></p>
                 <p><b>Client Name<br></b> ${valid_u.raw[0].firstname} ${valid_u.raw[0].lastname}</p>
                 <p><b>Client Contact<br></b> ${valid_u.raw[0].contact}</p>
                 <p><b>Client Address<br></b> ${valid_u.raw[0].address}</p>
