@@ -3036,7 +3036,7 @@ function adminmsg(user) {
                 <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 25px 0px; background-color: #344767 !important;">
                   <div class="container">
                     <div class="row row-cols-1">
-                        <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: 100%,imageHeight: 100%})" src="${imgs[0]}" class="img-fluid"></div>
+                        <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: '100vh',imageHeight: '100vh'})" src="${imgs[0]}" class="img-fluid"></div>
                     </div>
                   </div>
                   <p class="text-sm">${user.messages}</</p>
@@ -3062,7 +3062,7 @@ function adminmsg(user) {
             `;
             for (let url of imgs) {
               document.querySelector(`.ms-id-${user.id}`).innerHTML += `
-              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: 100%,imageHeight: 100%})" src="${url}" class="img-fluid"></div>
+              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: '100vh'imageHeight: '100vh'})" src="${url}" class="img-fluid"></div>
               `;
             }
         }
@@ -3089,7 +3089,7 @@ function clientmsg(user, name) {
               <div class="card-body pt-sm-3 pt-0 m-box scrollbar-y text-white" style="border-radius: 25px 25px 0 25px; background-color: #344767 !important;">
                 <div class="container">
                   <div class="row row-cols-1">
-                    <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: 100%,imageHeight: 100%})" src="${imgs[0]}" class="img-fluid"></div>
+                    <div class="col"><img onclick="Swal.fire({imageUrl: '${imgs[0]}', imageWidth: '100vh',imageHeight: '100vh'})" src="${imgs[0]}" class="img-fluid"></div>
                   </div>
                 </div>
                 <p class="text-sm">${user.messages}</p>
@@ -3114,7 +3114,7 @@ function clientmsg(user, name) {
             `;
             for (let url of imgs) {
               document.querySelector(`.ms-id-${user.id}`).innerHTML += `
-              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: 100%,imageHeight: 100%})" src="${url}" class="img-fluid"></div>
+              <div class="col"><img onclick="Swal.fire({imageUrl: '${url}', imageWidth: '100vh',imageHeight: '100vh'})" src="${url}" class="img-fluid"></div>
               `;
             }
         }
