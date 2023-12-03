@@ -970,8 +970,7 @@ function detail(e) {
         footing = style_1;
     }
     console.log(b_list[id]);
-    document.querySelector('.booked-info').innerHTML =
-        `
+    document.querySelector('.booked-info').innerHTML =`
     <div class="conitaner-fluid px-3 py-2">
         <div class="row">
             <div class="col-md-6" style="color: black !important;">
