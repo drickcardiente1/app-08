@@ -129,8 +129,6 @@ function page_data_loader(tag) {
         var odd_even = document.querySelector('.odd-even');
         var all_bikes = map_data.get('all_bikes').raw;
         var all_categories = map_data.get("all_categories").raw;
-        console.log(all_bikes)
-        console.log(all_categories)
         var bikes = [];
         for (let loop = 0; loop < all_categories.length; loop++) {
 
@@ -274,7 +272,6 @@ function page_data_loader(tag) {
                 bike[0].brand_id == brands.id ? brand.push(brands) : ""
             }
             for (var categories of all_categories) {
-                console.log(categories.id)
                 bike[0].category_id == categories.id ? category.push(categories) : ""
             }
             for (var galleries of all_galleries) {
@@ -285,7 +282,6 @@ function page_data_loader(tag) {
             document.querySelector('.price').setAttribute("data", bike[0].daily_rate ? bike[0].daily_rate : 0)
             document.querySelector('.description').innerHTML = bike[0].description ? bike[0].description : "N/A"
             document.querySelector('.category').innerHTML = category.length >= 1 ? category[0].category : "N/A"
-            console.log(brand)
             document.querySelector('.brand').innerHTML = brand.length >= 1 ? brand[0].name : "N/A"
             document.querySelector('.product-avatar').innerHTML =
                 `
@@ -312,7 +308,6 @@ function page_data_loader(tag) {
                `
             }
             var actor = map_data.get('actor');
-            console.log(actor);
             var unit_chicker = document.querySelector('.unit-chicker');
             function adds() {
                 unit_chicker.innerHTML = ``
@@ -607,7 +602,6 @@ async function check_unit() {
       var to_check_exist = val.data;
       var exist = false;
       for (let loop = 0; loop < to_check_exist.length; loop++) {
-        console.log(to_check_exist[loop].id);
         if (id == to_check_exist[loop].id) {
           exist = true;
         }
@@ -637,7 +631,6 @@ async function check_unit() {
 function book_mode() {
     var check_var = false;
     var all_bikes = map_data.get('all_bikes');
-    console.log(all_bikes);
     for (let loop = 0; loop < all_bikes.length; loop++) {
         if (all_bikes[loop].id == result2) {
             check_var = true;
@@ -915,7 +908,6 @@ function detail(e) {
     }
     function find(id) {
         for (let loop = 0; loop < all_categories.length; loop++) {
-            console.log(bike)
             if (all_categories[loop].id == id) {
                 category.push(all_categories[loop]);
             }
@@ -969,7 +961,6 @@ function detail(e) {
         `;
         footing = style_1;
     }
-    console.log(b_list[id]);
     document.querySelector('.booked-info').innerHTML =`
     <div class="conitaner-fluid px-3 py-2">
         <div class="row">
@@ -1337,7 +1328,6 @@ function get_page(relocate) {
         var check_var = false;
         var all_bikes = map_data.get('all_bikes').raw;
         for (let loop = 0; loop < all_bikes.length; loop++) {
-            console.log(all_bikes[loop].id)
             if (all_bikes[loop].id == result2) {
                 check_var = true;
             }
@@ -1451,7 +1441,6 @@ async function initializer(url) {
 }
 async function book() {
     var valid_u = map_data.get('actor');
-    console.log(valid_u)
     if (valid_u.status != 202) {
         get_page("/sign-in");
     } else {

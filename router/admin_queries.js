@@ -157,7 +157,6 @@ queries.post('/available_bikes', (req, res) => {
     qry = "SELECT * FROM `rent_list`";
     db.query(qry, function (error, data) {
         if (error) res.send(error);
-        console.log(data)
     });
 });
 
@@ -355,8 +354,6 @@ queries.post('/addbike', upload.fields([{ name: 'Default', maxCount: 1 }, { name
                 }
                 return { "avatar": avatar, "galeries": galeries }
             })().then((images) => {
-                console.log(images.avatar.length)
-                console.log(images.galeries.length)
                 qry = `INSERT INTO bike_list(id, brand_id, category_id, bike_model, description, avatar, daily_rate, status, date_created, date_updated) VALUES ('', '${brand_category}', '${bike_category}', '${model}', '${discription}', '${images.avatar[0]}', '${daily_rate}', '${status}', '${today}', '${today}')`;
                 (async () => {
                     await new Promise((resolve, reject) => {
@@ -393,7 +390,6 @@ queries.post('/addbike', upload.fields([{ name: 'Default', maxCount: 1 }, { name
                 var avatar = [def.secure_url]
                 return { "avatar": avatar }
             })().then((images) => {
-                console.log(images.avatar.length)
                 qry = `INSERT INTO bike_list(id, brand_id, category_id, bike_model, description, avatar, daily_rate, status, date_created, date_updated) VALUES ('', '${bike_category}', '${brand_category}', '${model}', '${discription}', '${images.avatar[0]}', '${daily_rate}', '${status}', '${today}', '${today}')`;
                 (async () => {
                     await new Promise((resolve, reject) => {
@@ -420,7 +416,6 @@ queries.post('/addbike', upload.fields([{ name: 'Default', maxCount: 1 }, { name
                 }
                 return { "galeries": galeries }
             })().then((images) => {
-                console.log(images.galeries.length)
                 qry = `INSERT INTO bike_list(id, brand_id, category_id, bike_model, description, daily_rate, status, date_created, date_updated) VALUES ('', '${bike_category}', '${brand_category}', '${model}', '${discription}', '${daily_rate}', '${status}', '${today}', '${today}')`;
                 (async () => {
                     await new Promise((resolve, reject) => {
@@ -513,38 +508,35 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
                 (async () => {
                     for (var url of images.galeries) {
                         qry = `INSERT INTO bike_gallery(id, bike_id, image, date_added) VALUES ('', '${bike_id}', '${url}', '${today}')`
-                        console.log(await promise_query(qry));
+                        await promise_query(qry)
                     };
                     qry = `UPDATE bike_list SET brand_id='${brand_id}', category_id='${category_id}', bike_model='${bike_model}', description='${description}', avatar='${avatar}', daily_rate='${daily_rate}', status='${status}', date_updated='${today}' WHERE id = ${bike_id};`;
-                    console.log(await promise_query(qry));
+                    await promise_query(qry)
                 })().then(() => {
                     function obj() {
                         var qry;
                         (async () => {
                             qry = `DELETE FROM bike_gallery WHERE id='${to_delate}';`
-                            console.log(await promise_query(qry));
+                            await promise_query(qry)
                         })();
                     }
                     function obj2() {
                         (async () => {
                             for (var id of to_delate) {
                                 qry = `DELETE FROM bike_gallery WHERE id='${id}';`
-                                console.log(await promise_query(qry));
+                                await promise_query(qry)
                             };
                         })();
                     }
                     typeof (to_delate) == 'string' ? obj() : obj2()
                 }).then(() => {
-                    console.log("job done")
                     res.sendStatus(202)
                     res.end();
                 }).catch(() => {
-                    console.log("error 2")
                     res.sendStatus(404)
                     res.end();
                 })
             }).catch(() => {
-                console.log("error 1")
                 res.sendStatus(404)
                 res.end();
             })
@@ -552,7 +544,6 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
         // adding img
         function igalery() {
             (async () => {
-                console.log("inserting")
                 var galeries = []
                 for (var image of req.files) {
                     var result = await cloudinary.uploader.upload(image.path);
@@ -564,21 +555,18 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
                 (async () => {
                     for (var url of images.galeries) {
                         qry = `INSERT INTO bike_gallery(id, bike_id, image, date_added) VALUES ('', '${bike_id}', '${url}', '${today}')`
-                        console.log(await promise_query(qry));
+                        await promise_query(qry)
                     };
                     qry = `UPDATE bike_list SET brand_id='${brand_id}', category_id='${category_id}', bike_model='${bike_model}', description='${description}', avatar='${avatar}', daily_rate='${daily_rate}', status='${status}', date_updated='${today}' WHERE id = ${bike_id};`;
-                    console.log(await promise_query(qry));
+                    await promise_query(qry)
                 })().then(() => {
-                    console.log("job done")
                     res.sendStatus(202)
                     res.end();
                 }).catch(() => {
-                    console.log("error 2")
                     res.sendStatus(404)
                     res.end();
                 })
             }).catch(() => {
-                console.log("error 1")
                 res.sendStatus(404)
                 res.end();
             })
@@ -607,11 +595,9 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
                 }
                 typeof (to_delate) == 'string' ? obj() : obj2()
             }).then(() => {
-                console.log("job done")
                 res.sendStatus(202)
                 res.end();
             }).catch(() => {
-                console.log("error 2")
                 res.sendStatus(404)
                 res.end();
             })
@@ -622,12 +608,9 @@ queries.post('/bike_update', upload.array('Galeries'), (req, res) => {
                 qry = `UPDATE bike_list SET brand_id='${brand_id}', category_id='${category_id}', bike_model='${bike_model}', description='${description}', avatar='${avatar}', daily_rate='${daily_rate}', status='${status}', date_updated='${today}' WHERE id = ${bike_id};`;
                 await promise_query(qry);
             })().then(() => {
-                console.log("job done")
                 res.sendStatus(202)
                 res.end();
             }).catch((error) => {
-                console.log(error)
-                console.log("job not done")
                 res.sendStatus(404)
                 res.end();
             })
@@ -746,7 +729,6 @@ queries.post('/addcategory', async (req, res) => {
 })
 
 queries.post('/upp_cat', async (req, res) => {
-    console.log(req.body);
     var id = req.body.id;
     var name = req.body.name;
     var description = req.body.discription;

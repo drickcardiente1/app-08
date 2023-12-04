@@ -206,7 +206,6 @@ const get_page = (tag) => {
       var brnd = "N/A",
         type = "N/A";
       for (let b = 0; b < brand_list.length; b++) {
-        console.log(brand_list[b].name);
         if (a[loop].brand_id == brand_list[b].id) {
           brnd = brand_list[b].name;
         }
@@ -633,7 +632,6 @@ const get_page = (tag) => {
           info.push(x[cl]);
         }
       }
-      console.log(info);
       function today(td) {
         var this_date = new Date(td);
         var day = String(this_date.getDate()).padStart(2, "0");
@@ -1069,7 +1067,6 @@ function edt_b(ths) {
 
   var tb_bt = document.getElementsByClassName("bt")[0];
   var tb_bt2 = document.getElementsByClassName("bt2")[0];
-  console.log(x4[t_id]);
 
   var gal = document.querySelector(".galeries");
   gal.innerHTML = "";
@@ -1169,13 +1166,11 @@ async function scsup(ths) {
   for (let loop = 0; loop < mult_img.files.length; loop++) {
     data.append("Galeries", mult_img.files[loop]);
   }
-  console.log(removd);
   function ad_removed() {
     for (let loop = 0; loop < removd.length; loop++) {
       data.append("to_delate", removd[loop]);
     }
   }
-  console.log(removd.length);
   removd ? ad_removed() : data.append("to_delate", undefined);
   data.append("id", bk_id);
   data.append("cat", cat);
@@ -1195,13 +1190,6 @@ async function scsup(ths) {
         swal.close();
         recan();
         analizer("/admin/motorbikes/");
-        // Swal.fire({
-        //   position: "top-end",
-        //   icon: "success",
-        //   title: "Bike UPDATED SUCCESSFULLY",
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
       } else {
         analizer("/admin/motorbikes/");
         recan();
@@ -1488,7 +1476,6 @@ function rl_lop(data) {
         avatar = clients[u].avatar;
       }
     }
-    console.log(avatar);
     if (data[loop].status == "0") {
       status = `
                 <button disabled class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
@@ -1672,7 +1659,6 @@ function bcat(ths) {
     target.innerHTML = "";
     target.innerHTML = ths.innerHTML;
     target.setAttribute('data_id', vr)
-    console.log(ths.innerHTML);
 }
 function bcat2(ths) {
     var target = document.getElementsByClassName('bct2')[0];
@@ -1680,7 +1666,6 @@ function bcat2(ths) {
     target.innerHTML = "";
     target.innerHTML = ths.innerHTML;
     target.setAttribute('data_id', vr)
-    console.log(ths.innerHTML);
 }
 function bcat3(ths) {
     var target = document.getElementsByClassName('bct3')[0];
@@ -1791,7 +1776,6 @@ function re_del(e) {
       avtr = x4[loop].avatar;
     }
   }
-  console.log(x4);
   var av = document.querySelector(".avt-1").src;
   for (let loop = 0; loop < bike_gallery.length; loop++) {
     if (av == bike_gallery[loop].image) {
@@ -2448,10 +2432,8 @@ function change_cl_prof(e) {
   var id = e.getAttribute("d_id");
   document.querySelector(".cl-id").setAttribute("d_id", id);
   var c_user = map1.get("clients");
-  console.log(c_user);
   var the_user = [];
   for (let loop = 0; loop < c_user.length; loop++) {
-    console.log(c_user[loop]);
     if (id == c_user[loop].id) {
       the_user.push(c_user[loop]);
     }
@@ -2604,8 +2586,6 @@ function update_info() {
   } else {
     username = u_name.value;
   }
-  console.log(first_name, last_name, username);
-
   $.ajax({
     url: "/query/updateusr",
     method: "POST",
@@ -2779,7 +2759,6 @@ function updateclpwd() {
   var old_p = document.getElementById("old_p");
   var new_p = document.getElementById("nw_p");
   var confnew_p = document.getElementById("confnw_p");
-  console.log();
 
   if (old_p.value == "") {
     Swal.fire("Please input Current password");

@@ -672,7 +672,6 @@ client_queries.post('/send-img',upload.array('img_message', 10), (req, res) => {
 });
 
 client_queries.post('/book',upload.single('license'), (req, res) => {
-    console.log(req.body.start)
     var date1 = new Date(req.body.start);
     var date2 = new Date(req.body.end); 
     var Difference_In_Time = date2.getTime() - date1.getTime();
