@@ -167,6 +167,7 @@ const sign_in = () => {
 const get_page = (tag) => {
   if (tag == "dashboard") {
     document.querySelector("#dashboard").classList.add("active");
+    document.querySelector('.tg-page').innerHTML = "HOME"
     var t_bikes = document.getElementsByClassName("total_motorbikes")[0];
     var d_bikes = document.getElementsByClassName("d_bikes")[0];
     var usrs = document.getElementsByClassName("usrs")[0];
@@ -185,6 +186,7 @@ const get_page = (tag) => {
     var a = map1.get("bikes");
     t_bikes.innerHTML = a.length;
   } else if (tag == "Motorbikes") {
+    document.querySelector('.tg-page').innerHTML = "MOTORBIKES"
     document.querySelector("#Motorbikes").classList.add("active");
     var a = map1.get("bikes");
     var categories = map1.get("categories");
@@ -493,9 +495,11 @@ const get_page = (tag) => {
       }
     });
   } else if (tag == "bookinglist") {
+    document.querySelector('.tg-page').innerHTML = "BOOKING LIST"
     document.querySelector("#bookinglist").classList.add("active");
     filter_remove();
   } else if (tag == "bookingreports") {
+    document.querySelector('.tg-page').innerHTML = "BOOKING REPORTS"
     document.querySelector("#bookingreports").classList.add("active");
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
@@ -546,6 +550,7 @@ const get_page = (tag) => {
       searching: false,
     });
   } else if (tag == "clients") {
+    document.querySelector('.tg-page').innerHTML = "CLIENTS"
     document.querySelector("#clients").classList.add("active");
     // saba-diha
     try {
@@ -677,6 +682,7 @@ const get_page = (tag) => {
       document.getElementById("contact").placeholder = `${info[0].contact}`;
     }
   } else if (tag == "brandlist") {
+    document.querySelector('.tg-page').innerHTML = "BRAND LIST"
     document.querySelector("#brandlist").classList.add("active");
     var brands = map1.get("brand_list");
     var table = document.getElementsByClassName("brand_list")[0];
@@ -729,6 +735,7 @@ const get_page = (tag) => {
       ],
     });
   } else if (tag == "categorylist") {
+    document.querySelector('.tg-page').innerHTML = "CATEGORY LIST"
     document.querySelector("#categorylist").classList.add("active");
     var categories = map1.get("categories");
     var table = document.getElementsByClassName("category_list")[0];
@@ -1185,6 +1192,7 @@ async function scsup(ths) {
   })
     .then((res) => {
       if (res.status == 202) {
+        swal.close();
         recan();
         analizer("/admin/motorbikes/");
         // Swal.fire({
@@ -1731,6 +1739,9 @@ function can() {
   var bot7 = document.getElementById("clients");
   bot7.style.pointerEvents = "none";
   bot7.style.cursor = "none";
+  var bot8 = document.querySelector(".main-page");
+  bot8.style.pointerEvents = "none";
+  bot8.style.cursor = "none";
 }
 function recan() {
   var bot1 = document.getElementById("dashboard");
@@ -1747,6 +1758,8 @@ function recan() {
   bot6.style = "";
   var bot7 = document.getElementById("clients");
   bot7.style = "";
+  var bot8 = document.querySelector(".main-page");
+  bot8.style = "";
 }
 function del_b(ths) {
   var id = ths.getAttribute("d_id");
