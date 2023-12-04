@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
+  "name": "JNJ motorbike rental system",
+  "description": "web system for capstone 2",
   "repository": "https://github.com/heroku/node-js-getting-started",
-  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
+  "logo": "https://res.cloudinary.com/devqjzqxb/image/upload/v1701674509/design/wah6sehk0qtz2pwewpfz.png",
   "keywords": ["node", "express", "heroku"],
-  "image": "heroku/nodejs"
+  "image": "heroku/nodejs/vanillajs"
 }
