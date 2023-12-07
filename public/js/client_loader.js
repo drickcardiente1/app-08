@@ -526,7 +526,7 @@ function looper1() {
         </div>
     </div>
     `;
-      var u = map_data.get("active_u");
+      var u = map_data.get("actor");
       for (let loop = 0; loop < to_load.length; loop++) {
         document.querySelector(".looper").innerHTML += `
         <div class="col-md-4 mt-md-0 mt-4">
@@ -1215,7 +1215,7 @@ async function s_up() {
     }
 }
 function update_info_client() {
-    var valid_u = map_data.get('active_u');
+    var valid_u = map_data.get('actor');
     var f_name = document.querySelector('.f_name');
     var l_name = document.querySelector('.l_name');
     var u_name = document.querySelector('.u_name');
