@@ -2935,6 +2935,7 @@ async function ms_clients() {
       Swal.fire('connection error')
     },
   });
+   badge_detector()
 }
 
 async function badge_detector() {
@@ -2948,6 +2949,8 @@ async function badge_detector() {
         success: function (data) {
           if (data.status == 202) {
             document.querySelector(`.badge-cl-${clients[loop].id}`).innerHTML = data.unread
+          } else {
+            document.querySelector(`.badge-cl-${clients[loop].id}`).innerHTML = `0`
           }
         },
         error: function (request, error) {
