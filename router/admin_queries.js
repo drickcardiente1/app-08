@@ -1071,5 +1071,41 @@ queries.post("/msg-indicator", (req, res) => {
 });
 
 
+queries.post("/msg-indicator-all", (req, res) => {
+  qry = `SELECT * FROM messages `;
+  (async () => {
+    await new Promise((resolve, reject) => {
+      db.query(qry, (err, data) => {
+        if (err) {
+          reject(res.send({ code: 404 }));
+        } else {
+          resolve(data);
+        }
+      });
+    })
+      .then((data) => {
+        var tag = false,
+          id = [];
+        for (var x of data) {
+          if (x.admin_stats.includes(1)) {
+            tag = true;
+            id.push(x.id);
+          }
+        }
+        if (tag == true) {
+          res.json({ status: 202, unread: id.length });
+          res.end();
+        } else {
+          res.json({ status: 404 });
+          res.end();
+        }
+      })
+      .catch((rs) => {
+        console.log("Error such table found ", rs);
+      });
+  })();
+});
+
+
 
 module.exports = queries;

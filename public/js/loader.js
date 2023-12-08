@@ -5,6 +5,7 @@ const sub_name = "";
 const admin_template_data = new Map([]);
 const layout = new Map([]);
 const map1 = new Map([]);
+var updater_interval_all;
 var updater_interval;
 var stocks_interval;
 var removd = [];
@@ -927,9 +928,12 @@ const analizer = async (url) => {
                 layer.innerHTML = "";
                 layer.innerHTML = layout.get("layer-index");
                 page_handler(url);
+                clearInterval(updater_interval_all);
+                updater_interval_all = setInterval(set_detector, 1000);
               });
             })();
           } else {
+            clearInterval(updater_interval_all);
             var locate = `/${root_name}/sign-in`;
             var layer = document.querySelector(".layer");
             layer.innerHTML = ""
@@ -946,6 +950,28 @@ const analizer = async (url) => {
     })();
   });
 };
+async function set_detector() {
+  await $.ajax({
+    url: "/query/msg-indicator-all",
+    method: "POST",
+    dataType: "JSON",
+    success: function (data) {
+      if (data.status == 202) {
+        document.querySelector(".indicate").innerHTML = `
+                <span
+                    class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-2">
+                    <span class="small">${data.unread}</span>
+                </span>
+                `;
+      } else {
+                document.querySelector(".indicate").innerHTML = ``;
+      }
+    },
+    error: function (request, error) {
+      Swal.fire("connection error");
+    },
+  });
+}
 function val_nb() {
   var err = false;
   var bike_category = document.getElementsByClassName("bct")[0].getAttribute("data_id");
@@ -2401,6 +2427,7 @@ function sign_out() {
     method: "POST",
     dataType: "JSON",
     success: function (data) {
+      clearInterval(updater_interval_all);
       analizer("/admin/sign-in");
     },
   });
